@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rua Web Store",
   description: "Smart E-commerce & AI Marketing Platform",
+  icons: "/favicon.svg",
 };
 
 export default function RootLayout({
