@@ -7,7 +7,7 @@ interface Product {
     name: string;
     description: string;
     price: number;
-    rating: string;
+    ratings: string;
     // images: string;
 }
 
@@ -19,7 +19,7 @@ const Products = async () => {
         const { products }: { products: Product[] } = await response.json();
 
 
-        console.log(products)
+        // console.log(products)
 
         return (
         <section className="container mx-auto p-6">
@@ -31,7 +31,7 @@ const Products = async () => {
                     name={product.name}
                     description={product.description}
                     price={product.price}
-                    rating={product.rating}
+                    rating={product.ratings}
                     // imageSrc={product.images}
                 />
                 ))}

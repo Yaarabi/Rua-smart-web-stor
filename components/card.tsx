@@ -24,7 +24,7 @@ const Card = ({ name, description, price, rating }: {
                 <h2 className="text-lg font-semibold text-gray-800">{name}</h2>
                 <p className="text-sm text-gray-600">{description}</p>
                 <p className="text-xl font-bold text-green-600">{price} MAD</p>
-                <p className="text-yellow-500 font-medium">⭐ {rating}</p>
+                <p className="text-yellow-800 font-medium">⭐ {rating}</p>
             </section>
             <footer className="mt-4 flex justify-center">
                 <button className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
