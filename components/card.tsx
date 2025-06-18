@@ -27,8 +27,8 @@ const Card = ({ name, description, price, rating }: {
                 <p className="text-yellow-500 font-medium">⭐ {rating}</p>
             </section>
             <footer className="mt-4 flex justify-center">
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                Buy Now
+                <button className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                Add to Cart
                 </button>
             </footer>
         </article>

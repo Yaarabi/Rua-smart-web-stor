@@ -2,9 +2,9 @@
 const Article = () => {
     return (
         <section className="max-w-screen-xl mx-auto mt-2 p-6 bg-gray-100 min-h-screen">
-            {/* About Rua Web Store */}
+            
             <article className="mb-8">
-                <h2 className="text-3xl font-bold text-blue-600">Welcome to Rua Web Store – The Future of E-Commerce</h2>
+                <h2 className="text-3xl font-bold text-gray-600">Welcome to Rua Web Store – The Future of E-Commerce</h2>
                 <p className="mt-4 text-lg">
                     Rua Web Store is an AI-powered e-commerce solution designed to revolutionize the way businesses and dropshippers manage their online stores. 
                     By integrating advanced automation, AI-driven marketing tools, and streamlined e-commerce management, we empower sellers to optimize their 
@@ -17,9 +17,9 @@ const Article = () => {
                 </p>
             </article>
 
-            {/* About Youssef */}
+            
             <article className="mb-8">
-                <h2 className="text-2xl font-bold text-blue-600">Meet the Founder: Youssef Aarabi</h2>
+                <h2 className="text-2xl font-bold text-gray-600">Meet the Founder: Youssef Aarabi</h2>
                 <p className="mt-4 text-lg">
                     I am Youssef Aarabi, a passionate full-stack web developer and digital marketing strategist with a deep expertise in building scalable 
                     e-commerce solutions. With a background in Economics and Management from Université Ibn Zohr d`Agadir, I’ve combined my technical skills with 
@@ -31,9 +31,9 @@ const Article = () => {
                 </p>
             </article>
 
-            {/* Call to Action */}
+            
             <div className="text-center bg-blue-100 p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold text-blue-700">Join the Revolution</h3>
+                <h3 className="text-xl font-semibold text-gray-600">Join the Revolution</h3>
                 <p className="mt-3 text-gray-700">
                     Rua Web Store is more than a platform—it’s a game-changing solution for businesses that want to scale smartly.  
                     Whether you`re an entrepreneur, dropshipper, or brand owner, we provide the tools to make your success seamless.
