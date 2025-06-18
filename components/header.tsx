@@ -5,8 +5,8 @@ import { MdSupportAgent } from "react-icons/md";
 const Header = () => {
     return (
         <header className="bg-white shadow">
-            <section className="text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white p-3">
-                <p className="text-sm font-medium">🚀 Exclusive Offers & Latest Updates</p>
+            <section className="text-center bg-gradient-to-r from-gray-900 to-gray-700 text-white p-3">
+                <p className="text-sm font-medium">Exclusive Offers & Latest Updates</p>
             </section>
             
             <div className="flex justify-between items-center px-6 bg-gray-200">
@@ -17,7 +17,7 @@ const Header = () => {
                         width={70} 
                         height={70} 
                     />
-                    <h1 className="text-xl font-bold text-blue-800">Rua Web Store</h1>
+                    <h1 className="text-xl font-bold text-gray-600">Rua Web Store</h1>
                 </div>
                 <button aria-label="Change Language" className="p-2 rounded">
                     🌐 Language
@@ -37,7 +37,7 @@ const Header = () => {
                         placeholder="Search products..." 
                         className="border rounded p-2 w-4/5" 
                     />
-                    <button className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+                    <button className="bg-gray-700 text-white p-2 rounded hover:bg-blue-700">
                         Search
                     </button>
                 </form>
