@@ -5,7 +5,7 @@ import Product from "@/models/products";
 export async function GET() {
     await connectDB();
     try {
-        const products = await Product.find({});
+        const products = await Product.find();
         return NextResponse.json({ message: "Products retrieved successfully", products });
     } catch (error) {
         return NextResponse.json({ message: "Failed to retrieve products", error }, { status: 500 });

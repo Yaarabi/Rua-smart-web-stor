@@ -17,6 +17,7 @@ const Card = ({ name, description, price, rating }: {
                 alt={`Image of ${name}`}
                 width={200}
                 height={200}
+                priority={true}
                 className="rounded-md object-cover"
                 />
             </header>

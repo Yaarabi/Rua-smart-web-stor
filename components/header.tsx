@@ -10,15 +10,15 @@ const Header = () => {
             </section>
             
             <div className="flex justify-between items-center px-6 bg-gray-200">
-                <div className="flex items-center space-x-1">
+                <section className="flex items-center space-x-1">
                     <Image 
                         src="/logo.svg" 
                         alt="Rua Web Store Logo" 
                         width={70} 
-                        height={70} 
+                        height={70}
                     />
                     <h1 className="text-xl font-bold text-gray-600">Rua Web Store</h1>
-                </div>
+                </section>
                 <button aria-label="Change Language" className="p-2 rounded">
                     🌐 Language
                 </button>

@@ -1,15 +1,20 @@
+import ProductChart from "@/components/productsChart";
+import Table from "@/components/table";
 
-import generatePromots from "@/app/utils/openai"
-
-const Test = async () => {
-
-    const prompt: string = "Give me a product title and a short, engaging description for a smart watch I'm launching. Format the result like this: title: [text], description: [text]. Make sure it follows digital marketing best practices (clear benefit, emotional hook, SEO-friendly). Keep it concise, no extra text."
-    const respense = await generatePromots(prompt)
+const Page = () => {
     return (
-        <div>
-        { respense }
-        </div>
-)
-}
+        <>
+        <header className="h-[30vh] w-full flex items-end justify-start space-x-4">
+            <div className="w-3/5">
+            <ProductChart />
+            </div>
+            <button className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">
+            New product
+            </button>
+        </header>
+        <Table/>
+        </>
+);
+};
 
-export default Test
+export default Page;
