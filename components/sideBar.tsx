@@ -3,7 +3,7 @@ import { FaHome, FaShoppingCart, FaUsers, FaChartBar, FaCog, FaSignOutAlt } from
 
 const SideBar = () => {
         return (
-            <aside className="w-64 h-screen bg-gray-900 text-white flex flex-col">
+            <aside className="md:fixed w-64 h-screen bg-gray-900 text-white flex flex-col">
 
             <div className="flex items-center p-6">
                 <Image src="/whiteLogo.svg" alt="Rua Web Store Logo" width={70} height={70} />
