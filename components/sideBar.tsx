@@ -5,10 +5,10 @@ const SideBar = () => {
         return (
             <aside className="md:fixed w-64 h-screen bg-gray-900 text-white flex flex-col">
 
-            <div className="flex items-center p-6">
+            <section className="flex items-center p-6">
                 <Image src="/whiteLogo.svg" alt="Rua Web Store Logo" width={70} height={70} />
                 <h2 className="text-xl font-bold ml-3">Rua Web Store</h2>
-            </div>
+            </section>
 
             <nav className="flex-1">
                 <ul className="space-y-4 p-4">

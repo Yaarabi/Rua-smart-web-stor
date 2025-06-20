@@ -7,7 +7,7 @@ interface Props {
     
 const Option = ({ forWhat, action1, action2 }: Props) => {
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <div className="max-w-md md:mt-28 mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
             How do you want to create this product? {forWhat}
         </h2>
