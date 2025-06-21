@@ -2,20 +2,26 @@
 "use client"
 
 import AddProductForm from "@/components/addProduct"
-import ForPrompt, { Context } from "@/components/forPrompt"
+import ForPrompt from "@/components/forPrompt"
 import Option from "@/components/option"
 import LaunchTips from "@/components/Tips"
-import { useContext, useState } from "react"
+import { useState } from "react"
 
 
 
 const Page = () => {
 
     const [manualy, setManualy] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [IA, setIA] = useState(false)
-    const form = useContext(Context)
+    const [ form, setForm ] = useState({
+        title: "",
+        about: ""
+    })
+
 
     const handelManualy = () => {
+        setLoading(false)
         setManualy(true)
         setIA(false)
     }
@@ -24,6 +30,7 @@ const Page = () => {
         setManualy(false)
     }
     const promptComming = () => {
+        setLoading(true)
         setManualy(true)
         setIA(false)
     }
@@ -32,8 +39,8 @@ const Page = () => {
         <>
         { !manualy && !IA && <Option forWhat={"product"} action1={handelManualy} action2={handelByIA} />}
         { !manualy && !IA && <LaunchTips/> }
-        { manualy && <AddProductForm prompt = {form} action={() => setManualy(false)}/> }
-        {IA && <ForPrompt action1={()=> setIA(false)} action2={promptComming}/> }
+        { manualy && <AddProductForm forPrompt={form} forLoading={loading}  action={() => {setManualy(false); setForm({ title: "", about:"" })}} /> }
+        {IA && <ForPrompt form={form} action1={()=> setIA(false)} action2={promptComming} action3={(x)=> setForm(x)}/> }
         </>
     )
     }

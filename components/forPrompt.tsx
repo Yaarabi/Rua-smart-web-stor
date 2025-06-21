@@ -1,54 +1,33 @@
 "use client"
 
-import { useState, createContext } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
     interface Props {
     action1: () => void;
     action2: () => void;
-    }
-    interface Form {
+    action3: React.Dispatch<React.SetStateAction<{ title: string; about: string }>>;
+    form: {
         title: string;
         about: string;
-        }
+    }
+    }
 
-    export const Context = createContext<Form>({
-        title: "",
-        about: ""
-        })
 
-const ForPrompt = ({ action1, action2 }: Props) => {
 
-    const [ form, setForm ] = useState<Form>({
-        title:"",
-        about: "",
-    })
+const ForPrompt = ({ action1, action2, action3, form }: Props) => {
+
 
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        action3((prev) => ({ ...prev, [name]: value }));
     };
 
-    // const prompt: string = `Give me a product title based on ${form.title}, ${form.about}. Format the result like this: title: [text]. Make sure it follows digital marketing best practices (clear benefit, emotional hook, SEO-friendly). Keep it concise, no extra text.`
-    // const [result, setResult] = useState<string | null>(null);
-    // const getRespense = async () => {
-
-    //     const res = await fetch("/api/generate", {
-    //     method: "POST",
-    //     body: JSON.stringify({ prompt }),
-    //     headers: { "Content-Type": "application/json" },
-    //     });
-        
-    //     const { result } = await res.json();
-    //     setResult(result);
-
-    // }
 
     return (
-        <Context.Provider value={form}>
+        <>
         <button onClick={action1} className="text-white hover:text-indigo-400 transition">
             <FaArrowLeft className="inline-block text-xl" />
         </button>
@@ -65,6 +44,7 @@ const ForPrompt = ({ action1, action2 }: Props) => {
             </label>
             <input
                 name="title"
+                required
                 value={form.title}
                 onChange={handleChange}
                 placeholder="e.g., Premium Leather Wallet"
@@ -78,6 +58,7 @@ const ForPrompt = ({ action1, action2 }: Props) => {
             </label>
             <textarea
                 name="about"
+                required
                 value={form.about}
                 onChange={handleChange}
                 placeholder="Brief product about..."
@@ -85,17 +66,12 @@ const ForPrompt = ({ action1, action2 }: Props) => {
             />
             </div>
 
-            <div className="flex justify-end space-x-4 pt-2">
-            <button
-                
-                className="px-6 py-2 bg-gray-200 text-indigo-600 rounded-md hover:bg-gray-300 transition"
-            >
-                Re-try
-            </button>
+            <div className="flex justify-end">
             <button
             type="button"
                 onClick={action2}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                disabled={!form.title || !form.about }
             >
                 Next
             </button>
@@ -104,7 +80,7 @@ const ForPrompt = ({ action1, action2 }: Props) => {
         </div>
 
 
-        </Context.Provider>
+        </>
     );
     };
 

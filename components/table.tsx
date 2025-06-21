@@ -3,14 +3,18 @@
 import { FaEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
 import { useQuery } from "@tanstack/react-query";
+import Skeleton from "./loading";
+import Image from "next/image";
+
 
     interface Product {
     name: string;
     description: string;
     price: number;
+    stock: number;
     ratings: string;
     createdAt: string;
-    // images: string;
+    images: string;
     }
 
 const Table = () => {
@@ -23,7 +27,7 @@ const Table = () => {
         },
     });
 
-    if (isLoading) return <p className="text-white text-center mt-6">Loading products...</p>;
+    if (isLoading) return <Skeleton/>;
     if (isError || !data?.products) return <p className="text-red-500 text-center mt-6">Failed to load products.</p>;
 
     return (
@@ -50,10 +54,10 @@ const Table = () => {
                     day: "numeric",
                 })}
                 </td>
-                <td className="p-2 border">—</td>
+                <td className="p-2 border"> <Image alt="product image" src={(product.images) ? `data:image/png;base64,${product.images[0]}` : "---"} width={20} height={20} /> </td>
                 <td className="p-2 border">{product.name}</td>
                 <td className="p-2 border">{product.price} MAD</td>
-                <td className="p-2 border">In stock</td>
+                <td className="p-2 border">{ product.stock }</td>
                 <td className="p-2 border flex justify-center space-x-4 cursor-pointer">
                     
                     <FaEdit size={18}/>

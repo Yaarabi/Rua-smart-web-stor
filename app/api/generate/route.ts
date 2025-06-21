@@ -1,19 +1,24 @@
-
-import { OpenAI } from "openai";
-
-const openai = new OpenAI({
-    apiKey: process.env.API_KEY,
-    baseURL: "https://openrouter.ai/api/v1",
-});
+import { NextResponse } from "next/server";
+import generatePrompts from "@/app/utils/openai";
 
 export async function POST(req: Request) {
-    const { prompt } = await req.json();
+    try {
+        const { prompt } = await req.json();
 
-    const response = await openai.chat.completions.create({
-        model: "deepseek/deepseek-r1-0528",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 3000,
-    });
+        if (!prompt) {
+        return NextResponse.json({ result: null, error: "Prompt is missing" }, { status: 400 });
+        }
 
-    return Response.json({ result: response.choices[0].message.content?.trim() });
+        const result = await generatePrompts(prompt);
+
+        if (!result) {
+        console.error("generatePromots returned null or undefined");
+        return NextResponse.json({ result: null, error: "AI generation failed" }, { status: 500 });
+        }
+
+        return NextResponse.json({ result });
+    } catch (error) {
+        console.error("API /generate crashed:", error);
+        return NextResponse.json({ result: null, error: "Server Error" }, { status: 500 });
+    }
 }

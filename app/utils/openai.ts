@@ -10,27 +10,28 @@ const openai = new OpenAI({
     apiKey: process.env.API_KEY,
 });
 
-const generatePromots = async (prompt: string) => {
+const generatePrompts = async (prompt: string) => {
 
-    const respense = await openai.chat.completions.create({
-
-        model: "deepseek/deepseek-r1-0528",
-        messages: [
-        {
-            "role": "user",
-            "content": prompt,
-    }
-    ],
+try {
+    const response = await openai.chat.completions.create({
+        model: "mistralai/mistral-7b-instruct",
+        messages: [{ role: "user", content: prompt }],
         max_tokens: 3001,
+    });
 
+    console.log("OpenRouter raw response:", JSON.stringify(response, null, 2));
 
-    })
+    const content = response.choices?.[0]?.message?.content?.trim();
+    return content || null;
 
-    return respense.choices[0].message.content?.trim()
+}catch (error) {
+    console.error("generatePromots error:", error);
+    return null;
+}
 
 }
 
-export default generatePromots
+export default generatePrompts
 
 
 

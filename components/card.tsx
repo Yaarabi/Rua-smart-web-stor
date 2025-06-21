@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 
-const Card = ({ name, description, price, rating }: {
+const Card = ({ name, price, rating }: {
     name: string;
-    description: string;
+    // description: string;
     price: number;
     rating: string;
     // imageSrc: string;
@@ -23,7 +23,7 @@ const Card = ({ name, description, price, rating }: {
             </header>
             <section className="mt-4 text-center">
                 <h2 className="text-lg font-semibold text-gray-800">{name}</h2>
-                <p className="text-sm text-gray-600">{description}</p>
+                <p className="text-sm text-gray-600">see More</p>
                 <p className="text-xl font-bold text-green-600">{price} MAD</p>
                 <p className="text-yellow-800 font-medium">⭐ {rating}</p>
             </section>
