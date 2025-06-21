@@ -1,51 +1,140 @@
     "use client";
 
-    import { useEffect, useState } from "react";
-    import { FaArrowLeft } from "react-icons/fa";
-    import useCreateProduct from "@/app/hooks/createProduct";
+import { useEffect, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import useCreateProduct from "@/app/hooks/createProduct";
+import getRespense from "@/app/hooks/getIArespense";
+import Loader from "./loader";
+import Posting from "./btnPatient";
+
 
     interface Props {
     action: () => void;
-    prompt: {
+    forPrompt: {
         title : string;
         about : string;
     }
+    forLoading: boolean
     }
 
     interface Form {
         name: string;
+        title: string;
         description: string;
         price: string;
         category: string;
         stock: string;
         ratings: string;
         images: string;
+        createdAt: Date
         }
 
 
 
-    const AddProductForm = ({ action, prompt }: Props) => {
+    const AddProductForm = ({ action, forPrompt, forLoading }: Props) => {
+
+    const titlePrompt: string = `Generate a product title based on the following:
+- Product name: ${forPrompt.title}
+- Target audience or benefit: ${forPrompt.about}
+
+Requirements:
+- Return only the final title, nothing else
+- Do not include quotes, brackets, or any label (e.g., no "Title:", no "response:")
+- The title must be clear, SEO-friendly, emotionally engaging, and under 9 words
+
+Output only the title on one line.
+`
+    const descriptionPrompt: string =`Write a compelling product description for an e-commerce listing.
+
+Inputs:
+- Product name or type: ${forPrompt.title}
+- Product purpose or audience: ${forPrompt.about}
+
+Guidelines:
+- Focus on key benefits and emotional appeal
+- Write in a modern, persuasive tone that’s SEO-friendly
+- Keep the description under 100 words
+- Do not include a title or extra labels
+- Output only the description text. No bullet points or headings, and under 20 words.
+
+The result should read like high-converting copy you'd find on a product detail page.
+`
 
     
+    const [titleByIA, setTitleByIA] = useState<string | null>(null);
+    const [descriptionByIA, setDescriptionByIA] = useState<string | null>(null)
+    const [ retry, setTry ] = useState(false)
+    const [ isRery, setIsRetry ] = useState(false)
+
+    const tryAgainGenerate = () => {
+        setIsRetry(true)
+        if(!retry) {
+            setTry(true)
+        }else{
+            setTry(false)
+        }
+    }
+
+    useEffect(() => {
+    const fetchRespense = async () => {
+        const title = await getRespense(titlePrompt);
+        const description = await getRespense(descriptionPrompt)
+        setTitleByIA(title);
+        setDescriptionByIA(description)
+        setIsRetry(false)
+    };
+    if (forPrompt.title && forPrompt.about) {
+        fetchRespense();
+    }
+    }, [forPrompt,titlePrompt,descriptionPrompt, retry]);
+
+
     const [form, setForm] = useState<Form>({
         name: "",
+        title: "",
         description: "",
         price: "",
         category: "",
         stock: "",
-        ratings: "",
+        ratings: "5",
         images: "",
+        createdAt: new Date()
     });
 
     useEffect(() => {
-        console.log(prompt)
-    },[prompt])
-    const handleChange = (
+    if (titleByIA && descriptionByIA) {
+        setForm((prev) => ({ ...prev, title: titleByIA, description: descriptionByIA }));
+    }
+    }, [titleByIA, descriptionByIA]);
+
+
+
+const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
+        ) => {
+        const { name, value, files } = e.target as HTMLInputElement;
+
+        if (name === "images" && files && files.length > 0) {
+            const reader = new FileReader();
+            const file = files[0];
+
+            reader.onloadend = () => {
+            const base64String = reader.result?.toString().split(",")[1];
+            if (base64String) {
+                setForm((prev) => ({ ...prev, images: base64String }));
+            }
+            };
+
+            reader.onerror = (error) => {
+            console.error("Error encoding image:", error);
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            setForm((prev) => ({ ...prev, [name]: value }));
+        }
+};
+
 
     const createProduct = useCreateProduct();
 
@@ -53,6 +142,9 @@
         e.preventDefault();
         createProduct.mutate(form);
     };
+    if(forLoading && forPrompt && !titleByIA && !descriptionByIA) {
+        return <Loader />
+    }
 
 return (
     <>
@@ -70,9 +162,9 @@ return (
             </label>
             <input
                 id="name"
-                name="name"
+                name="title"
                 placeholder="e.g., Rua Smart Watch"
-                value={form.name}
+                value={form.title}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -123,18 +215,17 @@ return (
 
             <div>
                 <label htmlFor="ratings" className="block text-sm text-gray-300 mb-1">
-                Rating
+                Unique Name
                 </label>
                 <input
                 id="ratings"
-                name="ratings"
-                type="number"
-                value={form.ratings}
+                name="name"
+                value={form.name}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
             </div>
-
+            
             <div>
                 <label htmlFor="category" className="block text-sm text-gray-300 mb-1">
                 Category
@@ -154,24 +245,36 @@ return (
                 Image URLs (comma-separated)
             </label>
             <input
-                id="images"
+                type="file"
                 name="images"
                 placeholder="https://..., https://..."
-                value={form.images}
+                // value={form.images}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             </div>
 
-            <button
-            type="submit"
-            className="w-full py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-            >
-            {createProduct.isPending ? "Posting..." : "Add Product"}
-            </button>
+            <div className="flex justify-end space-x-4">
+                <button             
+                type="button"
+                className="px-6 py-2 bg-gray-200 text-indigo-600 rounded-md hover:bg-gray-300 transition flex items-center"
+                disabled={!form.title || !form.description}
+                onClick={tryAgainGenerate}
+                >
+                    { isRery ? <Posting/> : "Re-Try" }
+                </button>
+                <button
+                type="submit"
+                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition flex items-center"
+                disabled={!form.title || !form.description || !form.price || !form.stock }
+                >
+                {createProduct.isPending ? <Posting/>  : "Add Product"}
+                </button>
+            </div>
         </form>
         </div>
     </>
+    
     );
     };
 
