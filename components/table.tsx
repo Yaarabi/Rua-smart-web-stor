@@ -1,23 +1,31 @@
     "use client";
 
-import { FaEdit } from "react-icons/fa";
+
 import { FaTrashCan } from "react-icons/fa6";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "./loading";
 import Image from "next/image";
+import { useDeleteProduct } from "@/app/hooks/createProduct";
+import Loader from "./loader";
+import ProductUpdate from "./productUpdate";
 
 
-    interface Product {
-    name: string;
-    description: string;
-    price: number;
-    stock: number;
-    ratings: string;
-    createdAt: string;
-    images: string;
-    }
+
+interface Product {
+        _id:string;
+        name: string;
+        title: string,
+        description: string;
+        price: string;
+        category: string;
+        stock: string;
+        images: string;
+        createdAt: Date;
+        }
 
 const Table = () => {
+
+
     const {data, isLoading, isError,} = useQuery({
                     queryKey: ["products"],
                     queryFn: async () => {
@@ -27,8 +35,21 @@ const Table = () => {
         },
     });
 
+    const deleteProduct = useDeleteProduct()
+    
+    const remove = async (id: string) => {
+        const confirmed = window.confirm("Are you sure to delete this product?");
+        console.log("User confirmed?", confirmed);
+        if (confirmed) {
+            deleteProduct.mutate(id);
+}
+    }
+
     if (isLoading) return <Skeleton/>;
     if (isError || !data?.products) return <p className="text-red-500 text-center mt-6">Failed to load products.</p>;
+    if (deleteProduct.isPending) return <Loader/>
+    
+    
 
     return (
         <table className="w-full border border-gray-300 mt-8 text-center rounded shadow-md">
@@ -60,8 +81,8 @@ const Table = () => {
                 <td className="p-2 border">{ product.stock }</td>
                 <td className="p-2 border flex justify-center space-x-4 cursor-pointer">
                     
-                    <FaEdit size={18}/>
-                    <FaTrashCan size={18} />
+                    <ProductUpdate product={product} />
+                    <FaTrashCan size={18} onClick={()=> remove(product._id)} />
                     
                 </td>
             </tr>

@@ -14,10 +14,7 @@ const Page = () => {
     const [manualy, setManualy] = useState(false)
     const [loading, setLoading] = useState<boolean>(false)
     const [IA, setIA] = useState(false)
-    const [ form, setForm ] = useState({
-        title: "",
-        about: ""
-    })
+    const [ about, setAbout ] = useState("")
 
 
     const handelManualy = () => {
@@ -39,8 +36,8 @@ const Page = () => {
         <>
         { !manualy && !IA && <Option forWhat={"product"} action1={handelManualy} action2={handelByIA} />}
         { !manualy && !IA && <LaunchTips/> }
-        { manualy && <AddProductForm forPrompt={form} forLoading={loading}  action={() => {setManualy(false); setForm({ title: "", about:"" })}} /> }
-        {IA && <ForPrompt form={form} action1={()=> setIA(false)} action2={promptComming} action3={(x)=> setForm(x)}/> }
+        { manualy && <AddProductForm forPrompt={about} forLoading={loading}  action={() => {setManualy(false); setAbout("")}} /> }
+        {IA && <ForPrompt about={about} action1={()=> setIA(false)} action2={promptComming} action3={(x)=> setAbout(x)}/> }
         </>
     )
     }

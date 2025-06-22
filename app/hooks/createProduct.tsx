@@ -4,13 +4,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Form {
         name: string;
+        title: string,
         description: string;
         price: string;
         category: string;
         stock: string;
-        ratings: string;
         images: string;
         }
+interface UpdatePayload {
+        product: Form;
+        id: string;
+    }
 
 const useCreateProduct = () => {
     const queryClient = useQueryClient();
@@ -33,4 +37,44 @@ const useCreateProduct = () => {
     });
 };
 
-export default useCreateProduct
+const usePutParoduct = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ product, id }: UpdatePayload) => {
+        const res = await fetch(`http://localhost:3000/api/products?id=${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(product),
+        });
+
+        if (!res.ok) throw new Error("Failed to Update this product");
+        return res.json();
+        },
+        onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["products"] });
+        alert("Product was updated successfully")
+        },
+    });
+}
+
+const useDeleteProduct = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id : string) => {
+        const res = await fetch(`http://localhost:3000/api/products?id=${id}`, {
+            method: "DELETE"
+        });
+            if (!res.ok) throw new Error("Failed to delete product");
+        return res.json();
+        },
+        onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["products"] });
+        },
+    });
+
+
+}
+
+export { useDeleteProduct, usePutParoduct, useCreateProduct }

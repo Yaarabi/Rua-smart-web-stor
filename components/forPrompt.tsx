@@ -5,24 +5,20 @@ import { FaArrowLeft } from "react-icons/fa";
     interface Props {
     action1: () => void;
     action2: () => void;
-    action3: React.Dispatch<React.SetStateAction<{ title: string; about: string }>>;
-    form: {
-        title: string;
-        about: string;
-    }
+    action3: React.Dispatch<React.SetStateAction<string>>;
+    about: string;
     }
 
 
 
-const ForPrompt = ({ action1, action2, action3, form }: Props) => {
+const ForPrompt = ({ action1, action2, action3, about }: Props) => {
 
 
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        const { name, value } = e.target;
-        action3((prev) => ({ ...prev, [name]: value }));
+        action3(e.target.value);
     };
 
 
@@ -39,27 +35,13 @@ const ForPrompt = ({ action1, action2, action3, form }: Props) => {
             </h2>
 
             <div>
-            <label htmlFor="title" className="block text-sm text-gray-300 mb-1">
-                Product Title
-            </label>
-            <input
-                name="title"
-                required
-                value={form.title}
-                onChange={handleChange}
-                placeholder="e.g., Premium Leather Wallet"
-                className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            </div>
-
-            <div>
             <label htmlFor="about" className="block text-sm text-gray-300 mb-1">
                 About Product
             </label>
             <textarea
                 name="about"
                 required
-                value={form.about}
+                value={about}
                 onChange={handleChange}
                 placeholder="Brief product about..."
                 className="w-full p-3 border border-gray-300 rounded-md resize-none h-24 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -71,7 +53,7 @@ const ForPrompt = ({ action1, action2, action3, form }: Props) => {
             type="button"
                 onClick={action2}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-                disabled={!form.title || !form.about }
+                disabled={ !about }
             >
                 Next
             </button>

@@ -53,7 +53,7 @@ export async function DELETE(req: Request) {
         const result = await Product.findByIdAndDelete(id);
         if (!result) return NextResponse.json({ message: "Product not found" }, { status: 404 });
 
-        return NextResponse.json(result);
+        return NextResponse.json({ message: "Product Deleted", data: result },{ status: 202 });
     } catch (error) {
         return NextResponse.json({ message: "Error in DELETE request", error }, { status: 500 });
     }

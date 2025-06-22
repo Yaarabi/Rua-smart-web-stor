@@ -4,7 +4,7 @@
 import Card from "./card";
 
 interface Product {
-    name: string;
+    title: string;
     description: string;
     price: number;
     ratings: string;
@@ -28,7 +28,7 @@ const Products = async () => {
                 {products.map((product, i) => (
                 <Card
                     key={i}
-                    name={product.name}
+                    name={product.title}
                     price={product.price}
                     rating={product.ratings}
                     // imageSrc={product.images}
