@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import useCreateProduct from "@/app/hooks/createProduct";
+import { useCreateProduct } from "@/app/hooks/createProduct";
 import getRespense from "@/app/hooks/getIArespense";
 import Loader from "./loader";
 import Posting from "./btnPatient";
@@ -10,14 +10,12 @@ import Posting from "./btnPatient";
 
     interface Props {
     action: () => void;
-    forPrompt: {
-        title : string;
-        about : string;
-    }
+    forPrompt:  string;
     forLoading: boolean
     }
 
     interface Form {
+        id: string;
         name: string;
         title: string;
         description: string;
@@ -34,8 +32,8 @@ import Posting from "./btnPatient";
     const AddProductForm = ({ action, forPrompt, forLoading }: Props) => {
 
     const titlePrompt: string = `Generate a product title based on the following:
-- Product name: ${forPrompt.title}
-- Target audience or benefit: ${forPrompt.about}
+
+- About this product ${forPrompt}
 
 Requirements:
 - Return only the final title, nothing else
@@ -47,8 +45,7 @@ Output only the title on one line.
     const descriptionPrompt: string =`Write a compelling product description for an e-commerce listing.
 
 Inputs:
-- Product name or type: ${forPrompt.title}
-- Product purpose or audience: ${forPrompt.about}
+- About this product ${forPrompt}
 
 Guidelines:
 - Focus on key benefits and emotional appeal
@@ -83,13 +80,14 @@ The result should read like high-converting copy you'd find on a product detail 
         setDescriptionByIA(description)
         setIsRetry(false)
     };
-    if (forPrompt.title && forPrompt.about) {
+    if (forPrompt) {
         fetchRespense();
     }
     }, [forPrompt,titlePrompt,descriptionPrompt, retry]);
 
 
     const [form, setForm] = useState<Form>({
+        id: "",
         name: "",
         title: "",
         description: "",
