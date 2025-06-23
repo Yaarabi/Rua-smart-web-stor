@@ -1,4 +1,5 @@
     
+
 import { create } from 'zustand';
 
 interface Product {
@@ -6,7 +7,7 @@ interface Product {
     name: string;
     title: string;
     description: string;
-    price: string;
+    price: number;
     category: string;
     stock: string;
     images: string;
@@ -22,8 +23,19 @@ interface StoreState {
 
 const useStore = create<StoreState>((set) => ({
     products: [],
-    addProduct: (newProduct) =>
-        set((state) => ({ products: [...state.products, newProduct] })),
+    addProduct: (newProduct) => {
+        set((state) => {
+            const exists = state.products.find((product) => product._id === newProduct._id);
+            if (exists) {
+            alert("This product was added before");
+            return state;
+            }
+            return {
+            products: [...state.products, newProduct],
+            };
+        });
+    },
+    // doubleProduct: () => set(),
     removeProduct: (id) =>
         set((state) => ({
         products: state.products.filter((item) => item._id !== id),
