@@ -1,20 +1,33 @@
 
+"use client"
 
 import Image from "next/image";
+import useStore from "@/zustand/store";
 
-const Card = ({ name, price, rating }: {
+interface Product {
+    _id: string;
     name: string;
-    // description: string;
+    title: string;
+    description: string;
     price: number;
-    rating: string;
-    // imageSrc: string;
+    category: string;
+    stock: string;
+    images: string;
+    createdAt: Date;
+}
+
+const Card = ({ product }: {
+    product: Product
 }) => {
+
+    const addProduct = useStore((state) => state.addProduct)
+
     return (
         <article className="bg-white rounded-lg shadow-md overflow-hidden p-4 border border-gray-200">
             <header className="flex justify-center">
                 <Image
-                src="/smartWatch.jpg"
-                alt={`Image of ${name}`}
+                src={`data:image/png;base64,${product.images[0]}`}
+                alt={`Image of ${product.name}`}
                 width={200}
                 height={200}
                 priority={true}
@@ -22,14 +35,14 @@ const Card = ({ name, price, rating }: {
                 />
             </header>
             <section className="mt-4 text-center">
-                <h2 className="text-lg font-semibold text-gray-800">{name}</h2>
+                <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
                 <p className="text-sm text-gray-600">see More</p>
-                <p className="text-xl font-bold text-green-600">{price} MAD</p>
-                <p className="text-yellow-800 font-medium">⭐ {rating}</p>
+                <p className="text-xl font-bold text-green-600">{product.price} MAD</p>
+                <p className="text-yellow-800 font-medium">⭐ {product.price}</p>
             </section>
             <footer className="mt-4 flex justify-center">
-                <button className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                Add to Cart
+                <button onClick={()=> addProduct(product)} className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                    Add to Cart
                 </button>
             </footer>
         </article>
