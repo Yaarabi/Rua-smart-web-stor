@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaHome, FaShoppingCart, FaUsers, FaChartBar, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaShoppingCart, FaUsers, FaChartBar, FaCog, FaSignOutAlt, FaClipboardCheck } from "react-icons/fa";
 
 const SideBar = () => {
         return (
@@ -19,6 +19,10 @@ const SideBar = () => {
                 <li className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 cursor-pointer">
                     <FaShoppingCart />
                     <span>Products</span>
+                </li>
+                <li className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 cursor-pointer">
+                    <FaClipboardCheck />
+                    <span>Orders</span>
                 </li>
                 <li className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 cursor-pointer">
                     <FaUsers />

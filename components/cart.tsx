@@ -2,8 +2,7 @@
 
 import { FaTimes } from "react-icons/fa";
 import ProductCart from "./productCart";
-import useStore from "@/zustand/store";
-import { useEffect, useState } from "react";
+import useStore, { useTotal } from "@/zustand/store";
 
 interface CartProps {
     onClose: () => void;
@@ -18,23 +17,17 @@ interface Product {
     stock: string;
     images: string;
     createdAt: Date;
+    quantity: number;
 }
 
 const Cart = ({ onClose }: CartProps) => {
 
     const products = useStore((state) => state.products)
-    const [ total, setTotal ] = useState<number>(0)
+    const total = useTotal()
 
-    const handleTotal = () => {
-        const sum = products.reduce((acc, ele) => acc + ele.price, 0);
-        setTotal(sum);
-};
-    useEffect(()=>{
-        handleTotal()
-    },[])
 
     return (
-        <div className="fixed top-12 right-0 w-full max-w-sm h-4/5 bg-gray-900 text-white p-6 shadow-lg z-50 flex flex-col overflow-x-auto rounded-xl shadow-lg border border-gray-300">
+        <div className="fixed top-12 right-6 w-full max-w-sm h-4/5 bg-gray-900 text-white p-6 shadow-lg z-50 flex flex-col overflow-x-auto rounded-xl shadow-lg border border-gray-300">
         <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold">Your Cart</h2>
             <button
