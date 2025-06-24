@@ -12,6 +12,10 @@ const productSchema = new mongoose.Schema({
     images: [String],
     ratings: Number,
     createdAt: Date,
+    quantity: {
+        type:Number,
+        default: 1
+    },
 })
 
 const Product = mongoose.model("Product", productSchema);

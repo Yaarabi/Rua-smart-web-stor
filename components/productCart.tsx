@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { FaTrashAlt, FaPlus, FaMinus } from "react-icons/fa";
+import useStore from "@/zustand/store";
 
 interface Product {
     _id: string;
@@ -14,23 +15,25 @@ interface Product {
     stock: string;
     images: string;
     createdAt: Date;
+    quantity: number
 }
 
 const ProductCart = ({ product }: { product:Product }) => {
 
-        const [count, setCount] = useState(1)
-        const [totalProductPrice, setTotalProductPrice] = useState(product.price)
+    const increment = useStore((state) => state.incrementQuantity)
+    const decrement = useStore((state) => state.decrementQuantity)
+    const remove = useStore((state)=> state.removeProduct)
+        const [totalProductPrice, setTotalProductPrice] = useState<number>(product.price)
 
         const handelMinus = () => {
-            if(count <= 0){
-                setCount(0)
+            if(product.quantity <= 0){
                 setTotalProductPrice(0)
             }else {
-                setCount(count -1)
                 setTotalProductPrice(totalProductPrice - product.price)
+                decrement(product._id)
             }
         }
-        const handelAdd = ()=>{ setCount(count +1); setTotalProductPrice(totalProductPrice + product.price)}
+        const handelAdd = ()=>{ setTotalProductPrice(totalProductPrice + product.price); increment(product._id)}
 
         
 
@@ -48,7 +51,7 @@ return (
                 </div>
                 <div>
                 <h4 className="font-medium">{product.name}</h4>
-                <p className="text-gray-400 text-sm">Quantity: {count}</p>
+                <p className="text-gray-400 text-sm">Quantity: {product.quantity}</p>
                 <p className="text-gray-200 mt-1">Price: {totalProductPrice} MAD</p>
                 </div>
             </div>
@@ -60,7 +63,7 @@ return (
                     <FaPlus onClick={handelAdd} />
                 </button>
                 <button className="text-red-500 hover:text-red-700 transition">
-                    <FaTrashAlt />
+                    <FaTrashAlt onClick={()=> remove(product._id)} />
                 </button>
                 </div>
             
