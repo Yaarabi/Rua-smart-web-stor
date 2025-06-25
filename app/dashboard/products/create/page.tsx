@@ -4,7 +4,7 @@
 import AddProductForm from "@/components/addProduct"
 import ForPrompt from "@/components/forPrompt"
 import Option from "@/components/option"
-import LaunchTips from "@/components/Tips"
+// import LaunchTips from "@/components/Tips"
 import { useState } from "react"
 
 
@@ -35,7 +35,7 @@ const Page = () => {
     return (
         <>
         { !manualy && !IA && <Option forWhat={"product"} action1={handelManualy} action2={handelByIA} />}
-        { !manualy && !IA && <LaunchTips/> }
+        {/* { !manualy && !IA && <LaunchTips/> } */}
         { manualy && <AddProductForm forPrompt={about} forLoading={loading}  action={() => {setManualy(false); setAbout("")}} /> }
         {IA && <ForPrompt about={about} action1={()=> setIA(false)} action2={promptComming} action3={(x)=> setAbout(x)}/> }
         </>

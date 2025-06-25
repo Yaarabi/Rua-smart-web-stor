@@ -132,7 +132,7 @@ const AddProductForm = ({ action, forPrompt, forLoading }: Props) => {
             <FaArrowLeft className="text-xl" />
         </button>
 
-        <div className="max-w-xl mx-auto px-4 mt-6">
+        <div className="md:w-4/5 mx-auto px-4 mt-6">
             <form onSubmit={handleSubmit} className="space-y-6">
             <h2 className="text-2xl font-semibold text-white mb-4">Add New Product</h2>
 
