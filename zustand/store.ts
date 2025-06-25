@@ -26,7 +26,6 @@ interface StoreState {
 
 const useStore = create<StoreState>((set) => ({
     products: [],
-    total: 0,
     addProduct: (newProduct) => {
         set((state) => {
             const exists = state.products.find((product) => product._id === newProduct._id);
@@ -60,6 +59,10 @@ const useStore = create<StoreState>((set) => ({
     })),
     }));
 
+export const useQuantity = () => {
+        const products = useStore((state) => state.products);
+  return products.reduce((acc, ele) => acc + ele.quantity, 0);
+};
 
 export const useTotal = () => {
         const products = useStore((state) => state.products);

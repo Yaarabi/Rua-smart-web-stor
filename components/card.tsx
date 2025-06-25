@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import useStore from "@/zustand/store";
 
 interface Product {
@@ -16,38 +17,43 @@ interface Product {
     quantity: number;
 }
 
-const Card = ({ product }: { product: Product }) => {
-    const addProduct = useStore((state) => state.addProduct);
+interface ProductCardProps {
+    product: Product;
+}
+
+const Card = ({ product }: ProductCardProps) => {
+    const [hovered, setHovered] = useState(false);
+    const add = useStore((state)=> state.addProduct)
 
     return (
-        <article className="bg-white shadow hover:shadow-lg transition-all duration-300 p-4 max-w-xs mx-auto flex flex-col justify-between">
-            <header className="flex justify-center items-center h-48 mb-4 overflow-hidden rounded-xl bg-gray-100">
+        <div
+            className="bg-white rounded-xl shadow-md p-4 cursor-pointer hover:shadow-lg transition duration-300 relative group"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            <div className="w-full h-40 relative mb-4">
                 <Image
                     src={`data:image/png;base64,${product.images[0]}`}
-                    alt={`Image of ${product.name}`}
-                    width={180}
-                    height={180}
-                    priority
-                    className="object-contain hover:scale-105 transition-transform duration-300"
+                    alt={product.name}
+                    layout="fill"
+                    objectFit="contain"
+                    className="rounded-lg"
                 />
-            </header>
-
-            <section className="flex flex-col gap-2 text-center">
-                <h2 className="text-lg font-semibold text-gray-800 truncate">{product.title}</h2>
-                <p className="text-sm text-gray-600">
-                    Price: <span className="text-green-600 font-bold">{product.price} MAD</span>
-                </p>
-            </section>
-
-            <footer className="mt-4">
+            </div>
+            <h2 className="text-lg font-semibold">
+                {product.name}<sup className="text-xs">8</sup>
+            </h2>
+            <p className="text-gray-500 text-sm">{product.title}</p>
+            <div className="mt-4 flex items-center justify-between text-gray-700">
+                <span className="font-semibold">${product.price}</span>
                 <button
-                    onClick={() => addProduct(product)}
-                    className="bg-gray-900 text-white text-sm px-5 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-300 w-full"
+                    onClick={()=> add(product)}
+                    className={`px-3 py-1 bg-gray-900 text-white text-sm rounded-md transition-opacity duration-300 ${hovered ? 'opacity-100' : 'opacity-0'}`}
                 >
                     Add to Cart
                 </button>
-            </footer>
-        </article>
+            </div>
+        </div>
     );
 };
 

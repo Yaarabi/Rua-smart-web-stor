@@ -27,7 +27,7 @@ const ForPrompt = ({ action1, action2, action3, about }: Props) => {
         <button onClick={action1} className="text-white hover:text-indigo-400 transition">
             <FaArrowLeft className="inline-block text-xl" />
         </button>
-        <div className="max-w-xl mx-auto mt-8 px-4">
+        <div className="md:w-3/5 mx-auto mt-8 px-4">
 
         <form className="space-y-5 mt-6">
             <h2 className="text-2xl font-semibold text-white">
@@ -52,7 +52,7 @@ const ForPrompt = ({ action1, action2, action3, about }: Props) => {
             <button
             type="button"
                 onClick={action2}
-                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition disabled:opacity-50"
                 disabled={ !about }
             >
                 Next
