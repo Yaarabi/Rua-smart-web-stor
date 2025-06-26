@@ -5,8 +5,8 @@ import Order from "@/models/order";
 export async function GET() {
     await connectDB();
     try {
-        const Orders = await Order.find();
-        return NextResponse.json({ message: "Orders retrieved successfully", Orders });
+        const orders = await Order.find();
+        return NextResponse.json({ message: "Orders retrieved successfully", orders });
     } catch (error) {
         return NextResponse.json({ message: "Failed to retrieve Orders", error }, { status: 500 });
     }

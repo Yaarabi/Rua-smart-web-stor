@@ -1,3 +1,5 @@
+
+"use client"
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
@@ -52,7 +54,7 @@ const Footer = () => {
 
             <div className="mt-12 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center max-w-screen-xl mx-auto text-center">
                 <p className="text-sm text-gray-400 mb-4 md:mb-0">
-                    &copy; {new Date().getFullYear()} Rua Web Store. All rights reserved.
+                    &copy; 2025 Rua Web Store. All rights reserved.
                 </p>
                 <div className="flex space-x-6 text-2xl">
                     <a href="#" aria-label="Facebook" className="hover:text-white transition-colors transform hover:scale-110"> <FaFacebook /> </a>

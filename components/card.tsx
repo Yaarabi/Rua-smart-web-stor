@@ -36,6 +36,7 @@ const Card = ({ product }: ProductCardProps) => {
                     src={`data:image/png;base64,${product.images[0]}`}
                     alt={product.name}
                     layout="fill"
+                    priority
                     objectFit="contain"
                     className="rounded-lg"
                 />
