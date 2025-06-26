@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { FaShoppingCart, FaUser, FaBars, FaTimes, FaSearch } from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes, FaSearch, FaUserAlt } from "react-icons/fa";
 import { MdSupportAgent } from "react-icons/md";
 import Cart from "./cart";
 import { useQuantity } from "@/zustand/store";
@@ -10,7 +10,6 @@ import { useQuantity } from "@/zustand/store";
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
-    const [search, setSearch] = useState(false)
     const Q = useQuantity()
 
     return (
@@ -21,7 +20,7 @@ const Header = () => {
 
             <nav className="flex justify-around gap-18 items-center px-4 md:px-8 py-4 bg-gray-50">
                 <div className="flex items-center gap-3">
-                    <Image src="/logo.svg" alt="Store Logo" width={48} height={48} />
+                    <Image src="/logo.svg" alt="Store Logo" width={48} height={48} priority />
                     <a href="#" className="hover:text-black transition">
                         <h1 className="text-2xl font-bold text-gray-800">Rua Store</h1>
                     </a>
@@ -43,20 +42,10 @@ const Header = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    { search && <div className="hidden md:flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            className="px-4 py-2 text-sm focus:outline-none w-60"
-                        />
-                        <button className="bg-gray-800 text-white px-4 py-2 text-sm hover:bg-gray-900 transition">
-                            Search
-                        </button>
-                    </div>}
 
                     <div className="flex items-center gap-4">
-                        { !search && <FaSearch onClick={()=> setSearch(true)} size={22} className="text-gray-600 hover:text-black cursor-pointer transition" />}
-                        <FaUser size={22} className="text-gray-600 hover:text-black cursor-pointer transition" />
+                        <FaSearch size={22} className="text-gray-600 hover:text-black cursor-pointer transition" />
+                        <FaUserAlt size={22} className="text-gray-600 hover:text-black cursor-pointer transition" />
                         <MdSupportAgent size={24} className="text-gray-600 hover:text-black cursor-pointer transition" />
                         <div className="relative">
                             <sup className="text-[10px] font-semibold text-gray-700 rounded-full px-1.5 py-0.5 absolute right-[-16px] top-[3px] shadow-sm group-hover:scale-110 transition-transform">{Q}</sup>

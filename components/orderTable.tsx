@@ -4,7 +4,8 @@
 import { FaTrashCan } from "react-icons/fa6";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "./loading";
-// import Loader from "./loader";
+import { useDeleteOrder } from "@/app/hooks/orderHooks";
+import Loader from "./loader";
 
 interface OrderItem {
     productId: string;
@@ -30,6 +31,7 @@ interface Order {
 }
 
 const Orders = () => {
+
     const { data, isLoading, isError } = useQuery({
         queryKey: ["orders"],
         queryFn: async () => {
@@ -40,19 +42,18 @@ const Orders = () => {
     });
 
 
+    const deleteOrder = useDeleteOrder();
 
-    // const deleteOrder = useDeleteProduct();
-
-    // const remove = async (id: string) => {
-    //     const confirmed = window.confirm("Are you sure you want to delete this order?");
-    //     if (confirmed) {
-    //         deleteOrder.mutate(id);
-    //     }
-    // };
+    const remove = async (id: string) => {
+        const confirmed = window.confirm("Are you sure you want to delete this order?");
+        if (confirmed) {
+            deleteOrder.mutate(id);
+        }
+    };
 
     if (isLoading) return <Skeleton />;
     if (isError || !data) return <p className="text-red-500 text-center mt-6">Failed to load orders.</p>;
-    // if (deleteOrder.isPending) return <Loader />;
+    if (deleteOrder.isPending) return <Loader />;
 
     return (
         <div className="overflow-x-auto mt-10 rounded-xl shadow-lg border border-gray-300">
@@ -60,7 +61,8 @@ const Orders = () => {
                 <thead className="bg-gray-700 text-xs uppercase text-gray-300">
                     <tr>
                         <th className="p-4">#</th>
-                        <th className="p-4">User</th>
+                        <th className="p-4">Id</th>
+                        <th className="p-4">Client</th>
                         <th className="p-4">Items</th>
                         <th className="p-4">Total Price</th>
                         <th className="p-4">Status</th>
@@ -75,6 +77,7 @@ const Orders = () => {
                             className="hover:bg-gray-700 transition duration-200 border-t border-gray-600"
                         >
                             <td className="p-4 text-center">{i + 1}</td>
+                            <td className="p-4 text-center">{order._id}</td>
                             <td className="p-4 text-center">{order.userId || "Guest"}</td>
                             <td className="p-4 text-left">
                                 {order.items.map((item, index) => (
@@ -104,7 +107,7 @@ const Orders = () => {
                             </td>
                             <td className="p-4 flex justify-center items-center gap-4">
                                 <button
-                                    // onClick={() => remove(order._id)}
+                                    onClick={() => remove(order._id)}
                                     className="text-red-400 hover:text-red-600 transition"
                                     title="Delete Order"
                                 >

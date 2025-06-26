@@ -1,4 +1,4 @@
-"use server";
+
 
 import Card from "./card";
 

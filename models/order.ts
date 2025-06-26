@@ -7,7 +7,6 @@ import mongoose, { Schema } from 'mongoose';
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'client',
-        default:"guest"
         },
         items: [
         {
