@@ -77,4 +77,42 @@ const useDeleteProduct = () => {
 
 }
 
-export { useDeleteProduct, usePutParoduct, useCreateProduct }
+const useGetProduct = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id : string) => {
+        const res = await fetch(`http://localhost:3000/api/products?id=${id}`, {
+            method: "GET"
+        });
+            if (!res.ok) throw new Error("Failed to delete product");
+        return res.json();
+        },
+        onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["product"] });
+        },
+    });
+
+
+}
+
+const useGetCategory = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (category : string) => {
+        const res = await fetch(`http://localhost:3000/api/products?category=${category}`, {
+            method: "GET"
+        });
+            if (!res.ok) throw new Error("Failed to delete product");
+        return res.json();
+        },
+        onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["category"] });
+        },
+    });
+
+
+}
+
+export { useDeleteProduct, usePutParoduct, useCreateProduct, useGetProduct, useGetCategory }

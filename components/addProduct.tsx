@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useCreateProduct } from "@/app/hooks/createProduct";
+import { useCreateProduct } from "@/app/hooks/forProduct";
 import getRespense from "@/app/hooks/getIArespense";
 import Loader from "./loader";
 import Posting from "./btnPatient";

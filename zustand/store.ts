@@ -29,7 +29,6 @@ const useStore = create<StoreState>((set) => ({
     addProduct: (newProduct) => {
         set((state) => {
             const exists = state.products.find((product) => product._id === newProduct._id);
-            console.log(state.products)
             if (exists) {
             alert("This product was added before");
             return state;
@@ -61,7 +60,7 @@ const useStore = create<StoreState>((set) => ({
 
 export const useQuantity = () => {
         const products = useStore((state) => state.products);
-  return products.reduce((acc, ele) => acc + ele.quantity, 0);
+    return products.reduce((acc, ele) => acc + ele.quantity, 0);
 };
 
 export const useTotal = () => {

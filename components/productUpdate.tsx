@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { usePutParoduct } from "@/app/hooks/createProduct";
+import { usePutParoduct } from "@/app/hooks/forProduct";
 import { FaEdit, FaArrowLeft } from "react-icons/fa";
 import Posting from "./btnPatient";
 
