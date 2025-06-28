@@ -27,6 +27,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "client"
     },
+    createdAt: Date,
+    updatedAt: Date,
 })
 
 const Client = mongoose.model('Client', userSchema);

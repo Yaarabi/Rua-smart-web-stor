@@ -2,15 +2,40 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Product from "@/models/products";
 
-export async function GET() {
+export async function GET(req: Request) {
     await connectDB();
+
     try {
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get("id");
+        const category = searchParams.get("category");
+
+        if (id) {
+        const product = await Product.findById(id);
+        if (!product) {
+            return NextResponse.json({ message: "Product not found" }, { status: 404 });
+        }
+        return NextResponse.json({ message: "Product retrieved", product });
+        }
+
+        if (category) {
+        const products = await Product.find({ category });
+        if (products.length === 0) {
+            return NextResponse.json({ message: "No products found in this category" }, { status: 404 });
+        }
+        return NextResponse.json({ message: "Category products retrieved", products });
+        }
+
         const products = await Product.find();
-        return NextResponse.json({ message: "Products retrieved successfully", products });
+        return NextResponse.json({ message: "All products retrieved", products });
+
     } catch (error) {
-        return NextResponse.json({ message: "Failed to retrieve products", error }, { status: 500 });
+        return NextResponse.json({ message: "Server error", error }, { status: 500 });
     }
 }
+
+
+
 
 export async function POST(req: Request) {
     await connectDB();

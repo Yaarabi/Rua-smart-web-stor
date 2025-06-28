@@ -4,7 +4,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "./loading";
 import Image from "next/image";
-import { useDeleteProduct } from "@/app/hooks/createProduct";
+import { useDeleteProduct } from "@/app/hooks/forProduct";
 import Loader from "./loader";
 import ProductUpdate from "./productUpdate";
 

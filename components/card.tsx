@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import useStore from "@/zustand/store";
+import { FaStar, FaEye } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface Product {
     _id: string;
@@ -13,6 +15,7 @@ interface Product {
     category: string;
     stock: string;
     images: string;
+    rating: number;
     createdAt: Date;
     quantity: number;
 }
@@ -23,37 +26,51 @@ interface ProductCardProps {
 
 const Card = ({ product }: ProductCardProps) => {
     const [hovered, setHovered] = useState(false);
-    const add = useStore((state)=> state.addProduct)
+    const add = useStore((state) => state.addProduct);
+    const router = useRouter();
 
     return (
         <div
-            className="bg-white rounded-xl shadow-md p-4 cursor-pointer hover:shadow-lg transition duration-300 relative group"
+            className="relative bg-gray-900 text-white p-4 shadow hover:bg-gray-800 cursor-pointer flex flex-col items-center"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            <div className="w-full h-40 relative mb-4">
+            {hovered && (
+                <FaEye
+                    size={30}
+                    className="absolute z-50 top-6 right-4 text-gray-100 rounded-full text-xl cursor-pointer hover:text-gray-400 transition"
+                    onClick={() => router.push(`/details/${product._id}`)}
+                />
+            )}
+
+            <div className="h-50 w-60 mb-4 relative">
                 <Image
-                    src={`data:image/png;base64,${product.images[0]}`}
+                    src={`data:image/png;base64,${product.images}`}
                     alt={product.name}
-                    layout="fill"
-                    priority
-                    objectFit="contain"
-                    className="rounded-lg"
+                    fill
+                    unoptimized
+                    style={{ objectFit: "contain" }}
+                    className="object-cover"
                 />
             </div>
-            <h2 className="text-lg font-semibold">
-                {product.name}<sup className="text-xs">8</sup>
-            </h2>
-            <p className="text-gray-500 text-sm">{product.title}</p>
-            <div className="mt-4 flex items-center justify-between text-gray-700">
-                <span className="font-semibold">${product.price}</span>
-                <button
-                    onClick={()=> add(product)}
-                    className={`px-3 py-1 bg-gray-900 text-white text-sm rounded-md transition-opacity duration-300 ${hovered ? 'opacity-100' : 'opacity-0'}`}
-                >
-                    Add to Cart
-                </button>
+
+            <h4 className="font-semibold mb-1">{product.name}</h4>
+            <p className="mb-2">${product.price}</p>
+            <div className="flex mb-4">
+                {Array.from({ length: product.rating }).map((_, i) => (
+                    <FaStar key={i} className="text-yellow-500" />
+                ))}
             </div>
+
+            <button
+                onClick={() => {
+                    alert("hello");
+                    add(product);
+                }}
+                className="bg-blue-700 hover:bg-gray-600 text-white py-2 px-4 w-full"
+            >
+                Add to Cart
+            </button>
         </div>
     );
 };

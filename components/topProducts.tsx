@@ -1,13 +1,7 @@
     "use client";
 
     import Image from "next/image";
-    import {
-    FaTruck,
-    FaHeadset,
-    FaCreditCard,
-    FaCheckCircle,
-    FaShieldAlt,
-    } from "react-icons/fa";
+    
 
     const Hero = () => {
     return (
@@ -76,25 +70,6 @@
                 </div>
             </div>
             </div>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
-            {[
-            { icon: <FaTruck size={28} />, title: "Free Delivery", desc: "Free Shipping for orders over $20" },
-            { icon: <FaHeadset size={28} />, title: "Support 24/7", desc: "24 hours a day, 7 days a week" },
-            { icon: <FaCreditCard size={28} />, title: "Secure Payment", desc: "Pay with Multiple Credit Cards" },
-            { icon: <FaCheckCircle size={28} />, title: "Reliability", desc: "Trusted by 2000+ major brands" },
-            { icon: <FaShieldAlt size={28} />, title: "Guarantee", desc: "Within 30 days for an exchange" },
-            ].map((feature, index) => (
-            <div
-                key={index}
-                className="flex flex-col items-center gap-3 bg-gray-50 border border-gray-300 rounded-xl p-5 hover:shadow-md hover:scale-[1.02] transition-all duration-300"
-            >
-                <div className="text-gray-800">{feature.icon}</div>
-                <h3 className="text-base font-semibold text-gray-900">{feature.title}</h3>
-                <p className="text-xs text-gray-500 text-center">{feature.desc}</p>
-            </div>
-            ))}
         </div>
         </section>
     );
