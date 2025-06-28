@@ -15,7 +15,7 @@ export default function Register() {
         const r = await register({
             email: (formData.get("email") as string) || "",
             password: (formData.get("password") as string) || "",
-            name: (formData.get("name") as string) || "",
+            username: (formData.get("name") as string) || "",
         });
 
         ref.current?.reset();

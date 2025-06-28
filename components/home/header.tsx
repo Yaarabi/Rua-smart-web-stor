@@ -6,10 +6,13 @@ import { useQuantity } from "@/zustand/store";
 import { FaShoppingCart, FaUser, FaSearch, FaHeadset, FaBars, FaTimes } from "react-icons/fa";
 import Cart from "../cart";
 import Link from "next/link";
+import ToLogin from "../login/toLogin";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+    const [loginOpen, setLoginOpen] = useState(false);
+
     const Q = useQuantity()
 
     return (
@@ -33,7 +36,15 @@ export default function Header() {
 
                 <div className="flex items-center space-x-4">
                     <FaSearch className="cursor-pointer" size={18} />
-                    <FaUser className="cursor-pointer"size={18} />
+                    <div className="relative">
+                        <FaUser
+                            className="cursor-pointer"
+                            size={18}
+                            onClick={() => setLoginOpen((prev) => !prev)}
+                        />
+                        {loginOpen && <ToLogin onClose={() => setLoginOpen(false)} />}
+                    </div>
+
                     <FaHeadset className="cursor-pointer hover:text-gray-400" size={18} />
                     <div className="relative">
                             <sup className="text-[10px] font-semibold text-white rounded-full px-1.5 py-0.5 absolute right-[-17px] top-[1px] shadow-sm group-hover:scale-110 transition-transform">

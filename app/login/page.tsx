@@ -2,8 +2,6 @@
 "use client"
 
 import { useState, FormEvent } from "react";
-// import LoginForm from "@/components/loginForm";
-// import SignUpForm from "@/components/signupForm";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -14,19 +12,7 @@ export default function AuthForm() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // const [isSignUp, setIsSignUp] = useState(false);
 
-  // const toggleForm = () => {
-  //   setIsSignUp((prev) => !prev);
-  // };
-
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
-
-  // const [username, setUsername] = useState("");
-  // const [newEmail, setNewEmail] = useState("");
-  // const [newPassword, setNewPassword] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,40 +30,6 @@ export default function AuthForm() {
     }
 };
 
-  // return (
-  //   <div
-  //     className="min-h-screen bg-gray-100 flex items-center justify-center px-4 w-full"
-  //     style={{ width: "100vw" }}
-  //   >
-  //     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-  //       {isSignUp ? (
-  //         <SignUpForm
-  //           username={username}
-  //           email={newEmail}
-  //           password={newPassword}
-  //           setUsername={setUsername}
-  //           setEmail={setNewEmail}
-  //           setPassword={setNewPassword}
-  //           onSubmit={(e) => {
-  //             e.preventDefault();
-  //           }}
-  //           toggleForm={toggleForm}
-  //         />
-  //       ) : (
-  //         <LoginForm
-  //           email={email}
-  //           password={password}
-  //           setEmail={setEmail}
-  //           setPassword={setPassword}
-  //           onSubmit={(e) => {
-  //             e.preventDefault();
-  //           }}
-  //           toggleForm={toggleForm}
-  //         />
-  //       )}
-  //     </div>
-  //   </div>
-  // );
   return (
     <section className="w-full h-screen flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
         <form

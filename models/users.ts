@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     updatedAt: Date,
 })
 
-const Client = mongoose.model('Client', userSchema);
+const Client = mongoose.models.Client || mongoose.model('Client', userSchema);
+
 
 export default Client;
