@@ -1,13 +1,10 @@
 
-
 "use client"
-import Dashboard from "@/components/dashboard/home";
-import Loader from "@/components/loader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation"; 
 import { useEffect } from "react";
 
-export default function ProtectedPage({ children }: { children: React.ReactNode }) {
+export default function ProtectedPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -16,20 +13,21 @@ export default function ProtectedPage({ children }: { children: React.ReactNode 
     },[session])
 
     useEffect(() => {
-        if (status === "unauthenticated" || session?.user.role !== "admin" ) {
+        if (status === "unauthenticated") {
         router.push("/login"); 
         }
-    }, [status, router, session?.user.role]);
+    }, [status, router]);
 
     if (status === "loading") {
-        return <Loader/>; 
+        return <p>Loading...</p>; 
     }
 
-    if (session?.user.role == "admin") {
+    if (session) {
         return (
-        <Dashboard>
-          { children }
-        </Dashboard>
+        <div>
+            <h1>Welcome, </h1>
+            <p>This is a protected page.</p>
+        </div>
         );
     }
 

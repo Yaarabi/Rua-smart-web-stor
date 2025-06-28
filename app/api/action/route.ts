@@ -1,4 +1,3 @@
-    // app/actions/register.ts
     "use server";
 
 import { connectDB } from "@/lib/db";
@@ -6,15 +5,15 @@ import Client from "@/models/users";
 import bcrypt from "bcryptjs";
 
 interface User {
-    name: string;
+    username: string;
     email: string;
     password: string;
     }
 
 export const register = async (values: User) => {
-    const { email, password, name } = values;
+    const { email, password, username } = values;
 
-    if (!email || !password || !name) {
+    if (!email || !password || !username) {
         return { error: "All fields are required." };
     }
 
@@ -25,15 +24,15 @@ export const register = async (values: User) => {
         if (existingUser) return { error: "Email already exists!" };
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new Client({ name, email, password: hashedPassword });
+        const newUser = new Client({ username, email, password: hashedPassword });
         const savedUser = await newUser.save();
 
         return {
         message: "User registered successfully",
         user: {
-            _id: savedUser._id,
-            name: savedUser.username,
+            username: savedUser.username,
             email: savedUser.email,
+            password: savedUser.password
         },
         };
     } catch (error) {
