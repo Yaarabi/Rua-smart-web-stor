@@ -17,6 +17,8 @@ interface OrderItem {
 interface Order {
     _id: string;
     userId: string;
+    name:string;
+    email:string;
     items: OrderItem[];
     shippingAddress: {
         city: string;
@@ -78,7 +80,7 @@ const Orders = () => {
                         >
                             <td className="p-4 text-center">{i + 1}</td>
                             <td className="p-4 text-center">{order._id}</td>
-                            <td className="p-4 text-center">{order.userId || "Guest"}</td>
+                            <td className="p-4 text-center">{order.name}</td>
                             <td className="p-4 text-left">
                                 {order.items.map((item, index) => (
                                     <div key={index} className="mb-2">

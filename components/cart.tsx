@@ -3,6 +3,7 @@
 import { FaTimes } from "react-icons/fa";
 import ProductCart from "./productCart";
 import useStore, { useTotal } from "@/zustand/store";
+import { useRouter } from "next/navigation"; 
 
 interface CartProps {
     onClose: () => void;
@@ -22,9 +23,15 @@ interface Product {
 
 const Cart = ({ onClose }: CartProps) => {
 
+    const router = useRouter()
+
     const products = useStore((state) => state.products)
     const total = useTotal()
 
+    const toPayement = () => {
+        localStorage.setItem("order", JSON.stringify(products))
+        router.push("/payment")
+    }
 
     return (
         <div className="fixed top-12 right-6 w-full max-w-sm h-4/5 bg-gray-900 text-white p-6 shadow-lg z-50 flex flex-col overflow-x-auto rounded-xl shadow-lg border border-gray-300">
@@ -49,7 +56,10 @@ const Cart = ({ onClose }: CartProps) => {
             <span className="text-lg font-semibold">Total:</span>
             <span className="text-xl font-bold">{total} MAD</span>
             </div>
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-3 rounded-lg">
+            <button 
+            disabled={products.length === 0}
+            onClick={toPayement}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-3 rounded-lg disabled:opacity-50">
             Proceed to Checkout
             </button>
         </div>

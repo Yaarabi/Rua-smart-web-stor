@@ -4,16 +4,16 @@ import mongoose, { Schema } from 'mongoose';
     const OrderSchema: Schema = new Schema(
     {
         userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'client',
+        type: String,
+        default: "guest"
         },
+        name:String,
+        email:String,
         items: [
         {
             productId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             required: true,
-            ref: 'Product',
             },
             name: { type: String, required: true },
             quantity: { type: Number, required: true },

@@ -1,7 +1,18 @@
 import Image from "next/image";
 import { FaHome, FaShoppingCart, FaUsers, FaChartBar, FaCog, FaSignOutAlt, FaClipboardCheck } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+
 
 const SideBar = () => {
+
+    const router = useRouter()
+    const handleSignOut = () => {
+            signOut({ redirect: false }).then(() => {
+                router.push("/");
+                });
+            };
+
         return (
             <aside className="md:fixed w-64 h-screen bg-gray-900 text-white flex flex-col">
 
@@ -40,7 +51,9 @@ const SideBar = () => {
                 <FaCog />
                 <span>Settings</span>
                 </li>
-                <li className="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 cursor-pointer">
+                <li
+                onClick={handleSignOut}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-600 cursor-pointer">
                 <FaSignOutAlt />
                 <span>Logout</span>
                 </li>
@@ -48,5 +61,6 @@ const SideBar = () => {
             </aside>
 );
 };
+
 
 export default SideBar;
