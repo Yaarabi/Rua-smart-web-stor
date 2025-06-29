@@ -11,27 +11,27 @@ export default function ProtectedPage({ children }: { children: React.ReactNode 
     const { data: session, status } = useSession();
     const router = useRouter();
 
-    useEffect(()=>{
-        console.log(session)
-    },[session])
-
     useEffect(() => {
-        if (status === "unauthenticated" || session?.user.role !== "admin" ) {
-        router.push("/login"); 
+        if (status === "unauthenticated") {
+            router.push("/login");
         }
-    }, [status, router, session?.user.role]);
+
+        if (status === "authenticated" && session && session.user.role !== "admin") {
+            router.push("/");
+        }
+    }, [status, session, router]);
+
 
     if (status === "loading") {
         return <Loader/>; 
     }
 
-    if (session?.user.role == "admin") {
-        return (
-        <Dashboard>
-          { children }
-        </Dashboard>
-        );
-    }
+    if (session && session.user.role === "admin") {
+            return <Dashboard>
+                        { children }
+                    </Dashboard>
+        }
 
-    return null; 
+    return null
+        
 }

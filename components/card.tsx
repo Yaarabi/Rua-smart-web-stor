@@ -64,7 +64,6 @@ const Card = ({ product }: ProductCardProps) => {
 
             <button
                 onClick={() => {
-                    alert("hello");
                     add(product);
                 }}
                 className="bg-blue-700 hover:bg-gray-600 text-white py-2 px-4 w-full"

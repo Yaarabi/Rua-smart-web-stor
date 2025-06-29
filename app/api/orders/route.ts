@@ -12,17 +12,24 @@ export async function GET() {
     }
 }
 
-export async function POST(req: Request) {
+
+
+export async function POST(req:Request) {
     await connectDB();
+
     try {
         const body = await req.json();
+
         const order = new Order(body);
         await order.save();
-        return NextResponse.json({ message: "Order created successfully", Order }, { status: 201 });
+
+        return NextResponse.json({ message: "Order created successfully", order }, { status: 201 });
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ message: "Upload failed", error }, { status: 500 });
     }
 }
+
 
 export async function PUT(req: Request) {
     await connectDB();

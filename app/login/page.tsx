@@ -26,7 +26,13 @@ export default function AuthForm() {
       setError(res.error as string);
     }
     if (res?.ok) {
-      return router.push("/");
+      const email = formData.get("email")
+      if(email === "admin@gmail.com"){
+        return router.push("/dashboard");
+      }else{
+        return router.push("/");
+      }
+      
     }
 };
 
