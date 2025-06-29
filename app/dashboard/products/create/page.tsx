@@ -37,7 +37,7 @@ const Page = () => {
         { !manualy && !IA && <Option forWhat={"product"} action1={handelManualy} action2={handelByIA} />}
         {/* { !manualy && !IA && <LaunchTips/> } */}
         { manualy && <AddProductForm forPrompt={about} forLoading={loading}  action={() => {setManualy(false); setAbout("")}} /> }
-        {IA && <ForPrompt about={about} action1={()=> setIA(false)} action2={promptComming} action3={(x)=> setAbout(x)}/> }
+        {IA && <ForPrompt for={"product"} about={about} action1={()=> setIA(false)} action2={promptComming} action3={(x)=> setAbout(x)}/> }
         </>
     )
     }

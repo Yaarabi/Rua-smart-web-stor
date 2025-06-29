@@ -4,13 +4,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { useQuantity } from "@/zustand/store";
 import { FaShoppingCart, FaUser, FaSearch, FaHeadset, FaBars, FaTimes } from "react-icons/fa";
-import Cart from "../cart";
+import Cart from "./cart"
+import Chat from "./chat";
 import Link from "next/link";
 import ToLogin from "../login/toLogin";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+    const [chatOpen, setChatOpen] = useState(false);
     const [loginOpen, setLoginOpen] = useState(false);
 
     const Q = useQuantity()
@@ -45,7 +47,14 @@ export default function Header() {
                         {loginOpen && <ToLogin onClose={() => setLoginOpen(false)} />}
                     </div>
 
-                    <FaHeadset className="cursor-pointer hover:text-gray-400" size={18} />
+                    <div className="relative">
+                            <FaHeadset 
+                                className="cursor-pointer hover:text-gray-400" 
+                                size={18}
+                                onClick={() => setChatOpen(true)}
+                            />
+                            {chatOpen && <Chat onClose={() => setChatOpen(false)} />}
+                    </div>
                     <div className="relative">
                             <sup className="text-[10px] font-semibold text-white rounded-full px-1.5 py-0.5 absolute right-[-17px] top-[1px] shadow-sm group-hover:scale-110 transition-transform">
                                 {(Q!==0)? Q : "" }
@@ -68,6 +77,8 @@ export default function Header() {
                     <a href="#categories" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Categories</a>
                     <a href="#featured" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Featured</a>
                     <a href="#about" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>About</a>
+                    <a href="#footer" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Contact Us</a>
+
                 </div>
             )}
         </>
