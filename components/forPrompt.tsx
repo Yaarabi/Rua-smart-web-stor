@@ -7,11 +7,12 @@ import { FaArrowLeft } from "react-icons/fa";
     action2: () => void;
     action3: React.Dispatch<React.SetStateAction<string>>;
     about: string;
+    for: string;
     }
 
 
 
-const ForPrompt = ({ action1, action2, action3, about }: Props) => {
+const ForPrompt = ({ action1, action2, action3, about, for: label }: Props) => {
 
 
 
@@ -31,19 +32,19 @@ const ForPrompt = ({ action1, action2, action3, about }: Props) => {
 
         <form className="space-y-5 mt-6">
             <h2 className="text-2xl font-semibold text-white">
-            Please enter specific information about this product
+                {`Please enter specific information about this ${label}`}
             </h2>
 
             <div>
             <label htmlFor="about" className="block text-sm text-gray-300 mb-1">
-                About Product
+                {`About Product ${label}`}
             </label>
             <textarea
                 name="about"
                 required
                 value={about}
                 onChange={handleChange}
-                placeholder="Brief product about..."
+                placeholder={`Brief ${label} about...`}
                 className="w-full p-3 border border-gray-300 rounded-md resize-none h-24 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             </div>
