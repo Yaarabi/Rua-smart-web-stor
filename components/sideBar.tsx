@@ -35,23 +35,22 @@ const SideBar = () => {
                 </button>
             </div>
 
-            <aside className={`fixed top-0 left-0 w-64 h-screen bg-gray-900 text-white flex flex-col shadow-lg transform transition-transform duration-300 z-50
-                ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative md:flex`}>
+            <aside className={`fixed top-0 left-0 w-64 h-screen bg-gray-900 text-white flex flex-col justify-between shadow-lg z-50 transform transition-transform duration-300
+                ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
                 
-                {/* Logo */}
                 <section className="flex items-center p-6 border-b border-gray-700">
                     <Image src="/whiteLogo.svg" alt="Rua Web Store Logo" width={50} height={50} />
                     <h2 className="text-xl font-bold ml-3 hidden md:block">Rua Web Store</h2>
                 </section>
 
-                <nav className="flex-1 overflow-y-auto">
+                <nav>
                     <ul className="space-y-2 p-4">
                         {menuItems.map((item, index) => (
                             <li key={index}>
                                 <Link
                                     href={item.path}
                                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition cursor-pointer"
-                                    onClick={() => setIsOpen(false)} // Close on mobile when clicking
+                                    onClick={() => setIsOpen(false)} 
                                 >
                                     {item.icon}
                                     <span className="text-base">{item.label}</span>

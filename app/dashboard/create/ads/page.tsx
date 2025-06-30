@@ -55,7 +55,7 @@ The goal is to create a scroll-stopping ad that quickly captures attention and d
     return (
         <>
         
-        {IA && <ForPrompt for={"post"} about={about} action1={()=>{ setIA(false); setPost(true)} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
+        {IA && <ForPrompt for={"Ad"} about={about} action1={()=>{ setIA(false); setPost(true)} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
         { post && <AddPost prompt={prompt} action2={redy}  action={() => {setPost(false); setAbout("");}} /> }
         {option && <AdOption image="" action={()=> setOption(false)}/>  }
         </>
