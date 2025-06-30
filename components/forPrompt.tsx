@@ -37,7 +37,7 @@ const ForPrompt = ({ action1, action2, action3, about, for: label }: Props) => {
 
             <div>
             <label htmlFor="about" className="block text-sm text-gray-300 mb-1">
-                {`About Product ${label}`}
+                {`About this ${label}`}
             </label>
             <textarea
                 name="about"

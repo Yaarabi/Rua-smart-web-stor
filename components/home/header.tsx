@@ -32,12 +32,15 @@ export default function Header() {
                 <nav className="hidden md:flex items-center space-x-6">
                     <Link href="/categories" className="hover:text-gray-400">Categories</Link>
                     <a href="#featured" className="hover:text-gray-400">Featured</a>
+                    <a href="/blogs" className="hover:text-gray-400">Blogs</a>
                     <a href="#about" className="hover:text-gray-400">About</a>
                     <a href="#footer" className="hover:text-gray-400">Contact Us</a>
                 </nav>
 
                 <div className="flex items-center space-x-4">
-                    <FaSearch className="cursor-pointer" size={18} />
+                    <Link href={"/search"}>
+                        <FaSearch className="cursor-pointer" size={18} />
+                    </Link>
                     <div className="relative">
                         <FaUser
                             className="cursor-pointer"
@@ -76,6 +79,7 @@ export default function Header() {
                 <div className="bg-gray-800 text-white p-4 flex flex-col space-y-4 text-center md:hidden">
                     <a href="#categories" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Categories</a>
                     <a href="#featured" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Featured</a>
+                    <a href="/blogs" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Blogs</a>
                     <a href="#about" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>About</a>
                     <a href="#footer" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>Contact Us</a>
 

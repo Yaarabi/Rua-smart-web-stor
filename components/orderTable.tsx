@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Skeleton from "./loading";
 import { useDeleteOrder } from "@/app/hooks/orderHooks";
 import Loader from "./loader";
+import { FaEdit } from "react-icons/fa";
 
 interface OrderItem {
     productId: string;
@@ -108,6 +109,13 @@ const Orders = () => {
                                 })}
                             </td>
                             <td className="p-4 flex justify-center items-center gap-4">
+                                <button
+                                    // onClick={}
+                                    className="text-red-400 hover:text-red-600 transition"
+                                    title="Delete Order"
+                                >
+                                    <FaEdit size={18} />
+                                </button>
                                 <button
                                     onClick={() => remove(order._id)}
                                     className="text-red-400 hover:text-red-600 transition"
