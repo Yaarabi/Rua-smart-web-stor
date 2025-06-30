@@ -22,7 +22,7 @@ const SideBar = () => {
         { icon: <FaShoppingCart />, label: 'Products', path: '/dashboard/products' },
         { icon: <FaClipboardCheck />, label: 'Orders', path: '/dashboard/orders' },
         { icon: <FaUsers />, label: 'Customers', path: '/dashboard/clients' },
-        { icon: <FaBlog />, label: 'New Post', path: '/dashboard/post' },
+        { icon: <FaBlog />, label: 'New Post', path: '/dashboard/create' },
         { icon: <FaChartBar />, label: 'Analytics', path: '' },
     ];
 

@@ -10,7 +10,7 @@
     interface Props {
     action: () => void;
     action2: () => void;
-    forPrompt: string;
+    prompt: string;
     }
 
     interface Form {
@@ -18,27 +18,8 @@
     images: string;
     }
 
-    const AddPost = ({ action, action2, forPrompt }: Props) => {
-    const prompt = `You are a professional content writer specializing in technology and electronic products.
-
-            Your task:
-            Write a high-converting, SEO-optimized product post based on the following product information: ${forPrompt}.
-
-            The post must:
-            - Start with a catchy introduction that quickly captures attention and highlights the product's key benefit.
-            - Clearly explain the main features and advantages in simple, persuasive, and engaging language.
-            - Use a friendly, modern, and professional tone.
-            - Include at least one practical digital marketing recommendation such as: social media ads, SEO optimization, email marketing, or influencer collaborations.
-            - End with a strong, persuasive call to action that invites the reader to explore the product at this link: www.rua.com.
-
-            Additional guidelines:
-            - Use short, punchy sentences and easy-to-read formatting.
-            - Add relevant emojis to make the post visually appealing.
-            - Write around 200-300 words.
-            - Avoid using bold formatting (no asterisks **) or like that 🌈.
-
-            The goal is to create an engaging post that attracts attention, builds interest, and drives traffic to www.rua.com.`;
-
+    const AddPost = ({ action, action2, prompt }: Props) => {
+    
     const [descriptionByIA, setDescriptionByIA] = useState<string | null>(null);
     const [retry, setRetry] = useState(false);
     const [isRetrying, setIsRetrying] = useState(false);
@@ -56,10 +37,10 @@
         setIsRetrying(false);
         };
 
-        if (forPrompt) {
+        if (prompt) {
         fetchResponse();
         }
-    }, [forPrompt, prompt, retry]);
+    }, [prompt, retry]);
 
     const [form, setForm] = useState<Form>({
         description: "",
