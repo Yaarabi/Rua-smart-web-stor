@@ -5,6 +5,7 @@ import { useState } from "react";
 import useStore from "@/zustand/store";
 import { FaStar, FaEye } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 interface Product {
     _id: string;
@@ -30,47 +31,57 @@ const Card = ({ product }: ProductCardProps) => {
     const router = useRouter();
 
     return (
-        <div
-            className="relative bg-gray-900 text-white p-4 shadow hover:bg-gray-800 cursor-pointer flex flex-col items-center"
+        <motion.div
+            whileHover={{ scale: 1.01 }}
+            className="relative bg-white text-gray-900 p-4 rounded-xl shadow-md hover:shadow-lg cursor-pointer flex flex-col transition-all duration-300 h-[350px] border"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
             {hovered && (
-                <FaEye
-                    size={30}
-                    className="absolute z-50 top-6 right-4 text-gray-100 rounded-full text-xl cursor-pointer hover:text-gray-400 transition"
-                    onClick={() => router.push(`/details/${product._id}`)}
-                />
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute top-4 right-4 z-50"
+                >
+                    <FaEye
+                        size={26}
+                        className="text-gray-500 hover:text-gray-800 transition-colors duration-300"
+                        onClick={() => router.push(`/categories/details/${product._id}`)}
+                    />
+                </motion.div>
             )}
 
-            <div className="h-50 w-60 mb-4 relative">
+            <div className="h-48 w-full mb-4 relative rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center p-4">
                 <Image
                     src={`data:image/png;base64,${product.images}`}
                     alt={product.name}
-                    fill
+                    width={160}
+                    height={160}
                     unoptimized
-                    style={{ objectFit: "contain" }}
-                    className="object-cover"
+                    className="object-contain max-h-44"
                 />
             </div>
 
-            <h4 className="font-semibold mb-1">{product.name}</h4>
-            <p className="mb-2">${product.price}</p>
-            <div className="flex mb-4">
-                {Array.from({ length: product.rating }).map((_, i) => (
-                    <FaStar key={i} className="text-yellow-500" />
-                ))}
+            <div className="flex flex-col flex-grow text-center">
+                <h4 className="font-semibold text-lg mb-1 line-clamp-2">{product.title}</h4>
+                <p className="mb-2 text-blue-600 font-semibold">${product.price}</p>
+
+                <div className="flex justify-center mb-4">
+                    {Array.from({ length: product.rating }).map((_, i) => (
+                        <FaStar key={i} className="text-yellow-400" />
+                    ))}
+                </div>
+
+                <div className="flex-grow" />
             </div>
 
             <button
-                onClick={() => {
-                    add(product);
-                }}
-                className="bg-blue-700 hover:bg-gray-600 text-white py-2 px-4 w-full"
+                onClick={() => add(product)}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 w-full rounded-lg transition-all duration-300 mt-2"
             >
                 Add to Cart
             </button>
-        </div>
+        </motion.div>
     );
 };
 
