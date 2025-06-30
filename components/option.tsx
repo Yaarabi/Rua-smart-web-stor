@@ -8,28 +8,30 @@ interface Props {
 
 const Option = ({ forWhat, action1, action2 }: Props) => {
     return (
-        <div className="mt-10 md:w-4/5 p-6 bg-white rounded-2xl shadow-lg m-auto">
+        <div className="w-full min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white px-4 py-10">
             
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                How do you want to create this product? <span className="text-indigo-600">{forWhat}</span>
+            <h2 className="text-3xl font-bold mb-8 text-center">
+                How do you want to create this product? <span className="text-indigo-500">{forWhat}</span>
             </h2>
 
-            <div className="flex justify-center space-x-6 mb-6">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-10">
                 <button
                     onClick={action1}
-                    className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                    className="px-8 py-3 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition-transform transform hover:scale-105 shadow"
                 >
-                    Manually
+                    Generate Manually
                 </button>
                 <button
                     onClick={action2}
-                    className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
+                    className="px-8 py-3 bg-gray-200 text-gray-900 rounded-2xl hover:bg-gray-300 transition-transform transform hover:scale-105 shadow"
                 >
-                    By AI
+                    Generate by AI
                 </button>
             </div>
 
-            <ProductContentTips />
+            <div className="max-w-3xl w-full">
+                <ProductContentTips />
+            </div>
         </div>
     );
 };

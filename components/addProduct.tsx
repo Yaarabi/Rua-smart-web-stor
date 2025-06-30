@@ -6,6 +6,7 @@ import { useCreateProduct } from "@/app/hooks/forProduct";
 import getRespense from "@/app/hooks/getIArespense";
 import Loader from "./loader";
 import Posting from "./btnPatient";
+import { useRouter } from "next/navigation";
 
 interface Props {
     action: () => void;
@@ -116,10 +117,14 @@ const AddProductForm = ({ action, forPrompt, forLoading }: Props) => {
     };
 
     const createProduct = useCreateProduct();
+    const router = useRouter()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         createProduct.mutate(form);
+        if(createProduct.isSuccess){
+            router.push("/dashboard/products")
+        }
     };
     
     if (forLoading && forPrompt && !titleByIA && !descriptionByIA) {

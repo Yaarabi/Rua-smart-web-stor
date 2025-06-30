@@ -8,6 +8,7 @@ import Cart from "./cart"
 import Chat from "./chat";
 import Link from "next/link";
 import ToLogin from "../login/toLogin";
+import Breadcrumb from "./path";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -85,6 +86,7 @@ export default function Header() {
 
                 </div>
             )}
+            <Breadcrumb/>
         </>
     );
 }
