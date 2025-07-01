@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6 
     },
+    address: {
+        type: String,
+        default: null
+    },
     role: {
         type: String,
         default: "client"
