@@ -1,5 +1,5 @@
     
-import ProductChart from "@/components/productsChart";
+import ProductChart from "@/components/charts/productsChart"
 import Table from "@/components/table";
 import Link from "next/link";
 
