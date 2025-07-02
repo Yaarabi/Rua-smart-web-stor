@@ -14,7 +14,7 @@ const data = [
 
 export default function RevenueChart() {
     return (
-        <Card sx={{ backgroundColor: "#111827", color: "white", borderRadius: 2 }}>
+        <Card sx={{ backgroundColor: "#111827", color: "white", borderRadius: 2}}>
             <CardContent>
                 <Typography variant="subtitle2" gutterBottom>Revenue</Typography>
                 <Typography variant="h5" fontWeight="bold" gutterBottom>$16,400.12</Typography>

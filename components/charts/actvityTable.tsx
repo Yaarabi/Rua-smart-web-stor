@@ -52,7 +52,7 @@ const rows = [
 
 export default function RecentActivity() {
     return (
-        <Card sx={{ backgroundColor: "#111827", color: "white", borderRadius: 2, width: "72%" }}>
+        <Card sx={{ backgroundColor: "#111827", color: "white", borderRadius: 2, width: "100%" }}>
             <CardContent>
                 <Typography variant="subtitle2" gutterBottom>Recent Activity</Typography>
                 <Table>

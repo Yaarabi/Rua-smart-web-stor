@@ -109,7 +109,7 @@ const SearchCollection = ({ input }: { input: string }) => {
             {products.length === 0 ? (
                 <p className="text-gray-300">{`No products found for "${input}"`}</p>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {products.map((product) => (
                         <Card key={product._id} product={product} />
                     ))}

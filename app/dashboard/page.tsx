@@ -3,24 +3,60 @@ import RevenueChart from "@/components/charts/totalRevenue";
 import TotalSalesCard from "@/components/charts/salles";
 import RecentActivity from "@/components/charts/actvityTable";
 import TrafficChannelChart from "@/components/charts/tarafic";
+import CategoryStockChart from "@/components/charts/productsChart";
 
-export default function DashboardHome() {
+interface Product {
+    _id: string;
+    name: string;
+    title: string;
+    description: string;
+    price: number;
+    category: string;
+    stock: string;
+    images: string;
+    rating: number;
+    createdAt: Date;
+    quantity: number;
+}
+
+const Home = async () => {
+    const response = await fetch("http://localhost:3000/api/products", {
+        cache: "no-store"
+    });
+    const data = (await response.json()) as { products: Product[] };
+    const products = data.products;
+
     return (
         <>
-        <DashboardHead />
+            <DashboardHead />
+            <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 w-[90%] mx-auto">
+                <div className="flex flex-col justify-evenly space-y-4 col-span-1 bg-gray-900 rounded-lg p-4 shadow-md">
+                    <TotalSalesCard />
+                    <TotalSalesCard />
+                </div>
+                <div className="col-span-1 md:col-span-3 bg-gray-900 rounded-lg p-4 shadow-md">
+                    <h2 className="text-white text-lg font-semibold mb-4">Revenue Overview</h2>
+                    <RevenueChart />
+                </div>
+            </section>
 
-        <section className="flex gap-4 mt-8">
-            <div className="flex flex-col justify-evenly">
-                <TotalSalesCard />
-                <TotalSalesCard />
-            </div>
-            <RevenueChart />
-        </section>
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 w-[90%] mx-auto">
+                <div className="col-span-2 bg-gray-900 rounded-lg p-4 shadow-md">
+                    <h2 className="text-white text-lg font-semibold mb-4">Product Category & Stock</h2>
+                    <CategoryStockChart products={products} />
+                </div>
+                <div className="col-span-1 items-center bg-gray-900 rounded-lg p-4 shadow-md">
+                    <h2 className="text-white text-lg font-semibold mb-4">Traffic Sources</h2>
+                    <TrafficChannelChart />
+                </div>
+            </section>
 
-        <section className="flex gap-4 mt-8">
-            <RecentActivity />
-            <TrafficChannelChart/>
-        </section>
+            <section className="mt-8 bg-gray-900 rounded-lg p-4 shadow-md w-[90%] mx-auto">
+                <h2 className="text-white text-lg font-semibold mb-4">Recent Activity</h2>
+                <RecentActivity />
+            </section>
         </>
     );
-}
+};
+
+export default Home;

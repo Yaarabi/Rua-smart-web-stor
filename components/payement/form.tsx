@@ -20,8 +20,7 @@ interface Product {
 }
 
 export default function PaymentForm() {
-
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const stripe = useStripe();
     const elements = useElements();
     const router = useRouter();
@@ -29,21 +28,26 @@ export default function PaymentForm() {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const [userId, setUserId] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [city, setCity] = useState("");
-    const [country, setCountry] = useState("");
+    const [customer, setCustomer] = useState({
+        userId: "",
+        name: "",
+        email: "",
+        city: "",
+        country: ""
+    });
+
     const [cartItems, setCartItems] = useState<Product[]>([]);
 
     useEffect(() => {
         if (session) {
-            console.log(session.user)
-            setUserId(session?.user._id || "");
-            setName(session?.user.name || "");
-            setEmail(session?.user.email || "");
+            setCustomer(prev => ({
+                ...prev,
+                userId: session.user?.id || "",
+                name: session.user?.name || "",
+                email: session.user?.email || ""
+            }));
         }
-    }, [status, session]);
+    }, [session]);
 
     useEffect(() => {
         const storedOrder = localStorage.getItem("order");
@@ -54,25 +58,29 @@ export default function PaymentForm() {
 
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+    const handleInputChange = (field: string, value: string) => {
+        setCustomer(prev => ({ ...prev, [field]: value }));
+    };
+
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const cardElement = elements?.getElement(CardElement);
+        if (!stripe || !elements) return;
+
+        const cardElement = elements.getElement(CardElement);
+        if (!cardElement) return;
 
         try {
-            if (!stripe || !cardElement) return;
-
             setLoading(true);
             setMessage("");
 
-            let currentUserId = userId;
+            let currentUserId = customer.userId;
 
             if (!session) {
                 const registerResponse = await axios.post("/api/action/register", {
-                    username: name,
-                    email,
-                    password: "123456789" 
+                    username: customer.name,
+                    email: customer.email,
+                    password: "123456789"
                 });
-
                 currentUserId = registerResponse.data.user._id;
             }
 
@@ -80,40 +88,43 @@ export default function PaymentForm() {
             const clientSecret = data.clientSecret;
 
             const result = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: { card: cardElement },
+                payment_method: { card: cardElement }
             });
 
             if (result.error) {
                 setMessage(`Payment failed: ${result.error.message}`);
-            } else if (result.paymentIntent?.status === "succeeded") {
+                return;
+            }
+
+            if (result.paymentIntent?.status === "succeeded") {
                 setMessage("✅ Payment successful!");
 
                 const orderResponse = await axios.post("/api/orders", {
                     userId: currentUserId || "guest",
-                    name,
-                    email,
+                    name: customer.name,
+                    email: customer.email,
                     items: cartItems.map(item => ({
                         productId: item._id,
                         name: item.name,
                         quantity: item.quantity,
-                        price: item.price,
+                        price: item.price
                     })),
-                    shippingAddress: { city, country },
+                    shippingAddress: { city: customer.city, country: customer.country },
                     totalPrice,
                     isPaid: true,
-                    paidAt: new Date(),
+                    paidAt: new Date()
                 });
 
                 if (orderResponse.data.message === "Order created successfully") {
-                    localStorage.removeItem("order");
-                    router.push("/");
+                    localStorage.setItem("customer", customer.name);
+                    router.push("/payment/success");
                 } else {
                     setMessage("Order creation failed. Please contact support.");
                 }
             }
         } catch (error) {
-            console.log(error);
-            setMessage("An error occurred. Please try again.");
+            console.error(error);
+            setMessage("An unexpected error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -127,32 +138,32 @@ export default function PaymentForm() {
                 <input
                     type="text"
                     placeholder="Your name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={customer.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     required
                     className="w-full border px-3 py-2 rounded"
                 />
                 <input
-                    type="text"
+                    type="email"
                     placeholder="Your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={customer.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
                     required
                     className="w-full border px-3 py-2 rounded"
                 />
                 <input
                     type="text"
                     placeholder="City"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    value={customer.city}
+                    onChange={(e) => handleInputChange("city", e.target.value)}
                     required
                     className="w-full border px-3 py-2 rounded"
                 />
                 <input
                     type="text"
                     placeholder="Country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    value={customer.country}
+                    onChange={(e) => handleInputChange("country", e.target.value)}
                     required
                     className="w-full border px-3 py-2 rounded"
                 />
@@ -163,16 +174,17 @@ export default function PaymentForm() {
                             base: {
                                 fontSize: "16px",
                                 color: "#32325d",
-                                "::placeholder": { color: "#aab7c4" },
+                                "::placeholder": { color: "#aab7c4" }
                             },
-                            invalid: { color: "#fa755a" },
-                        },
+                            invalid: { color: "#fa755a" }
+                        }
                     }}
                 />
+
                 <button
                     type="submit"
                     disabled={!stripe || loading}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+                    className={`w-full ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white py-2 px-4 rounded`}
                 >
                     {loading ? "Processing..." : `Pay ${totalPrice.toFixed(2)} MAD`}
                 </button>
@@ -183,6 +195,8 @@ export default function PaymentForm() {
             <div className="mt-6 bg-gray-100 p-4 rounded">
                 <h3 className="font-semibold mb-2">Stripe Test Card:</h3>
                 <p><strong>Card Number:</strong> 4242 4242 4242 4242</p>
+                <p><strong>Expiry:</strong> Any future date</p>
+                <p><strong>CVC:</strong> Any 3 digits</p>
             </div>
         </div>
     );
