@@ -7,7 +7,7 @@ import Skeleton from "../loading";
 import Loader from "../loader";
 import { useDeleteCustomer } from "@/app/hooks/forClient";
 
-interface Customer {
+export interface Customer {
     _id: string;
     username: string;
     email: string;

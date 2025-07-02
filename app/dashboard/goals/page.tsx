@@ -9,9 +9,9 @@ const features = [
         items: [
             {
                 icon: <FaPenFancy className="text-2xl text-indigo-400" />,
-                label: 'Product Insights',
-                path: '/dashboard/insights',
-                description: 'Set insights and notes about your products.',
+                label: 'Get Insights',
+                path: '/dashboard/goals/insights',
+                description: 'Set insights and notes about your business.',
             },
             {
                 icon: <FaRegNewspaper className="text-2xl text-indigo-400" />,

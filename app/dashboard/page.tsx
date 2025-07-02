@@ -5,8 +5,10 @@ import RecentActivity from "@/components/charts/actvityTable";
 import TrafficChannelChart from "@/components/charts/tarafic";
 import CategoryStockChart from "@/components/charts/productsChart";
 import { Order } from "../hooks/orderHooks";
+import StorData from "@/components/dashboard/storData";
+import { User } from "../hooks/insights";
 
-interface Product {
+export interface Product {
     _id: string;
     name: string;
     title: string;
@@ -26,6 +28,11 @@ const Home = async () => {
 
     const orderResponse = await fetch("http://localhost:3000/api/orders");
     const { orders }: { orders: Order[] } = await orderResponse.json();
+
+    const usersResponse = await fetch("http://localhost:3000/api/users");
+    const { clients }: { clients: User[] } = await usersResponse.json();
+
+
 
     return (
         <>
@@ -56,6 +63,9 @@ const Home = async () => {
                 <h2 className="text-white text-lg font-semibold mb-4">Recent Activity</h2>
                 <RecentActivity />
             </section>
+            {orders && products && clients && (
+                <StorData users={clients} products={products} orders={orders} />
+                )}
         </>
     );
 };
