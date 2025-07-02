@@ -57,7 +57,7 @@ const Thanks = ({ purchase, customer }: Props) => {
             const thankPrompt = `You are a friendly, professional seller Rua web Store. A customer named ${customer} just completed a purchase. Please write a warm and grateful thank-you message for their purchase. Also invite them to explore the product catalog below which features items related to their recent purchase. You can recommend bsed on ${allTitles.join(", ")}.
             there purchase includes: ${purchase.map(p => p.name).join(", ")}.
             Keep it concise and engaging. that in just 10 to 30 words.
-            and if it's good include link to categpries "https://Rua.com/categories"`;
+            and if it's good include link to categpries "rua-smart-web-store-git-main-youssef-aarabis-projects.vercel.app/categories"`;
 
             const productsPrompt = `
                 The customer purchased these items: ${purchase.map(p => p.name).join(", ")}.

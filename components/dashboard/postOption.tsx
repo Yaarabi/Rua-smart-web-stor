@@ -15,7 +15,7 @@ interface Props {
 
 
 const Option = ({ action, image }: Props) => {
-    const postUrl = `https://www.rua.com/post/${image}`;
+    const postUrl = `rua-smart-web-store-git-main-youssef-aarabis-projects.vercel.app${image}`;
 
     return (
         <>

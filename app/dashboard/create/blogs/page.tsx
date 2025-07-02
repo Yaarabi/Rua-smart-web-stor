@@ -57,7 +57,7 @@ const Page = () => {
         - Do not use bold formatting (no asterisks **).
         - and again do not use this **.
 
-        The goal is to create a blog that feels helpful, trustworthy, and informative while naturally encouraging the reader to take action and visit www.rua.com.
+        The goal is to create a blog that feels helpful, trustworthy, and informative while naturally encouraging the reader to take action and visit rua-smart-web-store-git-main-youssef-aarabis-projects.vercel.app.
         `;
 
 
