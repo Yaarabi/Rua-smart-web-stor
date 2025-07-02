@@ -1,9 +1,10 @@
 import DashboardHead from "@/components/dashboardHead";
 import RevenueChart from "@/components/charts/totalRevenue";
-import TotalSalesCard from "@/components/charts/salles";
+import TotalCard from "@/components/charts/salles";
 import RecentActivity from "@/components/charts/actvityTable";
 import TrafficChannelChart from "@/components/charts/tarafic";
 import CategoryStockChart from "@/components/charts/productsChart";
+import { Order } from "../hooks/orderHooks";
 
 interface Product {
     _id: string;
@@ -20,23 +21,23 @@ interface Product {
 }
 
 const Home = async () => {
-    const response = await fetch("http://localhost:3000/api/products", {
-        cache: "no-store"
-    });
-    const data = (await response.json()) as { products: Product[] };
-    const products = data.products;
+    const response = await fetch("http://localhost:3000/api/products");
+    const { products }: { products: Product[] } = await response.json();
+
+    const orderResponse = await fetch("http://localhost:3000/api/orders");
+    const { orders }: { orders: Order[] } = await orderResponse.json();
 
     return (
         <>
             <DashboardHead />
             <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 w-[90%] mx-auto">
                 <div className="flex flex-col justify-evenly space-y-4 col-span-1 bg-gray-900 rounded-lg p-4 shadow-md">
-                    <TotalSalesCard />
-                    <TotalSalesCard />
+                    <TotalCard data={orders} title="Sales" />
+                    <TotalCard data={orders} title="Orders"/>
                 </div>
                 <div className="col-span-1 md:col-span-3 bg-gray-900 rounded-lg p-4 shadow-md">
                     <h2 className="text-white text-lg font-semibold mb-4">Revenue Overview</h2>
-                    <RevenueChart />
+                    <RevenueChart data={orders} />
                 </div>
             </section>
 

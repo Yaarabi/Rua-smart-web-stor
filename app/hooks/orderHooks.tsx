@@ -10,7 +10,7 @@ interface OrderItem {
     price: number;
 }
 
-interface Order {
+export interface Order {
     _id: string;
     userId: string;
     items: OrderItem[];

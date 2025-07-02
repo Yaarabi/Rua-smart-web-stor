@@ -1,33 +1,53 @@
-"use client"
+"use client";
 
+import { Order } from "@/app/hooks/orderHooks";
 import { Card, CardContent, Typography } from "@mui/material";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useMemo } from "react";
 
-const data = [
-    { name: "Jan", profit: 8000, loss: 4000 },
-    { name: "Feb", profit: 9670, loss: 4500 },
-    { name: "Mar", profit: 10980, loss: 7000 },
-    { name: "Apr", profit: 14000, loss: 8200 },
-    { name: "May", profit: 12500, loss: 6100 },
-    { name: "Jun", profit: 9500, loss: 4800 },
-];
+interface Props {
+    data: Order[];
+}
 
-export default function RevenueChart() {
+export default function RevenueChart({ data }: Props) {
+
+    
+
+    const chartData = useMemo(() => {
+        const revenueByDate: { [key: string]: number } = {};
+
+        data.forEach(order => {
+            const date = new Date(order.createdAt).toLocaleDateString();
+            if (revenueByDate[date]) {
+                revenueByDate[date] += order.totalPrice;
+            } else {
+                revenueByDate[date] = order.totalPrice;
+            }
+        });
+
+        return Object.entries(revenueByDate).map(([date, total]) => ({
+            date,
+            revenue: total,
+        }));
+    }, [data]);
+
+    const totalRevenue = data.reduce((acc, order) => acc + order.totalPrice, 0);
+
     return (
-        <Card sx={{ backgroundColor: "#111827", color: "white", borderRadius: 2}}>
+        <Card sx={{ backgroundColor: "#111827", color: "white", borderRadius: 2 }}>
             <CardContent>
                 <Typography variant="subtitle2" gutterBottom>Revenue</Typography>
-                <Typography variant="h5" fontWeight="bold" gutterBottom>$16,400.12</Typography>
+                <Typography variant="h5" fontWeight="bold" gutterBottom>${totalRevenue.toFixed(2)}</Typography>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={data}>
-                        <XAxis dataKey="name" stroke="#ccc" />
+                    <BarChart data={chartData}>
+                        <XAxis dataKey="date" stroke="#ccc" />
                         <YAxis stroke="#ccc" />
-                        <Tooltip 
-                            contentStyle={{ backgroundColor: "#374151", border: "none", color: "white" }} 
+                        <Tooltip
+                            contentStyle={{ backgroundColor: "#374151", border: "none", color: "white" }}
                             itemStyle={{ color: "white" }}
+                            formatter={(value: number) => `$${value.toFixed(2)}`}
                         />
-                        <Bar dataKey="profit" fill="#34D399" /> 
-                        <Bar dataKey="loss" fill="#F87171" />  
+                        <Bar dataKey="revenue" fill="#34D399" />
                     </BarChart>
                 </ResponsiveContainer>
             </CardContent>
