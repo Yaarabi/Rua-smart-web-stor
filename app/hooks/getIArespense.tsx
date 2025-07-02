@@ -12,9 +12,7 @@ const getRespense = async (prompt: string): Promise<string | null> => {
 
         const data = await res.json();
 
-        console.log("AI response JSON:", data);
-
-        return data.result || null;
+        return data.result
     } catch (error) {
         console.error("Fetch or parse error:", error);
         return null;

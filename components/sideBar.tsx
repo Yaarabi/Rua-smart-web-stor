@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import { FaHome, FaShoppingCart, FaUsers, FaChartBar, FaCog, FaSignOutAlt, FaClipboardCheck, FaBars, FaTimes, FaBlog } from 'react-icons/fa';
+import { FaHome, FaShoppingCart, FaUsers, FaCog, FaSignOutAlt, FaClipboardCheck, FaBars, FaTimes, FaBlog, FaBullseye } from 'react-icons/fa';
 
 const SideBar = () => {
     const router = useRouter();
@@ -23,7 +23,7 @@ const SideBar = () => {
         { icon: <FaClipboardCheck />, label: 'Orders', path: '/dashboard/orders' },
         { icon: <FaUsers />, label: 'Customers', path: '/dashboard/Customers' },
         { icon: <FaBlog />, label: 'New Post', path: '/dashboard/create' },
-        { icon: <FaChartBar />, label: 'Analytics', path: '' },
+        { icon: <FaBullseye/>, label: 'Goals & Targets', path: '/dashboard/goals' },
     ];
 
     return (
