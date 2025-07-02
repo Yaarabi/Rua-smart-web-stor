@@ -1,4 +1,3 @@
-// app/api/action/route.ts
 import { connectDB } from "@/lib/db";
 import Client from "@/models/users";
 import bcrypt from "bcryptjs";
