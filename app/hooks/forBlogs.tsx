@@ -19,10 +19,10 @@ export interface BlogForm {
     category?: string;
 }
 
-interface UpdateBlogPayload {
-    blog: BlogForm;
-    id: string;
-}
+// interface UpdateBlogPayload {
+//     blog: BlogForm;
+//     id: string;
+// }
 
 const API_URL = "http://localhost:3000/api/blogs";
 
@@ -47,45 +47,45 @@ export const useCreateBlog = () => {
     });
 };
 
-export const useUpdateBlog = () => {
-    const queryClient = useQueryClient();
+// export const useUpdateBlog = () => {
+//     const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async ({ blog, id }: UpdateBlogPayload) => {
-        const res = await fetch(`${API_URL}?id=${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(blog),
-        });
+//     return useMutation({
+//         mutationFn: async ({ blog, id }: UpdateBlogPayload) => {
+//         const res = await fetch(`${API_URL}?id=${id}`, {
+//             method: "PUT",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(blog),
+//         });
 
-        if (!res.ok) throw new Error("Failed to update blog");
-        return res.json();
-        },
-        onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["blogs"] });
-        alert("Blog was updated successfully");
-        },
-    });
-};
+//         if (!res.ok) throw new Error("Failed to update blog");
+//         return res.json();
+//         },
+//         onSuccess: () => {
+//         queryClient.invalidateQueries({ queryKey: ["blogs"] });
+//         alert("Blog was updated successfully");
+//         },
+//     });
+// };
 
-export const useDeleteBlog = () => {
-    const queryClient = useQueryClient();
+// export const useDeleteBlog = () => {
+//     const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (id: string) => {
-        const res = await fetch(`${API_URL}?id=${id}`, {
-            method: "DELETE",
-        });
+//     return useMutation({
+//         mutationFn: async (id: string) => {
+//         const res = await fetch(`${API_URL}?id=${id}`, {
+//             method: "DELETE",
+//         });
 
-        if (!res.ok) throw new Error("Failed to delete blog");
-        return res.json();
-        },
-        onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["blogs"] });
-        alert("Blog was deleted successfully");
-        },
-    });
-};
+//         if (!res.ok) throw new Error("Failed to delete blog");
+//         return res.json();
+//         },
+//         onSuccess: () => {
+//         queryClient.invalidateQueries({ queryKey: ["blogs"] });
+//         alert("Blog was deleted successfully");
+//         },
+//     });
+// };
 
 
 
