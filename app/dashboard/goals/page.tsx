@@ -16,7 +16,7 @@ const features = [
             {
                 icon: <FaRegNewspaper className="text-2xl text-indigo-400" />,
                 label: 'Smart Goals',
-                path: '/dashboard/goals',
+                path: '/dashboard/goals/set',
                 description: 'Set clear, trackable goals to improve your strategy.',
             },
         ],

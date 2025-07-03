@@ -21,7 +21,7 @@ const Page = () => {
     const [response, setResponse] = useState<string | null>(null);
     const [loadingAI, setLoadingAI] = useState(false);
 
-    const options = ["My Business", "Product", "Customer", "Sales", "Marketing"];
+    const options = ["My Business", "My products", "My Customer", "Sales", "Marketing recommendations"];
 
     const router = useRouter();
 
@@ -82,7 +82,7 @@ const Page = () => {
                 <Loader />
             ) : (
                 selected && (
-                    <div className="mt-6 bg-gray-800 p-8 rounded-2xl shadow-xl text-gray-300 w-full max-w-3xl min-h-[300px] flex items-center justify-center transition-all duration-300">
+                    <div className="mt-6 bg-gray-800 p-8 rounded-2xl shadow-xl text-gray-300 flex items-center justify-center transition-all duration-300">
                         {loadingAI ? (
                             <Loader />
                         ) : response ? (
@@ -90,7 +90,7 @@ const Page = () => {
                                 <h3 className="text-2xl font-bold text-center text-indigo-400">
                                     Insights for {selected}
                                 </h3>
-                                <div className="max-h-[350px] overflow-y-auto p-6 bg-gray-900 rounded-md border border-gray-700 text-gray-400 leading-relaxed tracking-wide">
+                                <div className="p-6 bg-gray-900 rounded-md border border-gray-700 text-gray-400">
                                     {response}
                                 </div>
                             </div>
