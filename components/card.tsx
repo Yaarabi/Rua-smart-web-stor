@@ -33,7 +33,7 @@ const Card = ({ product }: ProductCardProps) => {
     return (
         <motion.div
             whileHover={{ scale: 1.01 }}
-            className="relative bg-white text-gray-900 p-4 rounded-xl shadow-md hover:shadow-lg cursor-pointer flex flex-col transition-all duration-300 h-[350px] border"
+            className="relative py-4 shadow-md hover:shadow-lg cursor-pointer flex flex-col transition-all duration-300 h-[350px]"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
@@ -51,14 +51,15 @@ const Card = ({ product }: ProductCardProps) => {
                 </motion.div>
             )}
 
-            <div className="h-48 w-full mb-4 relative rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center p-4">
+            <div className="relative h-48 w-full mb-4 rounded-xl overflow-hidden flex items-center justify-center transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute z-0" />
                 <Image
                     src={`data:image/png;base64,${product.images}`}
                     alt={product.name}
-                    width={160}
-                    height={160}
+                    width={300}
+                    height={250}
                     unoptimized
-                    className="object-contain max-h-44"
+                    className="relative z-10 object-contain max-h-40 transition duration-300 hover:brightness-105"
                 />
             </div>
 
