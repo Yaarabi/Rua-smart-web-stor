@@ -76,7 +76,7 @@ export default function PaymentForm() {
             let currentUserId = customer.userId;
 
             if (!session) {
-                const registerResponse = await axios.post("/api/action/register", {
+                const registerResponse = await axios.post("/api/action", {
                     username: customer.name,
                     email: customer.email,
                     password: "123456789"

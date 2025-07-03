@@ -33,7 +33,7 @@ const Card = ({ product }: ProductCardProps) => {
     return (
         <motion.div
             whileHover={{ scale: 1.01 }}
-            className="relative py-4 shadow-md hover:shadow-lg cursor-pointer flex flex-col transition-all duration-300 h-[350px]"
+            className="relative p-4 shadow-md hover:shadow-lg cursor-pointer flex flex-col transition-all duration-300 h-[350px]"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >

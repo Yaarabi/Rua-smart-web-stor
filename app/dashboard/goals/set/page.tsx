@@ -1,16 +1,22 @@
-'use client';
+"use client";
 
-import CheckGoal from '@/components/dashboard/checkGoal';
-import SmartGoal from '@/components/dashboard/smartGoal';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { FaArrowLeft, FaClipboardCheck, FaLightbulb, FaStreetView } from 'react-icons/fa'; 
+import { useGetGoals } from "@/app/hooks/forGoal";
+import Chart from "@/components/charts/goal";
+import CheckGoal from "@/components/dashboard/checkGoal";
+import SmartGoal from "@/components/dashboard/smartGoal";
+import Loader from "@/components/loader";
+import { Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FaArrowLeft, FaClipboardCheck, FaLightbulb, FaStreetView } from "react-icons/fa";
 
 const Page = () => {
     const [show, setShow] = useState(true);
     const [check, setCheck] = useState(false);
     const [go, setGo] = useState(false);
-    const [input, setInput] = useState('');
+    const [track, setTrack] = useState(false);
+    const [input, setInput] = useState("");
+    const [goals, setGoals] = useState([]);
 
     const router = useRouter();
 
@@ -18,20 +24,32 @@ const Page = () => {
         setShow(true);
         setCheck(false);
         setGo(false);
-        setInput('');
+        setTrack(false);
+        setInput("");
+        setGoals([]);
     };
+
+    const getGoals = useGetGoals();
+
+    useEffect(() => {
+        if (track && getGoals.data) {
+        setGoals(getGoals.data);
+        }
+    }, [track, getGoals.data]);
+
+    if (getGoals.isLoading) return <Loader />;
 
     return (
         <section className="w-full min-h-screen flex items-center justify-center bg-gray-900 text-white px-4">
         {show && (
             <div className="max-w-xl w-full p-8 bg-gray-800 rounded-3xl shadow-lg text-center space-y-8">
-                <div
-                                onClick={() => router.push("/dashboard/goals")}
-                                className="flex items-center gap-2 cursor-pointer self-start hover:text-indigo-400 transition"
-                            >
-                                <FaArrowLeft className="text-lg" />
-                                <span className="font-medium">Back</span>
-                            </div>
+            <div
+                onClick={() => router.push("/dashboard/goals")}
+                className="flex items-center gap-2 cursor-pointer self-start hover:text-indigo-400 transition"
+            >
+                <FaArrowLeft className="text-lg" />
+                <span className="font-medium">Back</span>
+            </div>
             <div
                 onClick={() => {
                 setCheck(true);
@@ -55,7 +73,7 @@ const Page = () => {
             </div>
             <div
                 onClick={() => {
-                setGo(true);
+                setTrack(true);
                 setShow(false);
                 }}
                 className="cursor-pointer flex items-center justify-center space-x-4 rounded-lg bg-indigo-700/30 hover:bg-indigo-700 transition px-6 py-4"
@@ -84,12 +102,12 @@ const Page = () => {
                 </button>
                 <button
                 onClick={() => {
-                    if (input.trim() !== '') {
+                    if (input.trim() !== "") {
                     setGo(true);
                     setCheck(false);
                     }
                 }}
-                disabled={input.trim() === ''}
+                disabled={input.trim() === ""}
                 className="px-4 py-2 bg-indigo-500 rounded-lg hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed text-white transition"
                 >
                 Get Response
@@ -110,7 +128,7 @@ const Page = () => {
             </div>
         )}
 
-        {!show && !check && !go && (
+        {!show && !check && !go && !track && (
             <div className="max-w-xl w-full p-8 bg-gray-800 rounded-3xl shadow-lg">
             <button
                 onClick={resetAll}
@@ -121,8 +139,24 @@ const Page = () => {
             <SmartGoal />
             </div>
         )}
+
+        {track && (
+            <div className="max-w-4xl w-full space-y-8 mt-4">
+            <button
+                onClick={resetAll}
+                className="mb-6 px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-white transition"
+            >
+                Back to Menu
+            </button>
+            {goals.length > 0 ? (
+                goals.map((goal, index) => <Chart key={index} goal={goal} />)
+            ) : (
+                <Typography>No goals to track.</Typography>
+            )}
+            </div>
+        )}
         </section>
     );
-    };
+};
 
 export default Page;
