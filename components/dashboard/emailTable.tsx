@@ -2,16 +2,19 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "@/components/loading";
+import Select from "@/components/dashboard/selecte";
 import Loader from "@/components/loader";
 import { useDeleteCustomer } from "@/app/hooks/forClient";
 import { Customer } from "@/components/dashboard/customers";
 import { useState } from "react";
 
-interface Props {
-    action?: () => void;
-}
 
-const CustomerTable = ({action}: Props) => {
+
+const CustomerTable = () => {
+
+    
+        const [select, setSelect] = useState(false);
+
     const { data, isLoading, isError } = useQuery({
         queryKey: ["clients"],
         queryFn: async () => {
@@ -28,8 +31,7 @@ const CustomerTable = ({action}: Props) => {
     const deleteCustomer = useDeleteCustomer();
 
     const [filter, setFilter] = useState<"all" | "new" | "regular" | "vip">("all");
-    const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
-    const [selectedNames, setSelectedNames] = useState<string[]>([]);
+    const [selectedCustomers, setSelectedCustomers] = useState<{ name: string; email: string }[]>([]);
 
     const getStatus = (customer: Customer) => {
         if (customer.totalOrders === 0) return "New";
@@ -43,28 +45,27 @@ const CustomerTable = ({action}: Props) => {
         if (filter === "regular") return customer.totalOrders > 0 && customer.totalSpent < 1000;
         if (filter === "vip") return customer.totalSpent >= 1000;
         return true;
-    });
+    }) || [];
 
     const toggleSelect = (email: string, name: string) => {
-        setSelectedEmails((prev) =>
-            prev.includes(email) ? prev.filter((e) => e !== email) : [...prev, email]
-        );
-        setSelectedNames((prev) =>
-            prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
-        );
+        setSelectedCustomers((prev) => {
+            const exists = prev.some((c) => c.email === email);
+            if (exists) {
+                return prev.filter((c) => c.email !== email);
+            } else {
+                return [...prev, { name, email }];
+            }
+        });
     };
 
-    const isSelected = (email: string) => selectedEmails.includes(email);
+    const isSelected = (email: string) => selectedCustomers.some((c) => c.email === email);
 
     const selectAll = () => {
-        if (selectedEmails.length === filteredCustomers.length) {
-            setSelectedEmails([]);
-            setSelectedNames([]);
+        if (selectedCustomers.length === filteredCustomers.length) {
+            setSelectedCustomers([]);
         } else {
-            const allEmails = filteredCustomers.map((customer) => customer.email);
-            const allNames = filteredCustomers.map((customer) => customer.username);
-            setSelectedEmails(allEmails);
-            setSelectedNames(allNames);
+            const all = filteredCustomers.map((c) => ({ name: c.username, email: c.email }));
+            setSelectedCustomers(all);
         }
     };
 
@@ -88,11 +89,12 @@ const CustomerTable = ({action}: Props) => {
                     <option value="vip">VIP</option>
                 </select>
 
-                {selectedEmails.length > 0 && (
+                {selectedCustomers.length > 0 && (
                     <div className="mt-4">
-                        <button 
-                        onClick={action}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                        <button
+                            onClick={() => setSelect(true)}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                        >
                             Send Email
                         </button>
                     </div>
@@ -108,7 +110,7 @@ const CustomerTable = ({action}: Props) => {
                                     onClick={selectAll}
                                     className="text-blue-500 hover:text-blue-700"
                                 >
-                                    {selectedEmails.length === filteredCustomers.length
+                                    {selectedCustomers.length === filteredCustomers.length
                                         ? "Unselect All"
                                         : "Select All"}
                                 </button>
@@ -129,11 +131,10 @@ const CustomerTable = ({action}: Props) => {
                                 <td className="text-center">
                                     <span
                                         onClick={() => toggleSelect(customer.email, customer.username)}
-                                        className={`cursor-pointer w-4 h-4 inline-block rounded-full border-2 ${
-                                            isSelected(customer.email)
-                                                ? "bg-blue-500 border-blue-500"
-                                                : "bg-transparent border-gray-400"
-                                        }`}
+                                        className={`cursor-pointer w-4 h-4 inline-block rounded-full border-2 ${isSelected(customer.email)
+                                            ? "bg-blue-500 border-blue-500"
+                                            : "bg-transparent border-gray-400"
+                                            }`}
                                     ></span>
                                 </td>
                                 <td className="text-center">{i + 1}</td>
@@ -152,18 +153,7 @@ const CustomerTable = ({action}: Props) => {
                     </tbody>
                 </table>
             </div>
-
-            <div className="mt-6 text-center text-gray-700 dark:text-gray-300 space-y-4">
-                <div>
-                    <h3 className="font-semibold mb-2">Selected Emails:</h3>
-                    <p>{selectedEmails.length > 0 ? selectedEmails.join(", ") : "No customers selected"}</p>
-                </div>
-
-                <div>
-                    <h3 className="font-semibold mb-2">Selected Names:</h3>
-                    <p>{selectedNames.length > 0 ? selectedNames.join(", ") : "No customers selected"}</p>
-                </div>
-            </div>
+            {  select && <Select customers={selectedCustomers} action={()=> setSelect(false)}/>}
         </div>
     );
 };

@@ -65,7 +65,7 @@ const Thanks = ({ purchase, customer }: Props) => {
                 ${allTitles.join(", ")}
 
                 Please recommend 3 to 6 product titles **only from this catalog** that are most related or complementary to the customer's purchase. 
-                Do not suggest any product titles outside this list.
+                Do not suggest any product titles outside this list, dont recomment the same products that he purshased.
 
                 ⚡️ Return only a valid JSON array of the recommended product titles.
                 ⚡️ Do NOT include any explanations, commentary, or formatting.

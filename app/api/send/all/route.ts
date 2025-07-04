@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY!);
 
 export async function POST(request: NextRequest) {
     try {
-        const { customers } = await request.json();
+        const { customers, emailContent } = await request.json();
 
         if (!Array.isArray(customers)) {
         return NextResponse.json(
@@ -19,10 +19,12 @@ export async function POST(request: NextRequest) {
         const results = await Promise.all(
         customers.map(({ name, email }) =>
             resend.emails.send({
-            from: "noreply@ruastore.com",
+            from: "Display Name <contact.ruastore@gmail.com>",
             to: email,
-            subject: "Bienvenue chez Rua Web Store!",
-            html: `<p>Salut ${name}, merci d’avoir rejoint Rua Web Store 🙌</p>`,
+            subject: emailContent.subject,
+            html: `<h2>${emailContent.greeting.replace("{{name}}", name)}</h2>
+            <p>${emailContent.body}</p>
+            <p><strong>${emailContent.callToAction}</strong></p>`,
             })
         )
         );

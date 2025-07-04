@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useStore from "@/zustand/store";
 
 interface Product {
     _id: string;
@@ -37,6 +38,8 @@ export default function PaymentForm() {
     });
 
     const [cartItems, setCartItems] = useState<Product[]>([]);
+
+    const clearCart = useStore((state)=> state.clearProducts);
 
     useEffect(() => {
         if (session) {
@@ -121,13 +124,26 @@ export default function PaymentForm() {
                 });
 
                 if (orderResponse.data.message === "Order created successfully") {
+
+                    clearCart();
+
                     localStorage.setItem("customer", customer.name);
-                        await axios.put(`/api/users?id=${currentUserId}`, {
-                            totalSpent: totalPrice,
-                            totalOrders: 1,
-                            lastOrder: Date.now(),
-                            address: `${customer.city}, ${customer.country}`,
-                        });
+
+                    await axios.put(`/api/users?id=${currentUserId}`, {
+                        totalSpent: totalPrice,
+                        totalOrders: 1,
+                        lastOrder: Date.now(),
+                        address: `${customer.city}, ${customer.country}`,
+                    });
+
+                    await Promise.all(
+                        cartItems.map((item) =>
+                            axios.put(`/api/products?id=${item._id}`, {
+                                stock: Number(item.stock) - item.quantity,
+                            })
+                        )
+                    );
+
 
                     router.push("/payment/success");
                 } else {
