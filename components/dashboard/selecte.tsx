@@ -1,9 +1,10 @@
     "use client";
 
-    import GenerateEmail from "./generateEmail";
-    import { useState } from "react";
+import { FaTimes } from "react-icons/fa";
+import GenerateEmail from "./generateEmail";
+import { useState } from "react";
 
-    const emailTypes = [
+const emailTypes = [
     { label: "Newsletter", value: "newsletter" },
     { label: "Promotional", value: "promotional" },
     { label: "Transactional", value: "transactional" },
@@ -14,14 +15,17 @@
     { label: "Event Invitation", value: "event_invitation" },
     ];
 
-    const Select = ({ onChange }: { onChange?: (value: string) => void }) => {
+interface Props{
+    action: () => void;
+    customers: { name: string; email: string }[];
+}
+
+const Select = ({customers, action}: Props) => {
+
+    
     const [selected, setSelected] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelected(e.target.value);
-        if (onChange) onChange(e.target.value);
-    };
 
     const submit = () => {
         if (selected) {
@@ -31,12 +35,14 @@
 
     return (
         <div className="absolute top-1/2 md:left-[55%] transform -translate-x-1/2 -translate-y-1/2 w-[90%] z-50">
+            
         {!isOpen && (
             <div className="flex flex-col justify-center gap-5 md:mx-auto bg-gray-900 p-8 w-2/5 rounded-xl shadow-xl">
+            <FaTimes className="self-end" onClick={action}/>
             <label className="text-base font-medium text-white">Email Marketing Type</label>
             <select
                 value={selected}
-                onChange={handleChange}
+                onChange={(e) => setSelected(e.target.value)}
                 className="border border-gray-500 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 text-gray-900"
             >
                 <option value="" disabled>
@@ -57,7 +63,7 @@
             </div>
         )}
 
-        {isOpen && <GenerateEmail type={selected} />}
+        {isOpen && <GenerateEmail action={()=> setIsOpen(false)} type={selected} customers ={customers} />}
         </div>
     );
     };

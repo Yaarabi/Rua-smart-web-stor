@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 
-//  Product Types 
 
 interface Product {
     _id: string;
@@ -19,12 +18,11 @@ interface ProductStoreState {
     products: Product[];
     addProduct: (newProduct: Product) => void;
     removeProduct: (id: string) => void;
-    clearProducts: () => void;
+    clearProducts: () => void;  
     incrementQuantity: (id: string) => void;
     decrementQuantity: (id: string) => void;
 }
 
-//  Post Types 
 
 interface Post {
     description: string;
@@ -36,7 +34,6 @@ interface PostStoreState {
     addPost: (newPost: Post) => void;
 }
 
-//  Product Store 
 
 const useStore = create<ProductStoreState>((set) => ({
     products: [],
@@ -71,7 +68,7 @@ const useStore = create<ProductStoreState>((set) => ({
         })),
 }));
 
-//  Selectors 
+
 
 export const useQuantity = () => {
     const products = useStore((state) => state.products);
@@ -83,7 +80,6 @@ export const useTotal = () => {
     return products.reduce((acc, ele) => acc + ele.price * ele.quantity, 0);
 };
 
-//  Post Store 
 
 export const usePost = create<PostStoreState>((set) => ({
     post: null,

@@ -31,23 +31,19 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
     await connectDB();
     try {
-        const { id, name, email } = await req.json();
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get("id");
+        const detail = await req.json();
 
-        if (!id || (!name && !email)) {
-            return NextResponse.json({ message: "ID and at least one field (name or email) are required" }, { status: 400 });
-        }
 
-        const updatedClient = await Client.findByIdAndUpdate(
-            id,
-            { $set: { name, email } },
-            { new: true }
-        );
+        if (!id) return NextResponse.json({ message: "Product ID is required" }, { status: 400 });
+        
+        const result = await Client.findByIdAndUpdate(id, detail, { new: true });
+        if (!result) return NextResponse.json({ message: "Product not found" }, { status: 404 });
+        
 
-        if (!updatedClient) {
-            return NextResponse.json({ message: "Client not found" }, { status: 404 });
-        }
 
-        return NextResponse.json({ message: "Client updated successfully", client: updatedClient });
+        return NextResponse.json({ message: "Client updated successfully", client: result });
     } catch (error) {
         return NextResponse.json({ message: "Failed to update client", error }, { status: 500 });
     }

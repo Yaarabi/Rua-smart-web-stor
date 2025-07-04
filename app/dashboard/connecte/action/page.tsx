@@ -1,13 +1,11 @@
 "use client";
 import CustomerTable from "@/components/dashboard/emailTable";
-import Select from "@/components/dashboard/selecte";
 import Recomend from "@/components/dashboard/recomend";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
     const [recomend, setRecommend] = useState(false);
-    const [select, setSelect] = useState(false);
     const router = useRouter();
 
     return (
@@ -34,10 +32,9 @@ const Page = () => {
                 </div>
             )}
 
-            {  select && <Select/>}
 
             <div className="mt-10">
-                <CustomerTable action={()=> setSelect(true)} />
+                <CustomerTable />
             </div>
         </section>
     );
