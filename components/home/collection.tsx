@@ -21,7 +21,7 @@ const Collection = async () => {
 
 
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`);;
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/products`);;
     const { products }: { products: Product[] } = await response.json();
 
     
