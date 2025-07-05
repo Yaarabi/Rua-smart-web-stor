@@ -30,7 +30,7 @@ const Collection = () => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["category", category],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:3000/api/products?category=${category}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/products?category=${category}`);
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },

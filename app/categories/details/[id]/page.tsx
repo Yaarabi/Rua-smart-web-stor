@@ -17,7 +17,7 @@ const ProductPage = () => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["product", id],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:3000/api/products?id=${id}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/products?id=${id}`);
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },
