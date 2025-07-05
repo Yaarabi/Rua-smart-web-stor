@@ -7,6 +7,8 @@ import CategoryStockChart from "@/components/charts/productsChart";
 import { Order } from "../hooks/orderHooks";
 import StorData from "@/components/dashboard/storData";
 import { User } from "../hooks/insights";
+export const dynamic = "force-dynamic";
+
 
 export interface Product {
     _id: string;
