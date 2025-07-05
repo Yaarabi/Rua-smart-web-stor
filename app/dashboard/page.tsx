@@ -23,13 +23,13 @@ export interface Product {
 }
 
 const Home = async () => {
-    const response = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/products`);
     const { products }: { products: Product[] } = await response.json();
 
-    const orderResponse = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/orders`);
+    const orderResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/orders`);
     const { orders }: { orders: Order[] } = await orderResponse.json();
 
-    const usersResponse = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/users`);
+    const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/users`);
     const { clients }: { clients: User[] } = await usersResponse.json();
 
 
