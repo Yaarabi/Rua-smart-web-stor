@@ -7,6 +7,7 @@ import Benefits from "@/components/home/benifits";
 import Newsletter from "@/components/home/trust";
 import Footer from "@/components/home/footer";
 import Collection from "@/components/home/collection";
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
