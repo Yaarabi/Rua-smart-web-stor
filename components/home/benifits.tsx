@@ -1,5 +1,5 @@
 
-// components/benefits.tsx
+
 export default function Benefits() {
   return (
     <section className="py-12 px-6 max-w-screen-xl mx-auto text-center">

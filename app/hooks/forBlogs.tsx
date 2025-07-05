@@ -24,7 +24,7 @@ export interface BlogForm {
 //     id: string;
 // }
 
-const API_URL = "http://localhost:3000/api/blogs";
+const API_URL = `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/blogs`;
 
 export const useCreateBlog = () => {
     const queryClient = useQueryClient();

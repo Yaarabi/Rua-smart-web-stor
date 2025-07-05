@@ -2,23 +2,23 @@
 
 import { Card, CardContent, Typography } from "@mui/material";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
 } from "recharts";
 import Loader from "../loader";
 import { useEffect, useState } from "react";
 import getRespense from "@/app/hooks/getIArespense";
 
 interface Goal {
-  title: string;
-  aggregates: string[];
-  timeFrame: string;
+    title: string;
+    aggregates: string[];
+    timeFrame: string;
 }
 
 interface AIResponse {

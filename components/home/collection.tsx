@@ -21,7 +21,7 @@ const Collection = async () => {
 
 
 
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/products`);;
+    const response = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products`);;
     const { products }: { products: Product[] } = await response.json();
 
     

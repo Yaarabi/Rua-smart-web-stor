@@ -11,9 +11,8 @@ interface BlogType {
     views: number;
     createdAt: string;
 }
-
 const Blogs = async () => {
-    const res = await fetch('http://localhost:3000/api/blogs', {
+    const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/blogs`, {
         cache: 'no-store',
     });
 
