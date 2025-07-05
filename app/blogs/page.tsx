@@ -1,6 +1,8 @@
 import Blogs from "@/components/blogs/blogs"
 import Footer from "@/components/home/footer"
 import Header from "@/components/home/header"
+export const dynamic = "force-dynamic";
+
 
 
 
