@@ -22,8 +22,9 @@ interface Product {
 const Collection = async () => {
 
 
+        const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+        const response = await fetch(`${baseUrl}/api/products`, { cache: "no-store" });
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/products`,{ cache: 'no-store' });
     const { products }: { products: Product[] } = await response.json();
 
     
