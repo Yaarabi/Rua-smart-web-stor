@@ -38,7 +38,7 @@ const Orders = () => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["orders"],
         queryFn: async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/orders`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/orders`);
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },

@@ -16,7 +16,7 @@ const CheckGoal = ({ title }: { title: string }) => {
     const { data, isLoading } = useQuery({
         queryKey: ["insights"],
         queryFn: async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/insights`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/insights`);
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },
