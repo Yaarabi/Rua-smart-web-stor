@@ -1,6 +1,8 @@
 
 
 import Card from "../card";
+export const dynamic = "force-dynamic";
+
 
 interface Product {
     _id: string;
