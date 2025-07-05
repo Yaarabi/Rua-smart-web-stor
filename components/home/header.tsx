@@ -27,7 +27,7 @@ export default function Header() {
             <header className="bg-gray-900 text-white p-4 flex justify-around gap-20 items-center sticky top-0 z-50 mx-auto">
                 <Link href={"/"} className="flex items-center" >
                         <Image src="/whiteLogo.svg" alt="Rua Web Store Logo" width={50} height={50} />
-                        <h1 className="text-lg font-bold">Rua Web Store</h1>
+                        <h1 className="text-base sm:text-lg font-bold">Rua Store</h1>
                 </Link>
 
                 <nav className="hidden md:flex items-center space-x-6">

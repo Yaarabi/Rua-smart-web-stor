@@ -20,7 +20,7 @@ const Recomend = () => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["clients"],
         queryFn: async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/users`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`);
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },

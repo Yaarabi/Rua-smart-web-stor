@@ -24,7 +24,7 @@ export interface BlogForm {
 //     id: string;
 // }
 
-const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blogs`;
+const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`;
 
 export const useCreateBlog = () => {
     const queryClient = useQueryClient();

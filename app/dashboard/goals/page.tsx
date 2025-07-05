@@ -27,13 +27,13 @@ const features = [
             {
                 icon: <FaBullhorn className="text-2xl text-indigo-400" />,
                 label: 'Marketing Announcements',
-                path: '/dashboard/marketing',
+                path: '/dashboard/goals/marketing',
                 description: 'Plan and manage your promotional campaigns.',
             },
             {
                 icon: <FaRocket className="text-2xl text-indigo-400" />,
                 label: 'Growth Strategies',
-                path: '/dashboard/growth',
+                path: '/dashboard/goals/growth',
                 description: 'Build custom growth strategies for your business.',
             },
         ],
