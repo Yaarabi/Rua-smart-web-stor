@@ -1,109 +1,70 @@
-'use client'
+    "use client";
 
-import { useState, useRef, useEffect } from 'react'
-import { FaTimes } from 'react-icons/fa'
-import getRespense from '@/app/hooks/getIArespense'
-import { motion } from 'framer-motion'
+import { FaTimes } from "react-icons/fa";
+import ProductCart from "./productCart";
+import useStore, { useTotal } from "@/zustand/store";
+import { useRouter } from "next/navigation"; 
 
 interface CartProps {
-    onClose: () => void
+    onClose: () => void;
+    }
+interface Product {
+    _id: string;
+    name: string;
+    title: string;
+    description: string;
+    price: number;
+    category: string;
+    stock: string;
+    images: string;
+    createdAt: Date;
+    quantity: number;
 }
 
-const Chat = ({ onClose }: CartProps) => {
-    const [messages, setMessages] = useState([
-        { sender: 'ai', content: 'Hello, how can I help you?' }
-    ])
-    const [input, setInput] = useState('')
-    const messagesEndRef = useRef<HTMLDivElement | null>(null)
+const Cart = ({ onClose }: CartProps) => {
 
-    const prompt = `You are Rua Web Store's virtual assistant. Respond to the user's message in a warm, concise, and professional tone, just like a helpful customer support agent.
+    const router = useRouter()
 
-        Only begin with: "Hello, this is Rua Web Store Admin." if the user is asking a question or continuing a previous support conversation. Do not repeat this greeting in every message.
+    const products = useStore((state) => state.products)
+    const total = useTotal()
 
-        Your response should:
-        - Be no more than 3–4 sentences
-        - Be friendly, clear, and solution-focused
-        - Provide helpful information about orders, shipping, returns, product recommendations, or store policies
-        - Ask for more details if the message is unclear or lacks context
-
-        About Rua Web Store:
-        Rua Web Store is an AI-powered e-commerce platform specializing in premium electronics — including smartphones, tablets, laptops, smartwatches, earbuds, cameras, and more. We offer fast shipping, secure checkout, and 24/7 support to help customers and dropshippers scale their businesses with smart automation and seamless service.
-
-        Here is the user's message:
-        ${input}`
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-
-    useEffect(() => {
-        scrollToBottom()
-    }, [messages])
-
-    const sendMessage = async () => {
-        if (!input.trim()) return
-
-        const userMessage = { sender: 'user', content: input }
-        setMessages(prev => [...prev, userMessage])
-        setInput('')
-
-        const aiResponse = await getRespense(prompt)
-
-        const aiMessage = {
-            sender: 'ai',
-            content: aiResponse || 'Error: Unable to fetch response.'
-        }
-        setMessages(prev => [...prev, aiMessage])
-    }
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') sendMessage()
+    const toPayement = () => {
+        localStorage.setItem("order", JSON.stringify(products))
+        router.push("/payment")
     }
 
     return (
-        <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 w-full sm:w-[400px] h-screen sm:h-[80vh] bg-gray-800 text-gray-200 p-4 shadow-2xl z-50 flex flex-col sm:rounded-2xl border border-gray-700"
-        >
+        <div className="fixed top-12 right-6 w-full max-w-sm h-4/5 bg-gray-900 text-white p-6 shadow-lg z-50 flex flex-col overflow-x-auto rounded-xl shadow-lg border border-gray-300">
+        <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold">Your Cart</h2>
+            <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition text-xl"
+            >
+            <FaTimes />
+            </button>
+        </div>
+
+        <div className="flex-1 space-y-4 overflow-y-auto">
+
+            { products.map((ele: Product, i:number) => <ProductCart key={i} product={ele}/> ) }
+
+        </div>
+
+        <div className="mt-6">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-100">Support Chat</h2>
-                <button onClick={onClose} className="text-gray-400 hover:text-red-400 transition-colors text-xl">
-                    <FaTimes />
-                </button>
+            <span className="text-lg font-semibold">Total:</span>
+            <span className="text-xl font-bold">{total} MAD</span>
             </div>
+            <button 
+            disabled={products.length === 0}
+            onClick={toPayement}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-3 rounded-lg disabled:opacity-50">
+            Proceed to Checkout
+            </button>
+        </div>
+        </div>
+    );
+};
 
-            <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-700 rounded-lg">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`p-3 rounded-xl shadow-md max-w-[70%] text-sm leading-relaxed ${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-600 text-gray-100'}`}>
-                            {msg.content}
-                        </div>
-                    </div>
-                ))}
-                <div ref={messagesEndRef} />
-            </div>
-
-            <div className="flex items-center border-t border-gray-700 p-3 bg-gray-700 sm:rounded-b-2xl">
-                <input
-                    type="text"
-                    placeholder="Type your message..."
-                    className="flex-1 bg-gray-800 text-gray-100 border border-gray-600 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
-                <button
-                    onClick={sendMessage}
-                    className="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition"
-                >
-                    Send
-                </button>
-            </div>
-        </motion.div>
-    )
-}
-
-export default Chat
+export default Cart;
