@@ -12,7 +12,7 @@ interface BlogType {
     createdAt: string;
 }
 const Blogs = async () => {
-    const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/blogs`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/blogs`, {
         cache: 'no-store',
     });
 

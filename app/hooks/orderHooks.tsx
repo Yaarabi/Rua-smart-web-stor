@@ -35,7 +35,7 @@ const useCreateOrder = () => {
 
     return useMutation({
         mutationFn: async (newOrder: Order) => {
-        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/orders`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/orders`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newOrder),
@@ -56,7 +56,7 @@ const usePutParoduct = () => {
 
     return useMutation({
         mutationFn: async ({ order, id }: UpdatePayload) => {
-        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/orders?id=${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/orders?id=${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(order),
@@ -77,7 +77,7 @@ const useDeleteOrder = () => {
 
     return useMutation({
         mutationFn: async (id : string) => {
-        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/orders?id=${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ? `https://${process.env.NEXT_PUBLIC_BASE_URL}` : 'http://localhost:3000'}/api/orders?id=${id}`, {
             method: "DELETE"
         });
             if (!res.ok) throw new Error("Failed to delete Order");
