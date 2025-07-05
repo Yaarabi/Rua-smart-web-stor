@@ -13,7 +13,7 @@ export interface GoalForm {
     insights: string[];
 }
 
-const API_URL = "http://localhost:3000/api/goals";
+const API_URL = `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/goals`;
 
 export const useGetGoals = () => {
     return useQuery({

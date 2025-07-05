@@ -5,7 +5,7 @@ export const useGetusers = () => {
     return useQuery({
         queryKey: ["users"],
         queryFn: async () => {
-            const res = await fetch("http://localhost:3000/api/users");
+            const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/users`);
             if (!res.ok) throw new Error("Failed to fetch users");
             return res.json();
         }
@@ -23,7 +23,7 @@ export const useCreateCustomer = () => {
             phone?: string;
             address?: string;
         }) => {
-            const res = await fetch("http://localhost:3000/api/users", {
+            const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newCustomer),
@@ -47,7 +47,7 @@ export const useUpdateCustomer = () => {
             totalOrders?: number;
             address?: string;
         }) => {
-            const res = await fetch("http://localhost:3000/api/users", {
+            const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/users`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updateData),
@@ -66,7 +66,7 @@ export const useDeleteCustomer = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            const res = await fetch(`http://localhost:3000/api/users/${id}`, {
+            const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/users/${id}`, {
                 method: "DELETE",
             });
             if (!res.ok) throw new Error("Failed to delete customer");

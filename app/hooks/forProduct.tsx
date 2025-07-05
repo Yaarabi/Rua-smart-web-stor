@@ -21,7 +21,7 @@ const useCreateProduct = () => {
 
     return useMutation({
         mutationFn: async (newProduct: Form) => {
-        const res = await fetch("http://localhost:3000/api/products", {
+        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newProduct),
@@ -42,7 +42,7 @@ const usePutParoduct = () => {
 
     return useMutation({
         mutationFn: async ({ product, id }: UpdatePayload) => {
-        const res = await fetch(`http://localhost:3000/api/products?id=${id}`, {
+        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products?id=${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(product),
@@ -63,7 +63,7 @@ const useDeleteProduct = () => {
 
     return useMutation({
         mutationFn: async (id : string) => {
-        const res = await fetch(`http://localhost:3000/api/products?id=${id}`, {
+        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products?id=${id}`, {
             method: "DELETE"
         });
             if (!res.ok) throw new Error("Failed to delete product");
@@ -82,7 +82,7 @@ const useGetProduct = () => {
 
     return useMutation({
         mutationFn: async (id : string) => {
-        const res = await fetch(`http://localhost:3000/api/products?id=${id}`, {
+        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products?id=${id}`, {
             method: "GET"
         });
             if (!res.ok) throw new Error("Failed to delete product");
@@ -101,7 +101,7 @@ const useGetCategory = () => {
 
     return useMutation({
         mutationFn: async (category : string) => {
-        const res = await fetch(`http://localhost:3000/api/products?category=${category}`, {
+        const res = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/products?category=${category}`, {
             method: "GET"
         });
             if (!res.ok) throw new Error("Failed to delete product");
