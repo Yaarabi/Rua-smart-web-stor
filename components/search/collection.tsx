@@ -27,7 +27,7 @@ const SearchCollection = ({ input }: { input: string }) => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["products"],
         queryFn: async () => {
-            const response = await fetch("http://localhost:3000/api/products");
+            const response = await fetch("/api/products");
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },
