@@ -1,30 +1,44 @@
 
-'use client';
-import ExistingAdsList from '@/components/dashboard/marketing/adList';
-import AdPerformanceCard from '@/components/dashboard/marketing/adCard';
-import AIAdSuggestions from '@/components/dashboard/marketing/ai';
-import { FaArrowLeft } from 'react-icons/fa';
+"use client";
 
-export default function MarketingPage() {
-    const ads = [
-        { id: 'summer-sale', title: 'Summer Sale', scheduledAt: '2025-07-03T20:41:00Z' },
-        { id: 'flash-deal', title: 'Flash Deal Friday', scheduledAt: '2025-07-05T10:00:00Z' },
-    ];
+import { useRouter } from "next/navigation";
+import { FaArrowLeft, FaClipboardCheck, FaLightbulb } from "react-icons/fa";
 
-    const performance = [
-        { adId: 'summer-sale', views: 1200, clicks: 180, conversions: 30 },
-        { adId: 'flash-deal', views: 800, clicks: 90, conversions: 15 },
-    ];
+const Page = () => {
+    
 
+    const router = useRouter();
+
+    
 
     return (
-        <>
-        <FaArrowLeft/>
-        <ExistingAdsList ads={ads} />
-        <AdPerformanceCard performance={performance} />
-        {ads.map((ad) => (
-            <AIAdSuggestions key={ad.id} adId={ad.id} />
-        ))}
-        </>
-    );
-}
+        <section className="w-full min-h-screen flex items-center justify-center bg-gray-900 text-white px-4">
+        
+            <div className="max-w-xl w-full p-8 bg-gray-800 rounded-3xl shadow-lg text-center space-y-8">
+            <div
+                onClick={() => router.push("/dashboard/goals")}
+                className="flex items-center gap-2 cursor-pointer self-start hover:text-indigo-400 transition"
+            >
+                <FaArrowLeft className="text-lg" />
+                <span className="font-medium">Back</span>
+            </div>
+            <div
+            onClick={() => router.push("/dashboard/goals/marketing/myAds")}
+                className="cursor-pointer flex items-center justify-center space-x-4 rounded-lg bg-indigo-700/30 hover:bg-indigo-700 transition px-6 py-4"
+            >
+                <FaClipboardCheck className="text-3xl text-indigo-400" />
+                <span className="text-xl font-semibold">My Ads</span>
+            </div>
+
+            <div
+            onClick={() => router.push("/dashboard/goals/marketing/promo")}
+                className="cursor-pointer flex items-center justify-center space-x-4 rounded-lg bg-indigo-700/30 hover:bg-indigo-700 transition px-6 py-4"
+            >
+                <FaLightbulb className="text-3xl text-indigo-400" />
+                <span className="text-xl font-semibold">Set Home Ad</span>
+            </div>
+            </div>
+    </section>
+)}
+
+export default Page;

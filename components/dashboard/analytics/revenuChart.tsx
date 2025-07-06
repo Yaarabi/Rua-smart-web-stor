@@ -11,6 +11,7 @@ import {
     CartesianGrid,
     ResponsiveContainer,
 } from "recharts";
+import AIAnalysisButton from "./aiRespense";
 
 interface Filters {
     dateFrom: string;
@@ -25,6 +26,8 @@ interface RevenueDataPoint {
         day: number;
     };
     totalRevenue: number;
+    orderCount: number; 
+    avgBasketValue: number; 
 }
 
 export default function RevenueChart({ filters }: { filters: Filters }) {
@@ -92,6 +95,7 @@ export default function RevenueChart({ filters }: { filters: Filters }) {
             />
             </LineChart>
         </ResponsiveContainer>
+        <AIAnalysisButton data={data || []}/>
         </div>
     );
 }

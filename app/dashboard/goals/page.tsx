@@ -63,7 +63,7 @@ const Page = () => {
             <div className="max-w-4xl w-full p-8 bg-gray-800 rounded-3xl shadow-lg text-center space-y-10">
                 {features.map((tier, idx) => (
                     <div key={idx}>
-                        <h2 className="text-xl font-semibold text-indigo-400 mb-6">{tier.tier} Features</h2>
+                        {/* <h2 className="text-xl font-semibold text-indigo-400 mb-6">{tier.tier} Features</h2> */}
                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {tier.items.map((item, index) => (
                                 <li key={index}>

@@ -39,7 +39,7 @@ const ProductCart = ({ product }: { product:Product }) => {
 
 return (
     
-    <div className="flex items-center justify-between border-b border-gray-700 pb-4">
+    <div className="flex items-center justify-between border-b border-gray-900 pb-4">
             <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 relative">
                 <Image

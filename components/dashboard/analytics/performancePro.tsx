@@ -12,6 +12,7 @@ import {
     ResponsiveContainer,
     Legend,
 } from "recharts";
+import AIAnalysisButton from "./aiRespense";
 
 interface Filters {
     dateFrom: string;
@@ -82,6 +83,7 @@ export default function ProductPerformanceChart({ filters }: { filters: Filters 
             <Bar dataKey="totalRevenue" fill="#fbbf24" name="Revenue" />
             </BarChart>
         </ResponsiveContainer>
+        <AIAnalysisButton data={data || []}/>
         </div>
     );
 }

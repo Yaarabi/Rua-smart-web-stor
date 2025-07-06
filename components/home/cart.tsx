@@ -33,37 +33,38 @@ const Cart = ({ onClose }: CartProps) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-16 z-50 px-4 md:px-0">
-            <div className="w-full max-w-sm h-[90vh] bg-gray-700 text-white p-6 rounded-2xl shadow-lg flex flex-col overflow-hidden">
+        <div className="fixed md:top-15 md:right-6 inset-0 z-50 flex justify-end">
+            <div className="w-full md:w-[40vw] max-w-sm h-[90vh] bg-gray-800 text-white p-6 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold">Your Cart</h2>
+                    <h2 className="text-2xl font-bold">Your Cart</h2>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-white transition text-xl"
+                        className="text-gray-400 hover:text-red-500 transition text-2xl p-1 rounded-full hover:bg-gray-700"
+                        aria-label="Close Cart"
                     >
                         <FaTimes />
                     </button>
                 </div>
 
-                <div className="flex-1 space-y-4 overflow-y-auto pr-2">
+                <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
                     {products.length > 0 ? (
                         products.map((ele: Product, i: number) => (
                             <ProductCart key={i} product={ele} />
                         ))
                     ) : (
-                        <p className="text-gray-300 text-center mt-10">Your cart is empty.</p>
+                        <p className="text-gray-400 text-center mt-10">Your cart is empty.</p>
                     )}
                 </div>
 
                 <div className="mt-6">
                     <div className="flex justify-between items-center mb-4">
-                        <span className="text-lg font-semibold">Total:</span>
-                        <span className="text-xl font-bold">{total} MAD</span>
+                        <span className="text-lg font-medium">Total:</span>
+                        <span className="text-2xl font-extrabold text-green-400">{total} MAD</span>
                     </div>
                     <button
                         disabled={products.length === 0}
                         onClick={toPayement}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 transition text-white py-3 rounded-lg disabled:opacity-50"
+                        className="w-full bg-green-500 hover:bg-green-600 transition text-white py-3 rounded-xl text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Proceed to Checkout
                     </button>

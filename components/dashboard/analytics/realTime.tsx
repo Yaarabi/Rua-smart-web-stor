@@ -2,6 +2,7 @@
 
 import Posting from "@/components/btnPatient";
 import { useQuery } from "@tanstack/react-query";
+import AIAnalysisButton from "./aiRespense";
 
 interface Order {
     _id: string;
@@ -80,6 +81,7 @@ export default function RealTimeOrders() {
             ))}
             </tbody>
         </table>
+        <AIAnalysisButton data={data || []}/>
         </div>
     );
 }
