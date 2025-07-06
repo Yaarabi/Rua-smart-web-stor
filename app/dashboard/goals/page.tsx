@@ -44,7 +44,7 @@ const features = [
             {
                 icon: <FaCrown className="text-2xl text-indigo-400" />,
                 label: 'Exclusive Analytics',
-                path: '/dashboard/analytics',
+                path: '/dashboard/goals/analytics',
                 description: 'Access premium, real-time business analytics.',
             },
             {

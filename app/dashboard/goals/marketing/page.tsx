@@ -3,6 +3,7 @@
 import ExistingAdsList from '@/components/dashboard/marketing/adList';
 import AdPerformanceCard from '@/components/dashboard/marketing/adCard';
 import AIAdSuggestions from '@/components/dashboard/marketing/ai';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function MarketingPage() {
     const ads = [
@@ -15,8 +16,10 @@ export default function MarketingPage() {
         { adId: 'flash-deal', views: 800, clicks: 90, conversions: 15 },
     ];
 
+
     return (
         <>
+        <FaArrowLeft/>
         <ExistingAdsList ads={ads} />
         <AdPerformanceCard performance={performance} />
         {ads.map((ad) => (
