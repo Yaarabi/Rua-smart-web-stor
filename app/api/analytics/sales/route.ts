@@ -1,4 +1,4 @@
-// app/api/analytics/sales-trends/route.ts
+
 import { NextRequest } from 'next/server';
 import { connectDB } from '@/lib/db';
 import Order from '@/models/order';
