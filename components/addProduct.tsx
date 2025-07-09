@@ -22,7 +22,7 @@ interface Form {
     price: string;
     category: string;
     stock: string;
-    ratings: string;
+    ratings: number;
     images: string;
     createdAt: Date;
 }
@@ -81,7 +81,7 @@ const AddProductForm = ({ action, forPrompt, forLoading }: Props) => {
         price: "",
         category: "",
         stock: "",
-        ratings: "5",
+        ratings: 5,
         images: "",
         createdAt: new Date(),
     });
