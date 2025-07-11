@@ -26,7 +26,11 @@ const AddPromotion = ({ action, action2, promptTitle }: Props) => {
 
     useEffect(() => {
         const fetchResponse = async () => {
-            const title = await getRespense(`Generate a catchy title for a homepage ad for a web store: ${promptTitle}, from 3 to 5 words`);
+            const prompt = `Generate a short, attention-grabbing promo headline for a homepage banner on a modern web store. 
+                It should be catchy, friendly, and drive action, similar to seasonal offers, shipping perks, or discount messages. 
+                Base it on this topic: "${promptTitle}". Keep it concise — 3 to 5 words max.
+                Avoid using "Sign Up" if the message is for logged-in users, add just one emojy to describ it.`
+            const title = await getRespense(prompt);
             setTitleByAI(title);
             setIsRetrying(false);
         };

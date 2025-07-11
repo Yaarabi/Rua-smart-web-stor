@@ -9,6 +9,7 @@ import Chat from "./chat";
 import Link from "next/link";
 import ToLogin from "../login/toLogin";
 import Breadcrumb from "./path";
+import OfferBanner from "./promo";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -20,9 +21,7 @@ export default function Header() {
 
     return (
         <>
-            <div className="bg-gray-700 text-white text-center py-2 text-sm">
-                Exclusive Offers! Get Free Shipping on Orders Over $50 
-            </div>
+            <OfferBanner/>
 
             <header className="bg-gray-900 text-white p-4 flex justify-around gap-20 items-center sticky top-0 z-50 mx-auto">
                 <Link href={"/"} className="flex items-center" >
