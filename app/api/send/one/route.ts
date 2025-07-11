@@ -1,30 +1,63 @@
+import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
-
-import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY!);
-
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
     try {
-        const { customers, emailContent } = await request.json();
+        const { to, subject, greeting, body, callToAction } = await req.json();
 
-        if (!customers || !emailContent) {
-        return NextResponse.json({ error: 'Missing name or email' }, { status: 400 });
+        if (!Array.isArray(to) || to.length === 0) {
+            return NextResponse.json(
+                { success: false, error: "'to' must be a non-empty array" },
+                { status: 400 }
+            );
         }
 
-        const result = await resend.emails.send({
-            from: "Display Name <contact.ruastore@gmail.com>",
-            to: customers[0].email, 
-            subject: emailContent.subject,
-            html: `<h2>${emailContent.greeting.replace("{{name}}", customers[0].name)}</h2>
-            <p>${emailContent.body}</p>
-            <p><strong>${emailContent.callToAction}</strong></p>`,
-            })
-        
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
 
-    return NextResponse.json({ success: true, data: result });
+        const failed: string[] = [];
+        let sent = 0;
+
+        for (const recipient of to) {
+            const { email, name } = recipient;
+
+            try {
+                const personalizedGreeting = greeting.replace('{{name}}', name);
+                const htmlContent = `
+                    <p>${personalizedGreeting}</p>
+                    <p>${body}</p>
+                    <p><strong>${callToAction}</strong></p>
+                `;
+                const textContent = `${personalizedGreeting}\n\n${body}\n\n${callToAction}`;
+
+                await transporter.sendMail({
+                    from: `"Rua Store" <${process.env.EMAIL_USER}>`,
+                    to: email,
+                    subject,
+                    text: textContent,
+                    html: htmlContent,
+                });
+
+                sent++;
+            } catch {
+                failed.push(email);
+            }
+        }
+
+        return NextResponse.json({
+            success: true,
+            sent,
+            failed,
+        });
     } catch (error) {
-                return NextResponse.json({ message: "Server error", error }, { status: 500 });
-}
+        return NextResponse.json(
+            { success: false, error: 'Server error', details: error },
+            { status: 500 }
+        );
+    }
 }
