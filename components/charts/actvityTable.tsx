@@ -40,7 +40,7 @@ export default function RecentActivity() {
     useEffect(() => {
         async function fetchRecentActivity() {
         try {
-            const res = await fetch('/api/trafic');
+            const res = await fetch('/api/trafic/activity');
             if (!res.ok) throw new Error('Failed to fetch data');
 
             const data = await res.json();

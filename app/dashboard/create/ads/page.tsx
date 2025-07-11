@@ -6,6 +6,7 @@ import {  useState } from "react"
 import ForPrompt from "@/components/forPrompt"
 import AddPost from "@/components/dashboard/addPost"
 import { AdOption } from "@/components/dashboard/postOption"
+import { useRouter } from "next/navigation"
 
 
 const Page = () => {
@@ -50,13 +51,13 @@ Additional guidelines:
 
 The goal is to create a scroll-stopping ad that quickly captures attention and drives traffic to www.rua.com.`;
 
-    
+    const router = useRouter();
 
     return (
         <>
         
-        {IA && <ForPrompt for={"Ad"} about={about} action1={()=>{ setIA(false); setPost(true)} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
-        { post && <AddPost prompt={prompt} action2={redy}  action={() => {setPost(false); setAbout("");}} /> }
+        {IA && <ForPrompt for={"Ad"} about={about} action1={()=>{ router.back()} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
+        { post && <AddPost prompt={prompt} action2={redy}  action={() => {setPost(false); setAbout(""); setIA(true)}} /> }
         {option && <AdOption image="" action={()=> setOption(false)}/>  }
         </>
     )

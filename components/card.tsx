@@ -33,7 +33,7 @@ const Card = ({ product }: ProductCardProps) => {
     return (
         <motion.div
         whileHover={{ scale: 1.02, boxShadow: "0 8px 20px rgba(0,0,0,0.4)" }}
-        className="relative flex flex-col h-[360px] bg-gray-800 border border-gray-600 rounded-3xl p-5 transition-shadow duration-300 cursor-pointer"
+        className="relative flex flex-col h-[360px] bg-gray-800 border border-gray-600 p-5 transition-shadow duration-300 cursor-pointer"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         >
@@ -51,7 +51,7 @@ const Card = ({ product }: ProductCardProps) => {
             </motion.div>
         )}
 
-        <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center mb-5">
+        <div className="relative h-44 w-full overflow-hidden bg-gray-900 flex items-center justify-center mb-5">
             <Image
             src={`data:image/png;base64,${product.images}`}
             alt={product.name}

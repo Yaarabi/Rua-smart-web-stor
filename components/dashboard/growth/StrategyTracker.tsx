@@ -1,89 +1,139 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import getRespense from '@/app/hooks/getIArespense';
+import { Card, CardContent, Typography } from "@mui/material";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
+import Loader from "@/components/loader";
+import { useEffect, useState } from "react";
+import getRespense from "@/app/hooks/getIArespense";
 
 
-const BarChart = ({ metrics }: { metrics: string[] }) => (
-    <div className="bg-gray-800 p-4 rounded">[Bar Chart for {metrics.join(', ')}]</div>
-);
-const PieChart = ({ metrics }: { metrics: string[] }) => (
-    <div className="bg-gray-800 p-4 rounded">[Pie Chart for {metrics.join(', ')}]</div>
-);
-const LineChart = ({ metrics }: { metrics: string[] }) => (
-    <div className="bg-gray-800 p-4 rounded">[Line Chart for {metrics.join(', ')}]</div>
-);
 
-const StrategyAnalyzer = ({ strategy }: { strategy: string }) => {
-    const [loading, setLoading] = useState(true);
-    const [requiredMetrics, setRequiredMetrics] = useState<string[]>([]);
-    const [chartType, setChartType] = useState<'bar' | 'pie' | 'line' | null>(null);
+interface AIResponse {
+    aggregates: string[];
+    timeFrame: string;
+    data: Array<Record<string, number | string>>;
+    insights?: string;
+}
+
+export default function Chart({ strategy }: { strategy: string }) {
+
+    const [chartData, setChartData] = useState<AIResponse | null>(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const analyzeStrategy = async () => {
+    const prompt = `Goal: ${JSON.stringify(strategy)}
+
+    Extract:
+    1. Aggregates to track (e.g. revenue, customers).
+    2. Time frame (default to 6 months if missing).
+    3. Sample monthly data for each aggregate.
+    4. A brief insights text about the goal and its data.
+
+    Respond in a single JSON object like this:
+    {
+    "aggregates": ["aggregate1", "aggregate2"],
+    "timeFrame": "6 months",
+    "data": [
+        { "month": "Month 1", "aggregate1": 1000, "aggregate2": 200 },
+        { "month": "Month 2", "aggregate1": 1100, "aggregate2": 210 }
+    ],
+    "insights": "a brief description of the goal and its data."
+    }`;
+
+    function extractJson(text: string): string | null {
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        return jsonMatch ? jsonMatch[0] : null;
+    }
+
+    useEffect(() => {
+        async function fetchData() {
         setLoading(true);
         setError(null);
-
-        const prompt = `
-You are a data analyst.
-
-Given the following business growth strategy, tell me:
-1. The key data metrics required to track this strategy.
-2. The most appropriate chart type to visualize this data.
-
-Strategy:
-"${strategy}"
-
-Respond in the following JSON format:
-{
-    "requiredData": ["metric1", "metric2", "metric3"],
-    "recommendedChart": "bar" // or "pie", "line"
-}
-        `;
-
         try {
-            const aiResponse = await getRespense(prompt);
-            if (!aiResponse) {
-                setError('No response from AI.');
-                setLoading(false);
-                return;
-            }
+            const result = await getRespense(prompt);
+            if (!result) throw new Error("No data returned from AI");
 
-            const parsed = JSON.parse(aiResponse);
-
-            if (parsed?.requiredData && parsed?.recommendedChart) {
-                setRequiredMetrics(parsed.requiredData);
-                setChartType(parsed.recommendedChart);
+            let parsed: AIResponse;
+            if (typeof result === "string") {
+            const jsonStr = extractJson(result);
+            if (!jsonStr) throw new Error("No JSON found in response");
+            parsed = JSON.parse(jsonStr);
             } else {
-                setError('AI response format invalid.');
+            parsed = result;
             }
-        } catch (err) {
-            console.error(err);
-            setError('Error processing AI response.');
+
+            setChartData(parsed);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+            setError(err.message);
+            } else {
+            setError("Error fetching data");
+            }
         } finally {
             setLoading(false);
         }
-    };
+        }
+        fetchData();
+    }, [strategy, prompt]);
 
-    useEffect(() => {
-        if (strategy) analyzeStrategy();
-    }, [strategy]);
-
-    if (loading) return <div className="text-white p-4">Analyzing strategy...</div>;
-    if (error) return <div className="text-red-500 p-4">{error}</div>;
-    if (!chartType) return <div className="text-white p-4">No chart type recommended.</div>;
+    if (loading) return <Loader />;
+    if (error) return <Typography color="error">{error}</Typography>;
+    if (!chartData) return null;
 
     return (
-        <div className="space-y-6 p-4 text-white">
-            <h2 className="text-2xl font-bold mb-4">📊 Strategy Tracker</h2>
-            <p className="mb-2">Strategy: {strategy}</p>
-            <p className="mb-4">Tracking Metrics: {requiredMetrics.join(', ')}</p>
+        <Card sx={{ width: "100%", p: 2, borderRadius: 4, boxShadow: 3 }}>
+        <CardContent>
+            <Typography variant="h6" gutterBottom>
+            {strategy}
+            </Typography>
 
-            {chartType === 'bar' && <BarChart metrics={requiredMetrics} />}
-            {chartType === 'pie' && <PieChart metrics={requiredMetrics} />}
-            {chartType === 'line' && <LineChart metrics={requiredMetrics} />}
-        </div>
+            <Typography variant="body2" mb={2}>
+            Tracking period: {chartData.timeFrame}
+            </Typography>
+
+            <div style={{ width: "100%", height: 400 }}>
+            <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                data={chartData.data}
+                margin={{ top: 20, right: 50, left: 0, bottom: 5 }}
+                >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {chartData.aggregates.map((agg, index) => (
+                    <Line
+                    key={agg}
+                    type="monotone"
+                    dataKey={agg}
+                    stroke={
+                        ["#1976d2", "#2e7d32", "#ff9800", "#d32f2f"][index % 4]
+                    }
+                    strokeWidth={3}
+                    activeDot={{ r: 8 }}
+                    name={agg.charAt(0).toUpperCase() + agg.slice(1)}
+                    />
+                ))}
+                </LineChart>
+            </ResponsiveContainer>
+            </div>
+
+            {chartData.insights && (
+            <Typography variant="body2" mt={2} fontStyle="italic">
+                Insights: {chartData.insights}
+            </Typography>
+            )}
+        </CardContent>
+        </Card>
     );
-};
-
-export default StrategyAnalyzer;
+}

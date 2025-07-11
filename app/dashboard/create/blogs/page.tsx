@@ -4,6 +4,7 @@
 import {  useState } from "react"
 import ForPrompt from "@/components/forPrompt"
 import AddBlog from "@/components/dashboard/addBlog"
+import { useRouter } from "next/navigation"
 
 
 const Page = () => {
@@ -60,12 +61,13 @@ const Page = () => {
         The goal is to create a blog that feels helpful, trustworthy, and informative while naturally encouraging the reader to take action and visit rua-smart-web-store-git-main-youssef-aarabis-projects.vercel.app.
         `;
 
+        const router = useRouter();
 
     return (
         <>
         
-        {IA && <ForPrompt for={"Blog"} about={about} action1={()=>{ setIA(false); setPost(true)} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
-        { post && <AddBlog promptTitle={promptTitle} promptContent={promptContent}  action={() => {setPost(false); setAbout("");}} /> }
+        {IA && <ForPrompt for={"Blog"} about={about} action1={()=>{router.back()} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
+        { post && <AddBlog promptTitle={promptTitle} promptContent={promptContent}  action={() => {setPost(false); setAbout(""); setIA(true)}} /> }
         </>
     )
 }

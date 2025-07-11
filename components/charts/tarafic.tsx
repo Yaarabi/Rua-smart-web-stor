@@ -11,22 +11,21 @@ interface GA4Row {
     metricValues: { value: string }[];
 }
 
-export default function TrafficChannelChart() {
+export default function DeviceUsageChart() {
     const [data, setData] = useState<{ name: string; value: number }[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchAnalytics() {
+        async function fetchDeviceData() {
         try {
-            const res = await fetch('/api/trafic');
+            const res = await fetch('/api/trafic/device');
             const json = await res.json();
 
-            // Defensive check to prevent .map error
-            if (!Array.isArray(json.activityUsersData)) {
-            throw new Error('Invalid API response: activityUsersData is not an array');
+            if (!Array.isArray(json.userDeviceData)) {
+            throw new Error('Invalid API response: userDeviceData is not an array');
             }
 
-            const gaData = json.activityUsersData as GA4Row[];
+            const gaData = json.userDeviceData as GA4Row[];
 
             const chartData = gaData.map((item) => ({
             name: item.dimensionValues?.[0]?.value || 'Unknown',
@@ -35,24 +34,24 @@ export default function TrafficChannelChart() {
 
             setData(chartData);
         } catch (error) {
-            console.error('Failed to fetch analytics data:', error);
+            console.error('Failed to fetch device data:', error);
             setData([]);
         } finally {
             setLoading(false);
         }
         }
 
-        fetchAnalytics();
+        fetchDeviceData();
     }, []);
 
-    if (loading) return <Typography>Loading...</Typography>;
-    if (data.length === 0) return <Typography>No data available</Typography>;
+    if (loading) return <Typography>Loading device usage...</Typography>;
+    if (data.length === 0) return <Typography>No device data available</Typography>;
 
     return (
-        <Card sx={{ backgroundColor: '#111827', width: '300px', color: 'white', borderRadius: 2 }}>
+        <Card sx={{ backgroundColor: '#111827', width: 320, color: 'white', borderRadius: 2 }}>
         <CardContent>
             <Typography variant="subtitle2" gutterBottom>
-            Active Users by Country
+            User Devices (All Time)
             </Typography>
             <ResponsiveContainer width="100%" height={250}>
             <PieChart>

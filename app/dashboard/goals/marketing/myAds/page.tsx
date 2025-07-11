@@ -2,7 +2,7 @@
 'use client';
 import ExistingAdsList from '@/components/dashboard/marketing/adList';
 import AdPerformanceCard from '@/components/dashboard/marketing/adCard';
-import AIAdSuggestions from '@/components/dashboard/marketing/ai';
+import Link from 'next/link';
 import { FaArrowLeft } from 'react-icons/fa';
 
 export default function MarketingPage() {
@@ -19,12 +19,12 @@ export default function MarketingPage() {
 
     return (
         <>
-        <FaArrowLeft/>
+        <Link href="/dashboard/goals/marketing" className="flex items-center gap-2 text-gray-200 mb-4">
+            <FaArrowLeft />
+            Back
+        </Link>
         <ExistingAdsList ads={ads} />
         <AdPerformanceCard performance={performance} />
-        {ads.map((ad) => (
-            <AIAdSuggestions key={ad.id} adId={ad.id} />
-        ))}
         </>
     );
 }

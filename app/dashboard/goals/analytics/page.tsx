@@ -10,7 +10,7 @@ import RealTimeOrders from "@/components/dashboard/analytics/realTime";
 export default function AnalyticsPage() {
     const [filters, setFilters] = useState({
         dateFrom: "2025-01-01",
-        dateTo: "2025-07-05",
+        dateTo: new Date().toISOString().split("T")[0], 
         region: "",
         category: "",
     });

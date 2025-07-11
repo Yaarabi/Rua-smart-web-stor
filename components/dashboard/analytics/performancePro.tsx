@@ -46,9 +46,10 @@ export default function ProductPerformanceChart({ filters }: { filters: Filters 
 
     if (isLoading) {
         return (
-        <div className="text-gray-200 p-4 bg-gray-900 rounded-md text-center">
-            <Posting/> Loading product performance...
-        </div>
+                <div className="text-gray-200 p-6 bg-gray-900 rounded-md text-center flex justify-center items-center gap-3">
+                    <Posting />
+                    <span className="text-lg font-medium animate-pulse">Loading product performance...</span>
+                </div>
         );
     }
 

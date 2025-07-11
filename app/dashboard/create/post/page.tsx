@@ -5,6 +5,7 @@ import {  useState } from "react"
 import ForPrompt from "@/components/forPrompt"
 import AddPost from "@/components/dashboard/addPost"
 import Option from "@/components/dashboard/postOption"
+import { useRouter } from "next/navigation"
 
 
 const Page = () => {
@@ -51,12 +52,13 @@ const Page = () => {
     
                 The goal is to create an engaging post that attracts attention, builds interest, and drives traffic to www.rua.com.`;
     
+    const router = useRouter();
 
     return (
         <>
         
-        {IA && <ForPrompt for={"post"} about={about} action1={()=>{ setIA(false); setPost(true)} } action2={promptComming} action3={(x)=> setAbout(x)}/> }
-        { post && <AddPost prompt={prompt} action2={redy}  action={() => {setPost(false); setAbout("");}} /> }
+        {IA && <ForPrompt for={"post"} about={about} action1={()=>{router.back()}} action2={promptComming} action3={(x)=> setAbout(x)}/> }
+        { post && <AddPost prompt={prompt} action2={redy}  action={() => {setPost(false); setAbout(""); setIA(true)}} /> }
         {option && <Option image="" action={()=> setOption(false)}/>  }
         </>
     )

@@ -6,7 +6,7 @@ import GoalWithStrategies from "@/components/dashboard/growth/StrategyList";
 import { useState } from "react";
 
 const Page = () => {
-    const [strategy, setStrategy] = useState("");
+    const [strategy, setStrategy] = useState<string | null>(null);
 
     const set = (strategy: string) => {
         setStrategy(strategy);
@@ -16,7 +16,7 @@ const Page = () => {
         <section className="p-6 space-y-6">
             <GoalWithStrategies action={set} />
             {/* <AssignStrategyModal /> */}
-            <StrategyTracker strategy={strategy} />
+            { strategy && <StrategyTracker strategy={strategy} />}
         </section>
     );
 };

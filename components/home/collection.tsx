@@ -31,9 +31,11 @@ const Collection = async () => {
     return (
         <article id="featured" className="py-12 px-6 max-w-screen-xl mx-auto text-center">
             <h3 className="text-3xl font-bold mb-8">Our Collection</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-center">
                 {products.map((product) => (
-                    <Card key={product._id} product={product}/>
+                    <div key={product._id} className="w-full max-w-[250px]">
+                    <Card product={product} />
+                    </div>
                 ))}
             </div>
         </article>
