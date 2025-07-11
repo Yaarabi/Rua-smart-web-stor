@@ -1,12 +1,16 @@
 
 import { NextResponse } from 'next/server';
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
-import fs from 'fs';
-import path from 'path';
+
+const credentials =
+    process.env.GA_SERVICE_ACCOUNT && process.env.GA_SERVICE_ACCOUNT !== 'undefined'
+        ? JSON.parse(process.env.GA_SERVICE_ACCOUNT)
+        : undefined;
 
 const analyticsClient = new BetaAnalyticsDataClient({
-    credentials: JSON.parse(fs.readFileSync(path.resolve('./service-account.json'), 'utf8')),
+    credentials,
 });
+
 
 export async function GET() {
     try {
