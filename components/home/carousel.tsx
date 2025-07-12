@@ -6,7 +6,7 @@ import { Box, Typography, Grid } from "@mui/material";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Cardfeat from "../featCard";
+import Card from "../card";
 
 interface Product {
     _id: string;
@@ -114,7 +114,7 @@ export default function Carousel() {
                     className=" max-w-[320px]  flex justify-center p-2 box-border"
                     >
 
-                        <Cardfeat product={product} />
+                        <Card product={product} />
                     </div>
                     
                 ))}
