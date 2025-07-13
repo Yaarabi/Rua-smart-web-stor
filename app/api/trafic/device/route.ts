@@ -1,11 +1,12 @@
 
+import fs from 'fs';
 import { NextResponse } from 'next/server';
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 
 
 const credentials =
     process.env.GA_SERVICE_ACCOUNT && process.env.GA_SERVICE_ACCOUNT !== 'undefined'
-        ? JSON.parse(process.env.GA_SERVICE_ACCOUNT)
+        ? JSON.parse(fs.readFileSync(process.env.GA_SERVICE_ACCOUNT, "utf-8"))
         : undefined;
 
 const analyticsClient = new BetaAnalyticsDataClient({

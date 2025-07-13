@@ -38,6 +38,7 @@ export interface User {
         lowStockProducts: [] as Product[],
         deliveryRate: 0,
         ordersToday: 0,
+        totalCustomers: users.length,
         bestCustomer: null as BestCustomer | null,
         audienceDistribution: {} as Record<string, number>, 
     });
@@ -65,6 +66,7 @@ export interface User {
         return acc;
         }, {} as Record<string, BestCustomer>);
 
+        const totalCustomers = users.length;
         const bestCustomer = Object.values(customerMap).sort((a, b) => b.totalSpent - a.totalSpent)[0] || null;
 
         
@@ -98,6 +100,7 @@ export interface User {
         lowStockProducts,
         deliveryRate,
         ordersToday,
+        totalCustomers,
         bestCustomer,
         audienceDistribution: audienceStats,
         });

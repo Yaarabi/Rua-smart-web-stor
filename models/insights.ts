@@ -43,6 +43,10 @@
         type: Number,
         required: true,
     },
+    totalCustomers:{
+        type: Number,
+        required: true,
+    },
     bestCustomer: {
         userId: {
         type: mongoose.Schema.Types.ObjectId,

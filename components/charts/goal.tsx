@@ -1,141 +1,191 @@
 "use client";
 
-import { Card, CardContent, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import getRespense from "@/app/hooks/getIArespense";
+import { useQuery } from "@tanstack/react-query";
 import {
-    LineChart,
-    Line,
+    Typography,
+    Box,
+    CircularProgress,
+    Alert,
+    Card,
+    CardContent,
+    Divider,
+} from "@mui/material";
+import {
+    BarChart,
+    Bar,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
+    LabelList,
 } from "recharts";
-import Loader from "../loader";
-import { useEffect, useState } from "react";
-import getRespense from "@/app/hooks/getIArespense";
 
 interface Goal {
     title: string;
     aggregates: string[];
     timeFrame: string;
+    targetValues: Record<string, number>;
 }
 
 interface AIResponse {
-    aggregates: string[];
     timeFrame: string;
-    data: Array<Record<string, number | string>>;
+    data: {
+        currentAchievment: number;
+        goalTarget: number;
+    };
     insights?: string;
 }
 
 export default function Chart({ goal }: { goal: Goal }) {
-
-    const [chartData, setChartData] = useState<AIResponse | null>(null);
+    const [aiResponse, setAiResponse] = useState<AIResponse | null>(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const prompt = `Goal: ${JSON.stringify(goal)}
+    const { data, isLoading: queryLoading } = useQuery({
+        queryKey: ["data"],
+        queryFn: async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/insights`);
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+        },
+    });
 
-    Extract:
-    1. Aggregates to track (e.g. revenue, customers).
-    2. Time frame (default to 6 months if missing).
-    3. Sample monthly data for each aggregate.
-    4. A brief insights text about the goal and its data.
+    const prompt =`Goal: ${JSON.stringify(goal)}
+        Based on the data: ${JSON.stringify(data?.[0])}
+        Generate a valid JSON object structured like this:
+        *{
+        "timeFrame": "6 months",
+        "data": {
+            "currentAchievment": <computedNumber>,
+            "goalTarget": <computedNumber>
+        },
+        "insights": "<brief analysis>"
+        }*
+        Important: Return only **computed values** — no expressions or formula syntax.`;
 
-    Respond in a single JSON object like this:
-    {
-    "aggregates": ["aggregate1", "aggregate2"],
-    "timeFrame": "6 months",
-    "data": [
-        { "month": "Month 1", "aggregate1": 1000, "aggregate2": 200 },
-        { "month": "Month 2", "aggregate1": 1100, "aggregate2": 210 }
-    ],
-    "insights": "a brief description of the goal and its data."
-    }`;
-
-    function extractJson(text: string): string | null {
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        return jsonMatch ? jsonMatch[0] : null;
-    }
 
     useEffect(() => {
-        async function fetchData() {
+        const fetchAIResponse = async () => {
+        if (!data || loading) return;
         setLoading(true);
-        setError(null);
+        setErrorMessage("");
         try {
-            const result = await getRespense(prompt);
-            if (!result) throw new Error("No data returned from AI");
-
-            let parsed: AIResponse;
-            if (typeof result === "string") {
-            const jsonStr = extractJson(result);
-            if (!jsonStr) throw new Error("No JSON found in response");
-            parsed = JSON.parse(jsonStr);
-            } else {
-            parsed = result;
-            }
-
-            setChartData(parsed);
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-            setError(err.message);
-            } else {
-            setError("Error fetching data");
-            }
-        } finally {
-            setLoading(false);
+            const response = await getRespense(prompt);
+            if (response) {
+            const parsed = JSON.parse(response);
+            setAiResponse(parsed);
         }
+        } catch (error) {
+            console.error("AI parsing error:", error);
+            setErrorMessage("Something went wrong while processing the AI insights.");
         }
-        fetchData();
-    }, [goal, prompt]);
+        setLoading(false);
+        };
 
-    if (loading) return <Loader />;
-    if (error) return <Typography color="error">{error}</Typography>;
-    if (!chartData) return null;
+        fetchAIResponse();
+    }, [prompt]);
+
+    if (queryLoading || loading) {
+        return (
+        <Box display="flex" alignItems="center" justifyContent="center" height={300}>
+            <CircularProgress />
+        </Box>
+        );
+    }
+
+    if (errorMessage) {
+        return (
+        <Box display="flex" justifyContent="center" p={2}>
+            <Alert severity="error">{errorMessage}</Alert>
+        </Box>
+        );
+    }
+
+    if (!aiResponse) return null;
+
+    const { currentAchievment, goalTarget } = aiResponse.data;
+
+    const chartData = [
+        {
+        name: goal.title,
+        Target: goalTarget,
+        Achieved: Math.min(currentAchievment, goalTarget),
+        },
+    ];
 
     return (
-        <Card sx={{ width: "100%", p: 2, borderRadius: 4, boxShadow: 3 }}>
-        <CardContent>
-            <Typography variant="h6" gutterBottom>
-            {goal.title}
+        <Card
+        sx={{
+            width: "100%",
+            maxWidth: 720,
+            mx: "auto",
+            mt: 5,
+            boxShadow: 6,
+            borderRadius: 4,
+            bgcolor: "#374151",
+            color: "#f9fafb",   
+        }}
+        >
+        <CardContent sx={{ px: 4, py: 3 }}>
+            <Typography variant="h5" fontWeight={700} gutterBottom color="inherit">
+                {goal.title}
+            </Typography>
+            <Typography variant="subtitle2" color="#d1d5db" gutterBottom>
+            Target tracking over {aiResponse.timeFrame}
             </Typography>
 
-            <Typography variant="body2" mb={2}>
-            Tracking period: {chartData.timeFrame}
-            </Typography>
+            <Divider sx={{ my: 2, borderColor: "#4b5563" }} />
 
-            <div style={{ width: "100%", height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                data={chartData.data}
-                margin={{ top: 20, right: 50, left: 0, bottom: 5 }}
-                >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {chartData.aggregates.map((agg, index) => (
-                    <Line
-                    key={agg}
-                    type="monotone"
-                    dataKey={agg}
-                    stroke={
-                        ["#1976d2", "#2e7d32", "#ff9800", "#d32f2f"][index % 4]
-                    }
-                    strokeWidth={3}
-                    activeDot={{ r: 8 }}
-                    name={agg.charAt(0).toUpperCase() + agg.slice(1)}
-                    />
-                ))}
-                </LineChart>
+            <ResponsiveContainer width="100%" height={260}>
+            <BarChart
+                data={chartData}
+                layout="vertical"
+                margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" stroke="#4b5563" />
+                <XAxis type="number" stroke="#e5e7eb" />
+                <YAxis type="category" stroke="#e5e7eb" />
+                <Tooltip
+                contentStyle={{ backgroundColor: "#1f2937", borderColor: "#6b7280" }}
+                labelStyle={{ color: "#f9fafb" }}
+                itemStyle={{ color: "#f9fafb" }}
+                />
+                <Bar dataKey="Target" fill="#6b7280" barSize={30} />
+                <Bar dataKey="Achieved" fill="#3b82f6" barSize={30}>
+                <LabelList dataKey="Achieved" position="insideLeft" fill="#f9fafb" />
+                </Bar>
+            </BarChart>
             </ResponsiveContainer>
-            </div>
 
-            {chartData.insights && (
-            <Typography variant="body2" mt={2} fontStyle="italic">
-                Insights: {chartData.insights}
+            <Typography
+            variant="body1"
+            sx={{
+                mt: 3,
+                fontWeight: 500,
+                color: currentAchievment >= goalTarget ? "#22c55e" : "#facc15",
+            }}
+            >
+            Progress: {currentAchievment} / {goalTarget}
             </Typography>
+
+            {aiResponse.insights && (
+            <Box
+                mt={3}
+                p={2}
+                borderRadius={2}
+                bgcolor="#1f2937"
+                border="1px solid #4b5563"
+            >
+                <Typography variant="subtitle2" fontWeight={600} gutterBottom color="#f9fafb">
+                Insights
+                </Typography>
+                <Typography variant="body2" color="#d1d5db" fontStyle="italic">
+                {aiResponse.insights}
+                </Typography>
+            </Box>
             )}
         </CardContent>
         </Card>

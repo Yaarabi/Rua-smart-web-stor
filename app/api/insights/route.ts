@@ -17,6 +17,7 @@
         averageRating,
         deliveryRate,
         ordersToday,
+        totalCustomers,
         bestCustomer,        
         audienceDistribution,    
         } = body;
@@ -32,6 +33,7 @@
         averageRating,
         deliveryRate,
         ordersToday,
+        totalCustomers,
         bestCustomer,
         audienceDistribution
         });
