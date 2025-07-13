@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import getRespense from '@/app/hooks/getIArespense'
+import { useSession } from 'next-auth/react'
 
 interface CartProps {
     onClose: () => void
@@ -14,20 +15,24 @@ const Chat = ({ onClose }: CartProps) => {
     ])
     const [input, setInput] = useState('')
     const messagesEndRef = useRef<HTMLDivElement | null>(null)
+    const [usename, setUsername] = useState('')
+    const { data: session } = useSession();
+
+    if(session) {
+        setUsername(session.user?.name || '')
+    }
+    
 
     const prompt = `You are Rua Web Store's virtual assistant. Respond to the user's message in a warm, concise, and professional tone, just like a helpful customer support agent.
 
-        Only begin with: "Hello, this is Rua Web Store Admin." if the user is asking a question or continuing a previous support conversation. Do not repeat this greeting in every message.
-
-        Your response should:
-        - Be no more than 3–4 sentences
         - Be friendly, clear, and solution-focused
         - Provide helpful information about orders, shipping, returns, product recommendations, or store policies
         - Ask for more details if the message is unclear or lacks context
 
         About Rua Web Store:
         Rua Web Store is an AI-powered e-commerce platform specializing in premium electronics — including smartphones, tablets, laptops, smartwatches, earbuds, cameras, and more. We offer fast shipping, secure checkout, and 24/7 support to help customers and dropshippers scale their businesses with smart automation and seamless service.
-
+        -if this true ${usename}, it is the user name, use it in the response.
+        -if it false, asck the user for there email and name .
         Here is the user's message:
         ${input}`
 

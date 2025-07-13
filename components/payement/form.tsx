@@ -39,7 +39,7 @@ export default function PaymentForm() {
 
     const [cartItems, setCartItems] = useState<Product[]>([]);
 
-    const clearCart = useStore((state)=> state.clearProducts);
+    const clearCart = useStore((state) => state.clearProducts);
 
     useEffect(() => {
         if (session) {
@@ -79,20 +79,13 @@ export default function PaymentForm() {
             setLoading(true);
             setMessage("");
 
-            let currentUserId = customer.userId;
+            const currentUserId = customer.userId;
 
-            if (!session) {
-                const registerResponse = await axios.post("/api/action", {
-                    username: customer.name,
-                    email: customer.email,
-                    password: "123456789",
-                });
-                currentUserId = registerResponse.data.user._id;
-            }
 
             const { data } = await axios.post("/api/payment", {
                 amount: totalPrice,
             });
+
             const clientSecret = data.clientSecret;
 
             const result = await stripe.confirmCardPayment(clientSecret, {
@@ -124,18 +117,24 @@ export default function PaymentForm() {
                 });
 
                 if (orderResponse.data.message === "Order created successfully") {
-
                     clearCart();
-
                     localStorage.setItem("customer", customer.name);
 
+                    if(!session) {
+
+                    await axios.post("/api/action", {
+                    username: customer.name,
+                    email: customer.email,
+                    password: "123456789",
+                    })
+                    }else{
                     await axios.put(`/api/users?id=${currentUserId}`, {
                         totalSpent: totalPrice,
                         totalOrders: 1,
                         lastOrder: Date.now(),
                         address: `${customer.city}, ${customer.country}`,
                     });
-
+                    }
                     await Promise.all(
                         cartItems.map((item) =>
                             axios.put(`/api/products?id=${item._id}`, {
@@ -143,7 +142,6 @@ export default function PaymentForm() {
                             })
                         )
                     );
-
 
                     router.push("/payment/success");
                 } else {
@@ -224,15 +222,9 @@ export default function PaymentForm() {
 
             <div className="mt-6 bg-gray-100 p-4 rounded">
                 <h3 className="font-semibold mb-2">Stripe Test Card:</h3>
-                <p>
-                    <strong>Card Number:</strong> 4242 4242 4242 4242
-                </p>
-                <p>
-                    <strong>Expiry:</strong> Any future date
-                </p>
-                <p>
-                    <strong>CVC:</strong> Any 3 digits
-                </p>
+                <p><strong>Card Number:</strong> 4242 4242 4242 4242</p>
+                <p><strong>Expiry:</strong> Any future date</p>
+                <p><strong>CVC:</strong> Any 3 digits</p>
             </div>
         </div>
     );

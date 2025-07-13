@@ -26,7 +26,7 @@ import {
 interface Goal {
     title: string;
     aggregates: string[];
-    timeFrame: string;
+    createdAt: Date;
     targetValues: Record<string, number>;
 }
 

@@ -7,7 +7,7 @@ import Benefits from "@/components/home/benifits";
 import Newsletter from "@/components/home/trust";
 import Footer from "@/components/home/footer";
 import Collection from "@/components/home/collection";
-import Carousel from "@/components/home/carousel";
+// import Carousel from "@/components/home/carousel";
 export const dynamic = "force-dynamic";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
       <main className="bg-gray-100 text-gray-900 min-h-screen">
         <Hero />
         <Categories />
-        <Carousel/>
+        {/* <Carousel/> */}
         <Collection />
         <About />
         <Benefits />

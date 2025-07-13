@@ -5,12 +5,13 @@ export interface Goal {
     title: string;
     insights: string[];
     createdAt: string;
-    updatedAt: string;
+    updatedAt: Date;
 }
 
 export interface GoalForm {
     title: string;
     insights: string[];
+    createdAt?: Date; 
 }
 
 const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/goals`;

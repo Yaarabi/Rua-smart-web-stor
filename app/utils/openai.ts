@@ -16,7 +16,7 @@ try {
     const response = await openai.chat.completions.create({
         model: "mistralai/mistral-7b-instruct",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 3001,
+        max_tokens: 1000,
     });
 
     console.log("OpenRouter raw response:", JSON.stringify(response, null, 2));

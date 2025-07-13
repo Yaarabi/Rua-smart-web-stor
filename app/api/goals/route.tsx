@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         );
         }
 
-        const newGoal = await Goal.create({ title, insights });
+        const newGoal = await Goal.create({ title, insights, createdAt: Date.now() });
         return NextResponse.json(newGoal, { status: 201 });
     } catch (error) {
         console.error(error);
