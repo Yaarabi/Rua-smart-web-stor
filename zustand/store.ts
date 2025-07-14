@@ -70,15 +70,21 @@ const useStore = create<ProductStoreState>((set) => ({
 
 
 
-export const useQuantity = () => {
-    const products = useStore((state) => state.products);
-    return products.reduce((acc, ele) => acc + ele.quantity, 0);
-};
+export const useQuantity = () => 
+    useStore((state) =>
+        state.products.reduce((acc, ele) => acc + ele.quantity, 0)
+    );
+    // const products = useStore((state) => state.products);
+    // return products.reduce((acc, ele) => acc + ele.quantity, 0);
 
-export const useTotal = () => {
-    const products = useStore((state) => state.products);
-    return products.reduce((acc, ele) => acc + ele.price * ele.quantity, 0);
-};
+
+export const useTotal = () => 
+    useStore((state) =>
+        state.products.reduce((acc, ele) => acc + ele.price * ele.quantity, 0)
+    );
+    // const products = useStore((state) => state.products);
+    // return products.reduce((acc, ele) => acc + ele.price * ele.quantity, 0);
+
 
 
 export const usePost = create<PostStoreState>((set) => ({

@@ -30,7 +30,7 @@ export default function Chart({ strategy }: { strategy: string }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const prompt = `Goal: ${JSON.stringify(strategy)}
+    const prompt = `Strategy: ${JSON.stringify(strategy)}
 
     Extract:
     1. Aggregates to track (e.g. revenue, customers).

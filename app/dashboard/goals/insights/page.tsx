@@ -11,7 +11,7 @@ const Page = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["insights"],
         queryFn: async () => {
-            const response = await fetch("http://localhost:3000/api/insights");
+            const response = await fetch("/api/insights");
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
         },
@@ -30,7 +30,7 @@ const Page = () => {
             if (selected && data) {
                 setLoadingAI(true);
                 try {
-                    const prompt = `Generate insights, recommendation and advice about ${selected} based on the provided data ${JSON.stringify(data)}. In 4-5 sentences, provide actionable insights that can help improve our business strategy.`;
+                    const prompt = `Generate insights, recommendation and advice about ${selected} based on the provided data ${JSON.stringify(data[0])}. In 4-5 sentences, provide actionable insights that can help improve our business strategy.`;
                     const result = await getRespense(prompt);
                     if (result) {
                         setResponse(result);

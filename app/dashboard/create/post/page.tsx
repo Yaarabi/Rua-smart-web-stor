@@ -59,7 +59,7 @@ const Page = () => {
         
         {IA && <ForPrompt for={"post"} about={about} action1={()=>{router.back()}} action2={promptComming} action3={(x)=> setAbout(x)}/> }
         { post && <AddPost prompt={prompt} action2={redy}  action={() => {setPost(false); setAbout(""); setIA(true)}} /> }
-        {option && <Option image="" action={()=> setOption(false)}/>  }
+        {option && <Option image="" action={()=>{ setOption(false); setIA(true)}}/>  }
         </>
     )
 }
