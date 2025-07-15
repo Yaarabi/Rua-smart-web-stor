@@ -1,31 +1,31 @@
 import { NextResponse } from 'next/server';
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
+// import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import Order from '@/models/order';
 import Product from '@/models/products';
 import Client from '@/models/users';
 import { connectDB } from '@/lib/db';
 
-const credentials = process.env.GA_SERVICE_ACCOUNT
-    ? JSON.parse(Buffer.from(process.env.GA_SERVICE_ACCOUNT, 'base64').toString('utf-8'))
-    : undefined;
+// const credentials = process.env.GA_SERVICE_ACCOUNT
+//     ? JSON.parse(Buffer.from(process.env.GA_SERVICE_ACCOUNT, 'base64').toString('utf-8'))
+//     : undefined;
 
-    const analyticsClient = new BetaAnalyticsDataClient({ credentials });
+//     const analyticsClient = new BetaAnalyticsDataClient({ credentials });
 
 export async function GET() {
     try {
-        if (!credentials) {
-        throw new Error('GA_SERVICE_ACCOUNT credentials not found or invalid.');
-        }
+        // if (!credentials) {
+        // throw new Error('GA_SERVICE_ACCOUNT credentials not found or invalid.');
+        // }
 
         await connectDB();
 
         // Google Analytics
-        const [activityResponse] = await analyticsClient.runReport({
-        property: process.env.PROPRTIES_GA4,
-        dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
-        dimensions: [{ name: 'country' }],
-        metrics: [{ name: 'activeUsers' }, { name: 'userEngagementDuration' }],
-        });
+        // const [activityResponse] = await analyticsClient.runReport({
+        // property: process.env.PROPRTIES_GA4,
+        // dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
+        // dimensions: [{ name: 'country' }],
+        // metrics: [{ name: 'activeUsers' }, { name: 'userEngagementDuration' }],
+        // });
 
         // Mongo Aggregates
         const orders = await Order.find();
@@ -92,7 +92,7 @@ export async function GET() {
         ordersToday,
         totalCustomers,
         bestCustomer,
-        audienceDistribution: activityResponse.rows || [],
+        // audienceDistribution: activityResponse.rows || [],
         });
     }  catch (error) {
             console.error('Data Error:', error);
