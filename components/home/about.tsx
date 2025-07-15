@@ -5,7 +5,8 @@ export default function About() {
             <h3 className="text-4xl font-bold text-center text-gray-900 mb-6">About Rua Web Store</h3>
             
             <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-            <span className="font-semibold text-gray-900">Rua Web Store</span> is an AI-powered e-commerce solution designed to help businesses and dropshippers streamline their online stores with cutting-edge automation, AI-driven marketing, and powerful customer engagement tools. We are dedicated to boosting your online sales and optimizing your digital presence with minimal effort.
+            <span className="font-semibold text-gray-900">Rua Web Store</span> 
+            : offers a curated selection of high-quality electronics — from smartphones and laptops to accessories and smart devices. We’re committed to delivering the latest tech at competitive prices, with fast shipping and reliable customer support. Shop confidently and stay connected with technology that fits your lifestyle.
             </p>
 
             <div className="border-l-4 border-gray-700 pl-4 mb-6">

@@ -82,6 +82,7 @@ export default function Chart({ goal }: { goal: Goal }) {
 
             const parsedResponse = JSON.parse(rawResponse);
             const aiText = parsedResponse.choices?.[0]?.message?.content;
+            
 
             if (!aiText) {
                 throw new Error("AI response missing content");
