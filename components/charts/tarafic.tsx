@@ -18,7 +18,7 @@ export default function DeviceUsageChart() {
     useEffect(() => {
         async function fetchDeviceData() {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/trafic/device`);
+            const res = await fetch(`/api/trafic/device`);
             const json = await res.json();
 
             if (!Array.isArray(json.userDeviceData)) {
