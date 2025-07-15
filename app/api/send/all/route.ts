@@ -22,10 +22,13 @@ export async function POST(req: Request) {
 
         const failed: string[] = [];
         let sent = 0;
+
         for (const recipient of to) {
-            const { email, name } = recipient;
+            const name = recipient?.name;
+            const email = recipient?.email;
 
             try {
+                const personalizedSubject = subject.replace('{{name}}', name);
                 const personalizedGreeting = greeting.replace('{{name}}', name);
 
                 const htmlContent = `
@@ -39,13 +42,14 @@ export async function POST(req: Request) {
                 await transporter.sendMail({
                     from: `"Rua Store" <${process.env.EMAIL_USER}>`,
                     to: email,
-                    subject,
+                    subject: personalizedSubject,
                     text: textContent,
                     html: htmlContent,
                 });
 
                 sent++;
-            } catch {
+            } catch (err) {
+                console.error(`Failed to send email to ${email}`, err);
                 failed.push(email);
             }
         }

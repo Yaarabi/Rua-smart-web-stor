@@ -18,9 +18,11 @@ const Chat = ({ onClose }: CartProps) => {
     const [usename, setUsername] = useState('')
     const { data: session } = useSession();
 
-    if(session) {
-        setUsername(session.user?.name || '')
-    }
+    useEffect(()=>{
+        if(session) {
+            setUsername(session.user?.name || '')
+        }
+    },[session])
     
 
     const prompt = `You are Rua Web Store's virtual assistant. Respond to the user's message in a warm, concise, and professional tone, just like a helpful customer support agent.

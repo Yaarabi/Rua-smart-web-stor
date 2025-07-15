@@ -32,7 +32,7 @@ const GenerateEmail = ({ type, customers, action }: RecomendProps) => {
         setError(null);
 
         const prompt = `
-    You are an expert email marketing strategist. Write for an email marketing type of ${type}.
+    You are an expert email marketing strategist for Rua Store. Write for an email marketing type of ${type}.
     Provide a detailed email template that includes:
     - A subject line
     - A greeting with the placeholder {{name}}
@@ -52,8 +52,15 @@ const GenerateEmail = ({ type, customers, action }: RecomendProps) => {
             const result = await getRespense(prompt);
 
             if (!result) throw new Error("Empty AI response");
+            else if (result) {
 
-            const parsed = JSON.parse(result);
+        const match = result.match(/```json\s*([\s\S]*?)```/);
+
+        if (!match || !match[1]) throw new Error("Could not find JSON block from AI response");
+
+        const cleaned = match[1].trim();
+        const parsed = JSON.parse(cleaned);
+
 
             if (
             !parsed.subject ||
@@ -65,6 +72,7 @@ const GenerateEmail = ({ type, customers, action }: RecomendProps) => {
             }
 
             setResponse(parsed);
+        }
         } catch {
             console.error("AI generation error:");
             setError("Failed to generate email template. Please try again."
@@ -126,15 +134,12 @@ const GenerateEmail = ({ type, customers, action }: RecomendProps) => {
 
     if (loadingAI) {
         return (
-        <div className="flex flex-col items-center justify-center min-h-[50vh] text-white space-y-4">
             <Loader />
-            <p className="text-lg text-gray-400">Generating email template with AI...</p>
-        </div>
         );
     }
 
     return (
-        <div className="max-w-4xl mx-auto mt-24 px-4 py-8 space-y-6">
+        <div className="max-w-4xl mx-auto mt-48 px-4 py-8 space-y-6">
         <div className="bg-gray-900 p-6 rounded-xl shadow space-y-6">
             <FaArrowLeft onClick={action} />
             <h3 className="text-2xl font-bold text-white mb-4 text-center">

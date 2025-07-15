@@ -14,7 +14,7 @@ const generatePrompts = async (prompt: string) => {
 
 try {
     const response = await openai.chat.completions.create({
-        model: "mistralai/mistral-7b-instruct",
+        model: "mistralai/mistral-small-3.2-24b-instruct:free",
         // tngtech/deepseek-r1t2-chimera:free
         // "mistralai/mistral-7b-instruct"
         // mistralai/mistral-small-3.2-24b-instruct:free

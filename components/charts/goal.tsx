@@ -47,46 +47,60 @@ export default function Chart({ goal }: { goal: Goal }) {
     const { data, isLoading: queryLoading } = useQuery({
         queryKey: ["data"],
         queryFn: async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/insights`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/data`);
         if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
         },
     });
 
-    const prompt =`Goal: ${JSON.stringify(goal)}
-        Based on the data: ${JSON.stringify(data?.[0])}
-        Generate a valid JSON object structured like this:
-        *{
-        "timeFrame": "6 months",
-        "data": {
-            "currentAchievment": <computedNumber>,
-            "goalTarget": <computedNumber>
-        },
-        "insights": "<brief analysis>"
-        }*
-        Important: Return only **computed values** — no expressions or formula syntax.`;
-
-
     useEffect(() => {
+        const prompt = `Goal: ${JSON.stringify(goal)}
+    Based on the data: ${JSON.stringify(data)}
+    *Generate a valid JSON object structured like this:
+    {
+    "timeFrame": "goal date start - goal date end",
+    "data": {
+        "currentAchievment": <computedNumber>,
+        "goalTarget": <computedNumber>
+    },
+    "insights": "<brief analysis>"
+    }*
+    Important: Return only JSON without markdown or code block formatting.
+    Only include computed values — no expressions or formulas.`;
+
         const fetchAIResponse = async () => {
         if (!data || loading) return;
         setLoading(true);
         setErrorMessage("");
+
         try {
-            const response = await getRespense(prompt);
-            if (response) {
-            const parsed = JSON.parse(response);
-            setAiResponse(parsed);
-        }
+            const rawResponse = await getRespense(prompt);
+
+            if (!rawResponse) {
+                throw new Error("AI response is empty or null");
+            }
+
+            const parsedResponse = JSON.parse(rawResponse);
+            const aiText = parsedResponse.choices?.[0]?.message?.content;
+
+            if (!aiText) {
+                throw new Error("AI response missing content");
+            }
+
+            const cleaned = aiText.replace(/```json|```/g, "").trim();
+            const parsedAI = JSON.parse(cleaned);
+
+            setAiResponse(parsedAI);
         } catch (error) {
             console.error("AI parsing error:", error);
             setErrorMessage("Something went wrong while processing the AI insights.");
         }
+
         setLoading(false);
         };
 
         fetchAIResponse();
-    }, [prompt]);
+    }, [data, goal]);
 
     if (queryLoading || loading) {
         return (
@@ -126,12 +140,12 @@ export default function Chart({ goal }: { goal: Goal }) {
             boxShadow: 6,
             borderRadius: 4,
             bgcolor: "#374151",
-            color: "#f9fafb",   
+            color: "#f9fafb",
         }}
         >
         <CardContent sx={{ px: 4, py: 3 }}>
             <Typography variant="h5" fontWeight={700} gutterBottom color="inherit">
-                {goal.title}
+            {goal.title}
             </Typography>
             <Typography variant="subtitle2" color="#d1d5db" gutterBottom>
             Target tracking over {aiResponse.timeFrame}
@@ -172,13 +186,7 @@ export default function Chart({ goal }: { goal: Goal }) {
             </Typography>
 
             {aiResponse.insights && (
-            <Box
-                mt={3}
-                p={2}
-                borderRadius={2}
-                bgcolor="#1f2937"
-                border="1px solid #4b5563"
-            >
+            <Box mt={3} p={2} borderRadius={2} bgcolor="#1f2937" border="1px solid #4b5563">
                 <Typography variant="subtitle2" fontWeight={600} gutterBottom color="#f9fafb">
                 Insights
                 </Typography>

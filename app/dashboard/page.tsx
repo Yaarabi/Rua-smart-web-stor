@@ -5,8 +5,8 @@ import RecentActivity from "@/components/charts/actvityTable";
 import TrafficChannelChart from "@/components/charts/tarafic";
 import CategoryStockChart from "@/components/charts/productsChart";
 import { Order } from "../hooks/orderHooks";
-import StorData from "@/components/dashboard/storData";
-import { User } from "../hooks/insights";
+// import StorData from "@/components/dashboard/storData";
+// import { User } from "../hooks/insights";
 
 export const dynamic = "force-dynamic";
 
@@ -31,8 +31,8 @@ const Home = async () => {
     const orderResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/orders`);
     const { orders }: { orders: Order[] } = await orderResponse.json();
 
-    const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`);
-    const { clients }: { clients: User[] } = await usersResponse.json();
+    // const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`);
+    // const { clients }: { clients: User[] } = await usersResponse.json();
 
     return (
         <>
@@ -67,9 +67,9 @@ const Home = async () => {
                 <RecentActivity />
             </section>
 
-            {orders && products && clients && (
+            {/* {orders && products && clients && (
                 <StorData users={clients} products={products} orders={orders} />
-            )}
+            )} */}
         </>
     );
 };

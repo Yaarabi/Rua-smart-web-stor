@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FaPenFancy, FaRegNewspaper, FaBullhorn, FaCrown, FaRocket, FaGem, FaArrowRight } from 'react-icons/fa';
+import { FaPenFancy, FaRegNewspaper, FaBullhorn, FaCrown,FaArrowRight } from 'react-icons/fa';
 
 const features = [
     {
@@ -31,30 +31,30 @@ const features = [
                 description: 'Plan and manage your promotional campaigns.',
             },
             {
-                icon: <FaRocket className="text-2xl text-indigo-400" />,
-                label: 'Growth Strategies',
-                path: '/dashboard/goals/growth',
-                description: 'Build custom growth strategies for your business.',
-            },
-        ],
-    },
-    {
-        tier: 'Premium',
-        items: [
-            {
                 icon: <FaCrown className="text-2xl text-indigo-400" />,
                 label: 'Exclusive Analytics',
                 path: '/dashboard/goals/analytics',
                 description: 'Access premium, real-time business analytics.',
             },
-            {
-                icon: <FaGem className="text-2xl text-indigo-400" />,
-                label: 'Priority Support',
-                path: '/dashboard/support',
-                description: 'Get dedicated, priority customer support.',
-            },
+            
         ],
     },
+    // {
+    //     tier: 'Premium',
+        // {
+            //     icon: <FaRocket className="text-2xl text-indigo-400" />,
+            //     label: 'Growth Strategies',
+            //     path: '/dashboard/goals/growth',
+            //     description: 'Build custom growth strategies for your business.',
+            // },
+            // {
+            //     icon: <FaGem className="text-2xl text-indigo-400" />,
+            //     label: 'Priority Support',
+            //     path: '/dashboard/support',
+            //     description: 'Get dedicated, priority customer support.',
+            // },
+    //     ],
+    // },
 ];
 
 const Page = () => {
