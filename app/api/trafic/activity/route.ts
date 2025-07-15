@@ -12,13 +12,14 @@ const analyticsClient = new BetaAnalyticsDataClient({
 });
 
 export async function GET() {
+    // 
     try {
         if (!credentials) {
         throw new Error('GA_SERVICE_ACCOUNT credentials not found or invalid.');
         }
 
         const [activityResponse] = await analyticsClient.runReport({
-        property: process.env.PROPRTIES_GA4,
+        property: process.env.PROPERTIES_GA4,
         dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
         dimensions: [{ name: 'country' }, { name: 'date' }],
         metrics: [

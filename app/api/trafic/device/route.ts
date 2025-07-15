@@ -18,7 +18,7 @@ const analyticsClient = new BetaAnalyticsDataClient({
 export async function GET() {
     try {
         const [deviceResponse] = await analyticsClient.runReport({
-        property: process.env.PROPRTIES_GA4,
+        property: process.env.PROPERTIES_GA4,
         dateRanges: [{ startDate: '2020-01-01', endDate: 'today' }],
         dimensions: [{ name: 'deviceCategory' }],
         metrics: [{ name: 'activeUsers' }],
