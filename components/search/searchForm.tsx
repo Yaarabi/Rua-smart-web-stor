@@ -5,10 +5,23 @@ import SearchCollection from "./collection";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
 
+interface Form {
+    _id: string;
+    name: string;
+    title: string;
+    description: string;
+    price: string;
+    category: string;
+    stock: string;
+    ratings: number;
+    images: string;
+    createdAt: Date;
+}
+
 interface ProductSuggestion {
     _id: string;
     title: string;
-    }
+}
 
 const Search = () => {
     const [input, setInput] = useState("");
@@ -22,10 +35,15 @@ const Search = () => {
     useEffect(() => {
         async function fetchProductTitles() {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?fields=title,_id`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`);
             if (!res.ok) throw new Error("Failed to fetch product titles");
+
             const data = await res.json();
-            setAllProducts(data.products || []);
+            const products = (data.products || []).map((p: Form) => ({
+            _id: p._id,
+            title: p.title,
+            }));
+            setAllProducts(products);
         } catch (error) {
             console.error(error);
         }
@@ -41,9 +59,11 @@ const Search = () => {
         return;
         }
 
-        const filtered = allProducts.filter((p) =>
-        p.title.toLowerCase().includes(input.trim().toLowerCase())
-        ).slice(0, 6); 
+        const filtered = allProducts
+        .filter((p) =>
+            p.title.toLowerCase().includes(input.trim().toLowerCase())
+        )
+        .slice(0, 6);
 
         setSuggestions(filtered);
         setShowSuggestions(filtered.length > 0);
@@ -120,7 +140,11 @@ const Search = () => {
             </button>
             </form>
 
-            <Link href="/" className="text-gray-400 hover:text-white transition" aria-label="Close search">
+            <Link
+            href="/"
+            className="text-gray-400 hover:text-white transition"
+            aria-label="Close search"
+            >
             <FaTimes size={24} />
             </Link>
         </header>

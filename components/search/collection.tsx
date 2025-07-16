@@ -57,14 +57,15 @@ const SearchCollection = ({ input }: { input: string }) => {
                 User search: "${input}"
                 Product titles array: ${JSON.stringify(allTitles)}
 
-                Respond with:
-                A JSON array of matched product titles. If no titles match, return an empty array: []`;
+                *Respond with:
+                A JSON array of matched product titles. If no titles match, return an empty array: [], without any comments*`;
 
             try {
                 const result = await getRespense(prompt);
 
                 if (result && typeof result === "string") {
-                    const matchedTitles: string[] = JSON.parse(result);
+                    const cleaned = result.replace(/```json|```/g, "").trim();
+const               matchedTitles: string[] = JSON.parse(cleaned);
 
                     const matchedProducts = allProducts.filter((product) =>
                         matchedTitles.includes(product.title)
