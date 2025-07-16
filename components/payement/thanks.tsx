@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../loader";
@@ -8,26 +8,30 @@ import Card from "../card";
 import Link from "next/link";
 
 interface Purchase {
-    name: string;
+  name: string;
 }
 
 interface Props {
-    purchase: Purchase[];
-    customer: string;
+  purchase: Purchase[];
+  customer: string;
 }
 
 interface Product {
-    _id: string;
-    name: string;
-    title: string;
-    description: string;
-    price: number;
-    category: string;
-    stock: string;
-    images: string;
-    rating: number;
-    createdAt: Date;
-    quantity: number;
+  _id: string;
+  name: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  stock: string;
+  images: string;
+  rating: number;
+  createdAt: Date;
+  quantity: number;
+}
+
+function cleanAIResponse(raw: string) {
+    return raw.replace(/```json|```/g, "").trim();
 }
 
 const Thanks = ({ purchase, customer }: Props) => {
@@ -44,65 +48,59 @@ const Thanks = ({ purchase, customer }: Props) => {
         },
     });
 
-    
     useEffect(() => {
         const fetchResponse = async () => {
-            if (!data?.products) return;
-            
-            setLoadingAI(true);
-            
-            const allProducts: Product[] = data.products;
-            const allTitles = allProducts.map((product) => product.title);
-            
-            const thankPrompt = `You are a friendly, professional seller Rua web Store. A customer named ${customer} just completed a purchase. Please write a warm and grateful thank-you message for their purchase. Also invite them to explore the product catalog below which features items related to their recent purchase. You can recommend bsed on ${allTitles.join(", ")}.
-            there purchase includes: ${purchase.map(p => p.name).join(", ")}.
-            Keep it concise and engaging. that in just 10 to 30 words.
-            and if it's good include link to categpries "rua-smart-web-store-git-main-youssef-aarabis-projects.vercel.app/categories"`;
+        if (!data?.products) return;
 
-            const productsPrompt = `
-                The customer purchased these items: ${purchase.map(p => p.name).join(", ")}.
-                Given the following product catalog titles:
-                ${allTitles.join(", ")}
+        setLoadingAI(true);
 
-                Please recommend 3 to 6 product titles **only from this catalog** that are most related or complementary to the customer's purchase. 
-                Do not suggest any product titles outside this list, dont recomment the same products that he purshased.
+        const allProducts: Product[] = data.products;
+        const allTitles = allProducts.map((product) => product.title);
 
-                ⚡️ Return only a valid JSON array of the recommended product titles.
-                ⚡️ Do NOT include any explanations, commentary, or formatting.
-                ⚡️ Example output: ["Product Title 1", "Product Title 2", "Product Title 3"]
+        const thankPrompt = `You are a friendly, professional seller Rua web Store. A customer named ${customer} just completed a purchase. Please write a warm and grateful thank-you message for their purchase. Also invite them to explore the product catalog below which features items related to their recent purchase. You can recommend based on ${allTitles.join(", ")}.
+        Their purchase includes: ${purchase.map((p) => p.name).join(", ")}.
+        Keep it concise and engaging, in just 10 to 30 words.`;
 
-                Only return the JSON array, nothing else.
-                `;
+        const productsPrompt = `
+            The customer purchased these items: ${purchase.map((p) => p.name).join(", ")}.
+            Given the following product catalog titles:
+            ${allTitles.join(", ")}
 
+            Please recommend 3 to 6 product titles **only from this catalog** that are most related or complementary to the customer's purchase. 
+            Do not suggest any product titles outside this list, don't recommend the same products that they purchased.
 
+            ⚡️ Return only a valid JSON array of the recommended product titles.
+            ⚡️ Do NOT include any explanations, commentary, or formatting.
+            ⚡️ Example output: ["Product Title 1", "Product Title 2", "Product Title 3"]
 
-            try {
-                const thank = await getRespense(thankPrompt);
-                if(thank){
-                    setMessage(thank)
-                }
-                const result = await getRespense(productsPrompt);
+            Only return the JSON array, nothing else.
+            `;
 
-                if (result && typeof result === "string") {
-                    const matchedTitles: string[] = JSON.parse(result);
-                    const matchedProducts = allProducts.filter((product) =>
-                        matchedTitles.includes(product.title)
-                );
-                setProducts(matchedProducts)
-                    
-                } else {
-                    
-                }
-            } catch (error) {
-                console.error("Error fetching or parsing AI response:", error);
-                
-            } finally {
-                setLoadingAI(false);
+        try {
+            const thankRaw = await getRespense(thankPrompt);
+            if (thankRaw) {
+            setMessage(cleanAIResponse(thankRaw));
             }
+
+            const resultRaw = await getRespense(productsPrompt);
+
+            if (resultRaw && typeof resultRaw === "string") {
+            const cleaned = cleanAIResponse(resultRaw);
+            const matchedTitles: string[] = JSON.parse(cleaned);
+            const matchedProducts = allProducts.filter((product) =>
+                matchedTitles.includes(product.title)
+            );
+            setProducts(matchedProducts);
+            }
+        } catch (error) {
+            console.error("Error fetching or parsing AI response:", error);
+        } finally {
+            setLoadingAI(false);
+        }
         };
 
         if (data?.products) {
-            fetchResponse();
+        fetchResponse();
         }
     }, [data, purchase, customer]);
 
@@ -129,7 +127,10 @@ const Thanks = ({ purchase, customer }: Props) => {
         <section className="bg-white shadow-md rounded-lg p-8 mb-12">
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">Thank You, {customer}!</h2>
             <p className="text-gray-700 whitespace-pre-line">{message}</p>
-            <Link href="/" className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+            <Link
+            href="/"
+            className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            >
             Go Back
             </Link>
         </section>
@@ -138,14 +139,14 @@ const Thanks = ({ purchase, customer }: Props) => {
             <section>
             <h3 className="text-xl font-semibold mb-6 text-gray-800">Recommended Products for You</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                {matched.map((product, i:number) => (
-                    <Card key={i} product={product}/>
+                {matched.map((product, i) => (
+                <Card key={i} product={product} />
                 ))}
             </div>
             </section>
         )}
         </main>
     );
-};
+    };
 
 export default Thanks;
